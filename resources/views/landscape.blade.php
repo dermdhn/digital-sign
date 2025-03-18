@@ -33,7 +33,7 @@
 <body class="bg-gray-100 h-screen flex items-center justify-center overflow-hidden">
     <div class="w-full h-full bg-white shadow-lg flex flex-col overflow-hidden">
         <!-- Judul -->
-        <div class="bg-gray-800 flex items-center py-12 px-4 h-[120px] relative overflow-hidden">
+        <div class="bg-gray-800 flex items-center py-20 px-10 h-[130px] relative overflow-hidden">
             <div class="absolute inset-0 w-[110%] left-[-5%] h-full">
                 <img src="{{ asset('header.jpg') }}" alt="Background"
                     class="w-full h-auto min-h-full object-cover object-center blur-sm transform translate-y-[-350px] header-bg-img">
@@ -42,10 +42,10 @@
                 <img src="{{ asset('unnes.png') }}" alt="Logo"
                     class="h-24 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
             </div>
-            <div class="flex-grow text-3xl font-bold text-center leading-tight font-poppins relative z-10 text-white">
+            <div class="flex-grow text-4xl font-bold text-center leading-tight font-poppins relative z-10 text-white">
                 SELAMAT DATANG DI<br>
                 UNIVERSITAS NEGERI SEMARANG
-                <p class="text-lg font-normal mt-1 text-white">Kampus UNNES Sekaran, Gunungpati, Semarang, 50229, Jawa
+                <p class="text-lg font-bold mt-1 text-white">Kampus UNNES Sekaran, Gunungpati, Semarang, 50229, Jawa
                     Tengah,
                     Indonesia</p>
             </div>
