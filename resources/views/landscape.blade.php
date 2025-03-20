@@ -244,7 +244,7 @@
 
     .floor-content {
         width: 80%;
-        margin-top: 1.5rem;
+        margin-top: -0.5rem;
     }
 
     .floor-slide.active {
@@ -330,7 +330,7 @@
         <!-- Informasi Lantai & Jadwal -->
         <div class="grid grid-cols-2 flex-grow bg-gray-50">
             <div
-                class="bg-white/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
+                class="bg-white/50 text-gray-800 flex flex-col items-center justify-start pt-4 text-lg backdrop-blur-sm">
                 <div class="font-poppins w-full">
                     <div
                         class="text-5xl font-bold text-gray-800 text-center hover:text-gray-900 transition-colors duration-300">
@@ -340,7 +340,7 @@
                             <!-- Lantai 1 -->
                             <div class="floor-slide active">
                                 <div class="floor-title-container">
-                                    <div class="text-5xl font-bold text-red-600 mb-6">
+                                    <div class="text-5xl font-bold text-red-600">
                                         <i class="fas fa-building-user mr-2"></i>Lantai 1
                                     </div>
                                     <div class="text-lg font-semibold text-gray-600 mb-6">( First Floor )</div>
@@ -369,7 +369,7 @@
                             <!-- Lantai 2 -->
                             <div class="floor-slide">
                                 <div class="floor-title-container">
-                                    <div class="text-5xl font-bold text-blue-600 mb-6">
+                                    <div class="text-5xl font-bold text-blue-600">
                                         <i class="fas fa-building-user mr-2"></i>Lantai 2
                                     </div>
                                     <div class="text-lg font-semibold text-gray-600 mb-6">( Second Floor )</div>
@@ -402,7 +402,7 @@
                             <!-- Lantai 3 -->
                             <div class="floor-slide">
                                 <div class="floor-title-container">
-                                    <div class="text-5xl font-bold text-green-600 mb-6">
+                                    <div class="text-5xl font-bold text-green-600">
                                         <i class="fas fa-building-user mr-2"></i>Lantai 3
                                     </div>
                                     <div class="text-lg font-semibold text-gray-600 mb-6">( Third Floor )</div>
@@ -433,7 +433,7 @@
                             <!-- Lantai 4 -->
                             <div class="floor-slide">
                                 <div class="floor-title-container">
-                                    <div class="text-5xl font-bold text-purple-600 mb-6">
+                                    <div class="text-5xl font-bold text-purple-600">
                                         <i class="fas fa-building-user mr-2"></i>Lantai 4
                                     </div>
                                     <div class="text-lg font-semibold text-gray-600 mb-6">( Fourth Floor )</div>
