@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::get('/landscape', function () {
     return view('landscape');
 });
+
+Route::get('/portrait', function () {
+    return view('portrait');
+});
