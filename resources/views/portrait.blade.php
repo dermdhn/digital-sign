@@ -27,35 +27,38 @@
         color: #333;
         overflow: hidden;
         font-family: 'Montserrat', sans-serif;
+        width: 1920px;
+        height: 1080px;
     }
 
     .signage-container {
         height: 100vh;
+        width: 100vw;
         display: flex;
         flex-direction: column;
     }
 
     .header {
         background: var(--primary-blue);
-        padding: 20px;
+        padding: 20px 40px;
         color: white;
+        height: 15vh;
     }
 
     .header-content {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 10px;
     }
 
     .header-logo {
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: 25px;
     }
 
     .header-logo img {
-        height: 80px;
+        height: 120px;
         filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
         transition: all 0.3s ease;
     }
@@ -66,21 +69,21 @@
     }
 
     .header-title {
-        font-size: 2rem;
+        font-size: 3.5rem;
         font-weight: bold;
         line-height: 1.2;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .header-title small {
-        font-size: 1.1rem;
+        font-size: 2rem;
         opacity: 0.9;
         display: block;
-        margin-top: 5px;
+        margin-top: 10px;
     }
 
     .datetime {
-        font-size: 1.2rem;
+        font-size: 2.5rem;
         font-weight: bold;
         color: var(--primary-yellow);
         text-align: right;
@@ -88,10 +91,11 @@
 
     .news-ticker {
         background-color: var(--primary-yellow);
-        padding: 8px;
-        font-size: 1rem;
+        padding: 15px;
+        font-size: 2rem;
         color: var(--primary-blue);
         font-weight: 600;
+        height: 5vh;
     }
 
     .content-area {
@@ -99,45 +103,45 @@
         display: flex;
         flex-direction: column;
         background: linear-gradient(180deg, #fff 0%, var(--light-yellow) 100%);
-        overflow-y: auto;
+        height: 72vh;
     }
 
     .main-content {
         flex: 1;
         display: flex;
         flex-direction: column;
-        padding: 15px;
-        gap: 15px;
+        padding: 25px;
+        gap: 25px;
     }
 
     .info-card {
         background: white;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 15px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-left: 4px solid var(--primary-blue);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-left: 6px solid var(--primary-blue);
     }
 
     .card-title {
         color: var(--primary-blue);
-        font-size: 1.2rem;
+        font-size: 2.5rem;
         font-weight: bold;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 15px;
     }
 
     .announcement {
         background: var(--primary-blue);
         color: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 15px;
-        font-size: 1.3rem;
+        padding: 30px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        font-size: 3rem;
         text-align: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .schedule-list {
@@ -147,60 +151,96 @@
     }
 
     .schedule-item {
-        padding: 12px;
-        border-bottom: 1px solid #eee;
-        font-size: 0.9rem;
+        padding: 20px;
+        border-bottom: 2px solid #eee;
+        font-size: 2rem;
     }
 
     .schedule-time {
         background: var(--primary-yellow);
         color: var(--primary-blue);
-        padding: 4px 8px;
-        border-radius: 4px;
+        padding: 8px 16px;
+        border-radius: 8px;
         font-weight: bold;
-        font-size: 0.8rem;
-        margin-right: 8px;
+        font-size: 1.8rem;
+        margin-right: 15px;
     }
 
     .quick-info {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 20px;
     }
 
     .quick-info-item {
         background: var(--secondary-blue);
         color: white;
-        padding: 15px;
-        border-radius: 8px;
+        padding: 20px;
+        border-radius: 12px;
         text-align: center;
-        font-size: 0.9rem;
+        font-size: 1.8rem;
     }
 
     .quick-info-item i {
-        font-size: 1.5rem;
+        font-size: 2.2rem;
         color: var(--primary-yellow);
-        margin-bottom: 8px;
+        margin-bottom: 10px;
     }
 
     .footer {
         background: var(--primary-blue);
-        padding: 10px;
-        text-align: center;
+        padding: 0;
         color: white;
-        font-size: 0.8rem;
+        font-size: 2rem;
+        height: 8vh;
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        border-top: 3px solid var(--primary-yellow);
+    }
+
+    .footer-content {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 50px;
+        animation: scrollText 30s linear infinite;
+        white-space: nowrap;
+    }
+
+    .footer-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        color: var(--primary-yellow);
+        padding: 0 25px;
+    }
+
+    .footer-item i {
+        font-size: 2.2rem;
+        color: var(--primary-yellow);
+    }
+
+    @keyframes scrollText {
+        0% {
+            transform: translateX(100%);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
     }
 
     .social-media {
         display: flex;
         justify-content: center;
-        gap: 15px;
-        margin-top: 8px;
+        gap: 25px;
+        margin-top: 10px;
     }
 
     .social-media i {
         color: var(--primary-yellow);
-        font-size: 1.2rem;
+        font-size: 2rem;
     }
 
     /* Optimasi untuk Portrait */
@@ -210,19 +250,19 @@
         }
 
         .header-logo img {
-            height: 60px;
+            height: 250px
         }
 
         .header-title {
-            font-size: 1.5rem;
+            font-size: 3rem;
         }
 
         .header-title small {
-            font-size: 0.9rem;
+            font-size: 1.5rem
         }
 
         .datetime {
-            font-size: 1rem;
+            font-size: 3rem;
         }
 
         .main-content {
@@ -274,35 +314,6 @@
 
                 <div class="info-card">
                     <div class="card-title">
-                        <i class="fas fa-info-circle"></i>
-                        Info Penting
-                    </div>
-                    <div class="quick-info">
-                        <div class="quick-info-item">
-                            <i class="fas fa-virus"></i>
-                            <div>Status COVID-19</div>
-                            <strong>Level 1</strong>
-                        </div>
-                        <div class="quick-info-item">
-                            <i class="fas fa-temperature-high"></i>
-                            <div>Cuaca</div>
-                            <strong>28°C</strong>
-                        </div>
-                        <div class="quick-info-item">
-                            <i class="fas fa-users"></i>
-                            <div>Mahasiswa Aktif</div>
-                            <strong>35,420</strong>
-                        </div>
-                        <div class="quick-info-item">
-                            <i class="fas fa-award"></i>
-                            <div>Akreditasi</div>
-                            <strong>A</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <div class="card-title">
                         <i class="fas fa-calendar-alt"></i>
                         Agenda Hari Ini
                     </div>
@@ -341,12 +352,40 @@
         </div>
 
         <div class="footer">
-            <div>UNIVERSITAS NEGERI SEMARANG - KONSERVASI DAN BEREPUTASI INTERNASIONAL</div>
-            <div class="social-media">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+            <div class="footer-content">
+                <div class="footer-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    Pendaftaran Wisuda Periode IV 2024 Telah Dibuka
+                </div>
+                <div class="footer-item">
+                    <i class="fas fa-trophy"></i>
+                    Tim Robotika UNNES Juara 1 Nasional
+                </div>
+                <div class="footer-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    Pekan Ilmiah Mahasiswa 15-20 April 2024
+                </div>
+                <div class="footer-item">
+                    <i class="fas fa-globe"></i>
+                    Program Pertukaran Mahasiswa Merdeka 2024
+                </div>
+                <div class="footer-item">
+                    <i class="fas fa-award"></i>
+                    UNNES Peringkat 1 PTN Konservasi di Indonesia
+                </div>
+                <!-- Duplikasi item untuk efek scroll yang mulus -->
+                <div class="footer-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    Pendaftaran Wisuda Periode IV 2024 Telah Dibuka
+                </div>
+                <div class="footer-item">
+                    <i class="fas fa-trophy"></i>
+                    Tim Robotika UNNES Juara 1 Nasional
+                </div>
+                <div class="footer-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    Pekan Ilmiah Mahasiswa 15-20 April 2024
+                </div>
             </div>
         </div>
     </div>
