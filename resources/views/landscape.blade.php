@@ -20,288 +20,303 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    {{--
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> --}}
+    <script src="https://kit.fontawesome.com/0dbc56c7a8.js" crossorigin="anonymous"></script>
     <style>
-    html,
-    body {
-        overflow: hidden;
-        height: 100vh;
-        margin: 0;
-        padding: 0;
-        background: #f0f2f5;
-    }
-
-    .font-poppins {
-        font-family: 'Poppins', sans-serif;
-    }
-
-    .glass-effect {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.18);
-    }
-
-    .header-gradient {
-        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-    }
-
-    .info-card {
-        background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    }
-
-    .schedule-card {
-        background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    }
-
-    .presence-section {
-        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-    }
-
-    /* Animasi untuk status kehadiran */
-    @keyframes slideIn {
-        0% {
-            transform: translate(-50%, 100%);
-            opacity: 0;
+        html,
+        body {
+            overflow: hidden;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
         }
 
-        100% {
-            transform: translate(-50%, 0);
-            opacity: 1;
-        }
-    }
-
-    @keyframes slideLoop {
-        0% {
-            transform: translateX(100%);
-            opacity: 0;
+        .font-poppins {
+            font-family: 'Poppins', sans-serif;
         }
 
-        20% {
-            transform: translateX(0);
-            opacity: 1;
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
         }
 
-        80% {
-            transform: translateX(0);
-            opacity: 1;
+        .header-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
         }
 
-        100% {
-            transform: translateX(-100%);
-            opacity: 0;
-        }
-    }
-
-    .status-hadir {
-        animation: slideIn 0.5s ease-out forwards;
-    }
-
-    .kotak-hadir {
-        animation: slideLoop 4s ease-in-out infinite;
-        opacity: 0;
-        transition: transform 0.3s ease;
-    }
-
-    .kotak-hadir:hover {
-        transform: translateY(-5px);
-    }
-
-    /* Responsif untuk gambar background dan konten */
-    @media (max-width: 1280px) {
-        .header-title {
-            font-size: 1.75rem;
-            line-height: 2rem;
+        .info-card {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
-        .header-subtitle {
-            font-size: 0.875rem;
+        .schedule-card {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
-        .floor-title {
+        .presence-section {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        }
+
+        .status-hadir {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 1.1rem;
+        }
+
+        .kotak-hadir {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .kotak-hadir.hadir {
+            background: linear-gradient(135deg, rgba(167, 243, 208, 0.9) 0%, rgba(110, 231, 183, 0.9) 100%);
+            border: 3px solid #10B981;
+        }
+
+        .kotak-hadir.tidak-hadir {
+            background: linear-gradient(135deg, rgba(254, 202, 202, 0.9) 0%, rgba(252, 165, 165, 0.9) 100%);
+            border: 3px solid #EF4444;
+            opacity: 0.8;
+        }
+
+        .kotak-hadir:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.2);
+        }
+
+        .status-hadir.hadir {
+            background: #10B981;
+            color: white;
+            border-top: 2px solid #059669;
+        }
+
+        .status-hadir.tidak-hadir {
+            background: #EF4444;
+            color: white;
+            border-top: 2px solid #DC2626;
+        }
+
+        .presence-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #1F2937;
+        }
+
+        .presence-icon {
             font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #1F2937;
         }
 
-        .presence-box {
-            font-size: 1.5rem;
-            padding: 1rem;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .header-bg-img {
-            height: 100% !important;
-            transform: translateY(0) !important;
+        .presence-status-icon {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
         }
 
-        .header-logo {
-            height: 3rem;
-            width: auto;
+        /* Responsif untuk gambar background dan konten */
+        @media (max-width: 1280px) {
+            .header-title {
+                font-size: 1.75rem;
+                line-height: 2rem;
+            }
+
+            .header-subtitle {
+                font-size: 0.875rem;
+            }
+
+            .floor-title {
+                font-size: 2.5rem;
+            }
+
+            .presence-box {
+                font-size: 1.5rem;
+                padding: 1rem;
+            }
         }
 
-        .header-title {
-            font-size: 1.25rem;
-            line-height: 1.5rem;
+        @media (max-width: 768px) {
+            .header-bg-img {
+                height: 100% !important;
+                transform: translateY(0) !important;
+            }
+
+            .header-logo {
+                height: 3rem;
+                width: auto;
+            }
+
+            .header-title {
+                font-size: 1.25rem;
+                line-height: 1.5rem;
+            }
+
+            .header-subtitle {
+                font-size: 0.75rem;
+            }
+
+            .floor-title {
+                font-size: 2rem;
+            }
+
+            .info-list {
+                font-size: 0.875rem;
+            }
+
+            .presence-box {
+                font-size: 1.25rem;
+                padding: 0.5rem;
+            }
         }
 
-        .header-subtitle {
-            font-size: 0.75rem;
+        /* Tambahkan style untuk animasi marquee */
+        @keyframes marquee {
+            0% {
+                transform: translateX(100%);
+                opacity: 1;
+            }
+
+            95% {
+                transform: translateX(-150%);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(-155%);
+                opacity: 0;
+            }
         }
 
-        .floor-title {
-            font-size: 2rem;
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
         }
 
-        .info-list {
-            font-size: 0.875rem;
+        .marquee-container::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 200px;
+            background: linear-gradient(to left, transparent, white);
+            z-index: 2;
         }
 
-        .presence-box {
-            font-size: 1.25rem;
-            padding: 0.5rem;
-        }
-    }
-
-    /* Tambahkan style untuk animasi marquee */
-    @keyframes marquee {
-        0% {
-            transform: translateX(100%);
-            opacity: 1;
+        .animate-marquee {
+            display: inline-block;
+            animation: marquee 40s linear infinite;
+            margin-left: 200px;
         }
 
-        95% {
-            transform: translateX(-150%);
-            opacity: 1;
+        #liveclock {
+            z-index: 3;
+            position: relative;
         }
 
-        100% {
-            transform: translateX(-155%);
+        /* Tambahkan style untuk slide lantai */
+        .floor-slider {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .floor-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+            margin-top: 1.5rem;
+        }
+
+        .floor-slide {
+            min-width: 100%;
             opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-    }
 
-    .marquee-container {
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-    }
+        .floor-title-container {
+            text-align: center;
+            width: 100%;
+        }
 
-    .marquee-container::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 200px;
-        background: linear-gradient(to left, transparent, white);
-        z-index: 2;
-    }
+        .floor-content {
+            width: 80%;
+            margin-top: -0.5rem;
+        }
 
-    .animate-marquee {
-        display: inline-block;
-        animation: marquee 40s linear infinite;
-        margin-left: 200px;
-    }
+        .floor-slide.active {
+            opacity: 1;
+        }
 
-    #liveclock {
-        z-index: 3;
-        position: relative;
-    }
+        .floor-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
 
-    /* Tambahkan style untuk slide lantai */
-    .floor-slider {
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        .floor-nav-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(156, 163, 175, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    .floor-slides {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-        width: 100%;
-        margin-top: 1.5rem;
-    }
+        .floor-nav-btn.active {
+            background: #dc2626;
+            transform: scale(1.2);
+        }
 
-    .floor-slide {
-        min-width: 100%;
-        opacity: 0;
-        transition: opacity 0.5s ease-in-out;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        .floor-arrows {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            transform: translateY(-50%);
+            z-index: 10;
+        }
 
-    .floor-title-container {
-        text-align: center;
-        width: 100%;
-    }
+        .floor-arrow {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-    .floor-content {
-        width: 80%;
-        margin-top: -0.5rem;
-    }
-
-    .floor-slide.active {
-        opacity: 1;
-    }
-
-    .floor-nav {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 10px;
-        z-index: 10;
-    }
-
-    .floor-nav-btn {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: rgba(156, 163, 175, 0.5);
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .floor-nav-btn.active {
-        background: #dc2626;
-        transform: scale(1.2);
-    }
-
-    .floor-arrows {
-        position: absolute;
-        top: 50%;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 20px;
-        transform: translateY(-50%);
-        z-index: 10;
-    }
-
-    .floor-arrow {
-        background: rgba(0, 0, 0, 0.5);
-        color: white;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .floor-arrow:hover {
-        background: rgba(0, 0, 0, 0.8);
-    }
+        .floor-arrow:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
     </style>
 </head>
 
@@ -351,6 +366,7 @@
                                             <h3 class="font-bold text-5xl mb-4 text-gray-900 text-center">
                                                 <i class="fas fa-door-open mr-2"></i>Informasi Ruangan
                                             </h3>
+                                            <div class="w-full h-1 bg-gray-800 mb-4 rounded-full"></div>
                                             <ul
                                                 class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-900">
                                                 <li>DIREKTUR AKADEMIK, KEMAHASISWAAN, DAN KONSERVASI</li>
@@ -381,6 +397,7 @@
                                             <h3 class="font-bold text-5xl mb-4 text-gray-900 text-center">
                                                 <i class="fas fa-door-open mr-2"></i>Informasi Ruangan
                                             </h3>
+                                            <div class="w-full h-1 bg-gray-800 mb-4 rounded-full"></div>
                                             <ul
                                                 class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-900">
                                                 <li>RUANG REKTOR</li>
@@ -414,6 +431,7 @@
                                             <h3 class="font-bold text-5xl mb-4 text-gray-900 text-center">
                                                 <i class="fas fa-door-open mr-2"></i>Informasi Ruangan
                                             </h3>
+                                            <div class="w-full h-1 bg-gray-800 mb-4 rounded-full"></div>
                                             <ul
                                                 class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-900">
                                                 <li>DIREKTUR UMUM DAN SDM</li>
@@ -445,6 +463,7 @@
                                             <h3 class="font-bold text-5xl mb-4 text-gray-900 text-center">
                                                 <i class="fas fa-door-open mr-2"></i>Informasi Ruangan
                                             </h3>
+                                            <div class="w-full h-1 bg-gray-800 mb-4 rounded-full"></div>
                                             <ul
                                                 class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-900">
                                                 <li>KETUA SENAT</li>
@@ -517,7 +536,7 @@
                                 </div>
                             </div>
 
-                            <div class="pb-1">
+                            <div class="border-b border-gray-500/30 pb-3">
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <h3 class="font-bold text-lg"><i class="fas fa-chart-line mr-2"></i>Evaluasi
@@ -533,58 +552,91 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="border-b border-gray-500/30 pb-3">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-bold text-lg"><i
+                                                class="fas fa-handshake mr-2"></i>Penandatanganan MoU</h3>
+                                        <p class="text-sm text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Ruang
+                                            Rapat 407</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-semibold text-yellow-400"><i class="far fa-clock mr-1"></i>16:30
+                                            WIB</p>
+                                        <p class="text-sm text-gray-300"><i class="far fa-calendar-check mr-1"></i>Hari
+                                            ini</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pb-1">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-bold text-lg"><i class="fas fa-trophy mr-2"></i>Rapat
+                                            Penganugerahan Prestasi</h3>
+                                        <p class="text-sm text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Ruang
+                                            Command Center</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="font-semibold text-yellow-400"><i class="far fa-clock mr-1"></i>18:00
+                                            WIB</p>
+                                        <p class="text-sm text-gray-300"><i class="far fa-calendar-check mr-1"></i>Hari
+                                            ini</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="presence-section py-6 flex-shrink-0">
+        <div class="presence-section py-2 flex-shrink-0">
             <div class="grid grid-cols-5 gap-6 px-6">
-                <!-- Kotak Kehadiran -->
                 <div
-                    class="glass-effect py-12 rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box">
-                    <i class="fas fa-user-tie text-4xl mb-2 text-gray-800"></i>
-                    <span class="text-gray-800 font-bold text-3xl">Rektor</span>
+                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box hadir">
+                    <i class="fas fa-user-tie presence-icon"></i>
+                    <div class="presence-title">Rektor</div>
                     <div
-                        class="bg-blue-400/70 text-black text-center py-1.5 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir font-semibold">
-                        <i class="fas fa-check-circle mr-1"></i>Hadir
+                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir hadir font-semibold">
+                        <i class="fas fa-check-circle presence-status-icon"></i>Hadir
                     </div>
                 </div>
                 <div
-                    class="glass-effect py-12 rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box">
-                    <i class="fas fa-user-tie text-4xl mb-2 text-gray-800"></i>
-                    <span class="text-gray-800 font-bold text-3xl">WR 1</span>
+                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box hadir">
+                    <i class="fas fa-user-tie presence-icon"></i>
+                    <div class="presence-title">Wakil Rektor 1</div>
                     <div
-                        class="bg-blue-400/70 text-black text-center py-1.5 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir font-semibold">
-                        <i class="fas fa-check-circle mr-1"></i>Hadir
+                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir hadir font-semibold">
+                        <i class="fas fa-check-circle presence-status-icon"></i>Hadir
                     </div>
                 </div>
                 <div
-                    class="glass-effect py-12 rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box">
-                    <i class="fas fa-user-tie text-4xl mb-2 text-gray-800"></i>
-                    <span class="text-gray-800 font-bold text-3xl">WR 2</span>
+                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box tidak-hadir">
+                    <i class="fas fa-user-tie presence-icon"></i>
+                    <div class="presence-title">Wakil Rektor 2</div>
                     <div
-                        class="bg-red-500/70 text-black text-center py-1.5 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir font-semibold">
-                        <i class="fas fa-times-circle mr-1"></i>Tidak
+                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir tidak-hadir font-semibold">
+                        <i class="fas fa-times-circle presence-status-icon"></i>Tidak Hadir
                     </div>
                 </div>
                 <div
-                    class="glass-effect py-12 rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box">
-                    <i class="fas fa-user-tie text-4xl mb-2 text-gray-800"></i>
-                    <span class="text-gray-800 font-bold text-3xl">WR 3</span>
+                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box hadir">
+                    <i class="fas fa-user-tie presence-icon"></i>
+                    <div class="presence-title">Wakil Rektor 3</div>
                     <div
-                        class="bg-blue-400/70 text-black text-center py-1.5 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir font-semibold">
-                        <i class="fas fa-check-circle mr-1"></i>Hadir
+                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir hadir font-semibold">
+                        <i class="fas fa-check-circle presence-status-icon"></i>Hadir
                     </div>
                 </div>
                 <div
-                    class="glass-effect py-12 rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box">
-                    <i class="fas fa-user-tie text-4xl mb-2 text-gray-800"></i>
-                    <span class="text-gray-800 font-bold text-3xl">WR 4</span>
+                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box hadir">
+                    <i class="fas fa-user-tie presence-icon"></i>
+                    <div class="presence-title">Wakil Rektor 4</div>
                     <div
-                        class="bg-blue-400/70 text-black text-center py-1.5 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir font-semibold">
-                        <i class="fas fa-check-circle mr-1"></i>Hadir
+                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir hadir font-semibold">
+                        <i class="fas fa-check-circle presence-status-icon"></i>Hadir
                     </div>
                 </div>
             </div>
@@ -618,144 +670,132 @@
     </div>
 
     <script>
-    function updateClock() {
-        const now = new Date();
+        function updateClock() {
+            const now = new Date();
 
-        // Format time: HH:MM
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const timeString = `<i class="far fa-clock mr-2"></i>${hours}:${minutes}`;
+            // Format time: HH:MM
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const timeString = `<i class="far fa-clock mr-2"></i>${hours}:${minutes}`;
 
-        // Update the element
-        document.getElementById('liveclock').innerHTML = timeString;
+            // Update the element
+            document.getElementById('liveclock').innerHTML = timeString;
 
-        // Update every second untuk animasi yang lebih smooth
-        setTimeout(updateClock, 1000);
-    }
+            // Update every second untuk animasi yang lebih smooth
+            setTimeout(updateClock, 1000);
+        }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        // Tambahkan loading state
-        const loadingState = document.createElement('div');
-        loadingState.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-        loadingState.innerHTML = `
-            <div class="bg-white p-5 rounded-lg shadow-xl">
-                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"></div>
-                <p class="mt-3 text-gray-700">Memuat Data...</p>
-            </div>
-        `;
-        document.body.appendChild(loadingState);
-
-        try {
-            updateClock();
-
-            // Menambahkan animasi dengan delay untuk setiap status dan kotak
-            const statusElements = document.querySelectorAll('.status-hadir');
-            const kotakElements = document.querySelectorAll('.kotak-hadir');
-
-            statusElements.forEach((element, index) => {
-                element.style.animationDelay = `${(4 - index) * 0.2}s`;
-            });
-
-            kotakElements.forEach((element, index) => {
-                element.style.animationDelay = `${(4 - index) * 0.2}s`;
-            });
-
-            // Tambahkan script untuk slide
-            const slides = document.querySelectorAll('.floor-slide');
-            const navBtns = document.querySelectorAll('.floor-nav-btn');
-            let currentSlide = 0;
-
-            function showSlide(index) {
-                try {
-                    slides.forEach(slide => {
-                        slide.classList.remove('active');
-                        slide.style.transform = `translateX(-${index * 100}%)`;
-                    });
-                    slides[index].classList.add('active');
-
-                    navBtns.forEach(btn => btn.classList.remove('active'));
-                    navBtns[index].classList.add('active');
-                } catch (error) {
-                    console.error('Error showing slide:', error);
-                }
-            }
-
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % slides.length;
-                showSlide(currentSlide);
-            }
-
-            function prevSlide() {
-                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-                showSlide(currentSlide);
-            }
-
-            // Event Listeners
-            navBtns.forEach((btn, index) => {
-                btn.addEventListener('click', () => {
-                    currentSlide = index;
-                    showSlide(currentSlide);
-                });
-            });
-
-            // Keyboard navigation
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowLeft') {
-                    prevSlide();
-                } else if (e.key === 'ArrowRight') {
-                    nextSlide();
-                }
-            });
-
-            // Touch events untuk mobile
-            let touchStartX = 0;
-            let touchEndX = 0;
-
-            document.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            });
-
-            document.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            });
-
-            function handleSwipe() {
-                const swipeThreshold = 50;
-                const swipeLength = touchEndX - touchStartX;
-
-                if (Math.abs(swipeLength) > swipeThreshold) {
-                    if (swipeLength > 0) {
-                        prevSlide();
-                    } else {
-                        nextSlide();
-                    }
-                }
-            }
-
-            // Auto slide setiap 10 detik
-            setInterval(nextSlide, 10000);
-
-            // Hapus loading state setelah semua selesai
-            setTimeout(() => {
-                loadingState.remove();
-            }, 1000);
-
-        } catch (error) {
-            console.error('Error initializing app:', error);
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tambahkan loading state
+            const loadingState = document.createElement('div');
+            loadingState.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
             loadingState.innerHTML = `
                 <div class="bg-white p-5 rounded-lg shadow-xl">
-                    <div class="text-red-600 text-center mb-3">
-                        <i class="fas fa-exclamation-circle text-4xl"></i>
-                    </div>
-                    <p class="text-gray-700">Terjadi kesalahan saat memuat aplikasi</p>
-                    <button onclick="location.reload()" class="mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                        Muat Ulang
-                    </button>
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"></div>
+                    <p class="mt-3 text-gray-700">Memuat Data...</p>
                 </div>
             `;
-        }
-    });
+            document.body.appendChild(loadingState);
+
+            try {
+                updateClock();
+
+                // Menambahkan script untuk slide
+                const slides = document.querySelectorAll('.floor-slide');
+                const navBtns = document.querySelectorAll('.floor-nav-btn');
+                let currentSlide = 0;
+
+                function showSlide(index) {
+                    try {
+                        slides.forEach(slide => {
+                            slide.classList.remove('active');
+                            slide.style.transform = `translateX(-${index * 100}%)`;
+                        });
+                        slides[index].classList.add('active');
+
+                        navBtns.forEach(btn => btn.classList.remove('active'));
+                        navBtns[index].classList.add('active');
+                    } catch (error) {
+                        console.error('Error showing slide:', error);
+                    }
+                }
+
+                function nextSlide() {
+                    currentSlide = (currentSlide + 1) % slides.length;
+                    showSlide(currentSlide);
+                }
+
+                function prevSlide() {
+                    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                    showSlide(currentSlide);
+                }
+
+                // Event Listeners
+                navBtns.forEach((btn, index) => {
+                    btn.addEventListener('click', () => {
+                        currentSlide = index;
+                        showSlide(currentSlide);
+                    });
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') {
+                        prevSlide();
+                    } else if (e.key === 'ArrowRight') {
+                        nextSlide();
+                    }
+                });
+
+                // Touch events untuk mobile
+                let touchStartX = 0;
+                let touchEndX = 0;
+
+                document.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+
+                document.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                });
+
+                function handleSwipe() {
+                    const swipeThreshold = 50;
+                    const swipeLength = touchEndX - touchStartX;
+
+                    if (Math.abs(swipeLength) > swipeThreshold) {
+                        if (swipeLength > 0) {
+                            prevSlide();
+                        } else {
+                            nextSlide();
+                        }
+                    }
+                }
+
+                // Auto slide setiap 10 detik
+                setInterval(nextSlide, 10000);
+
+                // Hapus loading state setelah semua selesai
+                setTimeout(() => {
+                    loadingState.remove();
+                }, 1000);
+
+            } catch (error) {
+                console.error('Error initializing app:', error);
+                loadingState.innerHTML = `
+                    <div class="bg-white p-5 rounded-lg shadow-xl">
+                        <div class="text-red-600 text-center mb-3">
+                            <i class="fas fa-exclamation-circle text-4xl"></i>
+                        </div>
+                        <p class="text-gray-700">Terjadi kesalahan saat memuat aplikasi</p>
+                        <button onclick="location.reload()" class="mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                            Muat Ulang
+                        </button>
+                    </div>
+                `;
+            }
+        });
     </script>
 </body>
 
