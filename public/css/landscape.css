@@ -1,0 +1,218 @@
+/* Base Styles */
+html, body {
+    overflow: hidden;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    background: #f0f2f5;
+}
+
+.font-poppins {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Effects */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.header-gradient {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+}
+
+/* Cards */
+.info-card {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+.schedule-card {
+    background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+/* Presence Section */
+.presence-section {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+}
+
+.status-hadir {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+    padding: 8px 0;
+    font-size: 1.1rem;
+}
+
+.kotak-hadir {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    min-height: 200px;
+}
+
+.kotak-hadir.hadir {
+    background: linear-gradient(135deg, rgba(167, 243, 208, 0.9) 0%, rgba(110, 231, 183, 0.9) 100%);
+    border: 3px solid #10B981;
+}
+
+.kotak-hadir.tidak-hadir {
+    background: linear-gradient(135deg, rgba(254, 202, 202, 0.9) 0%, rgba(252, 165, 165, 0.9) 100%);
+    border: 3px solid #EF4444;
+    opacity: 0.8;
+}
+
+.kotak-hadir:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.2);
+}
+
+.status-hadir.hadir {
+    background: #10B981;
+    color: white;
+    border-top: 2px solid #059669;
+}
+
+.status-hadir.tidak-hadir {
+    background: #EF4444;
+    color: white;
+    border-top: 2px solid #DC2626;
+}
+
+.presence-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #1F2937;
+}
+
+.presence-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1F2937;
+}
+
+.presence-status-icon {
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+    0% {
+        transform: translateX(100%);
+        opacity: 1;
+    }
+    95% {
+        transform: translateX(-150%);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-155%);
+        opacity: 0;
+    }
+}
+
+.marquee-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.marquee-container::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 200px;
+    background: linear-gradient(to left, transparent, white);
+    z-index: 2;
+}
+
+.animate-marquee {
+    display: inline-block;
+    animation: marquee 40s linear infinite;
+    margin-left: 200px;
+}
+
+/* Floor Slider */
+.floor-slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.floor-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.floor-slide {
+    min-width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.floor-slide.active {
+    opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 1280px) {
+    .header-title {
+        font-size: 1.75rem;
+        line-height: 2rem;
+    }
+    .header-subtitle {
+        font-size: 0.875rem;
+    }
+    .floor-title {
+        font-size: 2.5rem;
+    }
+    .presence-box {
+        font-size: 1.5rem;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-bg-img {
+        height: 100% !important;
+        transform: translateY(0) !important;
+    }
+    .header-logo {
+        height: 3rem;
+        width: auto;
+    }
+    .header-title {
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+    }
+    .header-subtitle {
+        font-size: 0.75rem;
+    }
+    .floor-title {
+        font-size: 2rem;
+    }
+    .info-list {
+        font-size: 0.875rem;
+    }
+    .presence-box {
+        font-size: 1.25rem;
+        padding: 0.5rem;
+    }
+} 

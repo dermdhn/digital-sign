@@ -14,15 +14,19 @@
     <meta property="og:url" content="{{ url()->current() }}">
     <title>Web Rektorat UNNES</title>
 
-    <!-- Preload gambar penting -->
+    <!-- Preload Resources -->
     <link rel="preload" as="image" href="{{ asset('header.jpg') }}">
     <link rel="preload" as="image" href="{{ asset('unnes.png') }}">
+    <link rel="preload" href="{{ asset('css/landscape.css') }}" as="style">
+    <link rel="preload" href="{{ asset('js/landscape.js') }}" as="script">
 
+    <!-- Styles -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     {{--
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> --}}
     <script src="https://kit.fontawesome.com/0dbc56c7a8.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ asset('css/landscape.css') }}">
     <style>
         html,
         body {
@@ -322,8 +326,8 @@
 
 <body class="bg-gray-100 h-screen flex items-center justify-center overflow-hidden">
     <div class="w-full h-full bg-white shadow-lg flex flex-col overflow-hidden">
-        <!-- Judul -->
-        <div class="header-gradient flex items-center py-20 px-10 h-[130px] relative overflow-hidden">
+        <!-- Header Section -->
+        <header class="header-gradient flex items-center py-20 px-10 h-[130px] relative overflow-hidden">
             <div class="absolute inset-0 w-[110%] left-[-5%] h-full opacity-30">
                 <img src="{{ asset('header.jpg') }}" alt="Background"
                     class="w-full h-auto min-h-full object-cover object-center blur-sm transform translate-y-[-350px] header-bg-img">
@@ -333,317 +337,85 @@
                     class="h-24 w-auto object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] header-logo hover:scale-105 transition-transform duration-300">
             </div>
             <div class="flex-grow text-4xl font-bold text-center leading-tight font-poppins relative z-10 text-white">
-                <div class="header-title">SELAMAT DATANG DI<br>
-                    UNIVERSITAS NEGERI SEMARANG</div>
+                <h1 class="header-title">SELAMAT DATANG DI<br>UNIVERSITAS NEGERI SEMARANG</h1>
                 <p class="text-lg font-bold mt-1 text-white/90 header-subtitle">Kampus UNNES Sekaran, Gunungpati,
-                    Semarang,
-                    50229, Jawa Tengah, Indonesia</p>
+                    Semarang, 50229, Jawa Tengah, Indonesia</p>
             </div>
             <div class="w-24 flex-shrink-0 relative z-10"></div>
-        </div>
+        </header>
 
-        <!-- Informasi Lantai & Jadwal -->
-        <div class="grid grid-cols-2 flex-grow bg-gray-50">
-            <div
+        <!-- Main Content -->
+        <main class="grid grid-cols-2 flex-grow bg-gray-50">
+            <!-- Floor Information -->
+            <section
                 class="bg-white/50 text-gray-800 flex flex-col items-center justify-start pt-4 text-lg backdrop-blur-sm">
                 <div class="font-poppins w-full">
-                    <div
-                        class="text-5xl font-bold text-gray-800 text-center hover:text-gray-900 transition-colors duration-300">
-                    </div>
                     <div class="floor-slider">
                         <div class="floor-slides">
-                            <!-- Lantai 1 -->
-                            <div class="floor-slide active">
-                                <div class="floor-title-container">
-                                    <div class="text-5xl font-bold text-red-600">
-                                        <i class="fas fa-building-user mr-2"></i>Lantai 1
-                                    </div>
-                                    <div class="text-lg font-semibold text-gray-600 mb-6">( First Floor )</div>
-                                </div>
-                                <div class="floor-content">
-                                    <div class="info-card rounded-xl p-6 shadow-lg">
-                                        <div class="text-gray-800 font-poppins">
-                                            <h3 class="font-bold text-5xl mb-4 text-gray-900 text-center">
-                                                <i class="fas fa-door-open mr-2"></i>Informasi Ruangan
-                                            </h3>
-                                            <div class="w-full h-1 bg-gray-800 mb-4 rounded-full"></div>
-                                            <ul
-                                                class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-900">
-                                                <li>DIREKTUR AKADEMIK, KEMAHASISWAAN, DAN KONSERVASI</li>
-                                                <li>KANTOR URUSAN INTERNASIONAL</li>
-                                                <li>KANTOR PELAYANAN PENGADAAN</li>
-                                                <li>SUBDIREKTORAT AKADEMIK DAN KEMAHASISWAAN</li>
-                                                <li>SUBDIREKTORAT REPUTASI DAN KERJASAMA</li>
-                                                <li>SEKSI ADMISI DAN LAYANAN TERPADU</li>
-                                                <li>RUANG RAPAT 105</li>
-                                            </ul>
+                            @foreach(['Lantai 1' => 'First Floor', 'Lantai 2' => 'Second Floor', 'Lantai 3' => 'Third Floor', 'Lantai 4' => 'Fourth Floor'] as $lantai => $floor)
+                                <div class="floor-slide {{ $loop->first ? 'active' : '' }}">
+                                    <div class="floor-title-container">
+                                        <div
+                                            class="text-5xl font-bold text-{{ $loop->iteration == 1 ? 'red' : ($loop->iteration == 2 ? 'blue' : ($loop->iteration == 3 ? 'green' : 'purple')) }}-600">
+                                            <i class="fas fa-building-user mr-2"></i>{{ $lantai }}
                                         </div>
+                                        <div class="text-lg font-semibold text-gray-600 mb-6">( {{ $floor }} )</div>
+                                    </div>
+                                    <div class="floor-content">
+                                        @include("partials.floor-content-{$loop->iteration}")
                                     </div>
                                 </div>
-                            </div>
-
-                            <!-- Lantai 2 -->
-                            <div class="floor-slide">
-                                <div class="floor-title-container">
-                                    <div class="text-5xl font-bold text-blue-600">
-                                        <i class="fas fa-building-user mr-2"></i>Lantai 2
-                                    </div>
-                                    <div class="text-lg font-semibold text-gray-600 mb-6">( Second Floor )</div>
-                                </div>
-                                <div class="floor-content">
-                                    <div class="info-card rounded-xl p-6 shadow-lg"
-                                        style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);">
-                                        <div class="text-gray-800 font-poppins">
-                                            <h3 class="font-bold text-5xl mb-4 text-gray-900 text-center">
-                                                <i class="fas fa-door-open mr-2"></i>Informasi Ruangan
-                                            </h3>
-                                            <div class="w-full h-1 bg-gray-800 mb-4 rounded-full"></div>
-                                            <ul
-                                                class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-900">
-                                                <li>RUANG REKTOR</li>
-                                                <li>RUANG WAKIL REKTOR 1</li>
-                                                <li>RUANG WAKIL REKTOR 2</li>
-                                                <li>RUANG WAKIL REKTOR 3</li>
-                                                <li>RUANG WAKIL REKTOR 4</li>
-                                                <li>SEKRETARIS UNIVERSITAS</li>
-                                                <li>SUBDIREKTORAT PERENCANAAN DAN AKUTANSI</li>
-                                                <li>SEKSI TATA USAHA DAN PROTOKOLER</li>
-                                                <li>RUANG COMMAND CENTER</li>
-                                                <li>RUANG RAPAT 217</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Lantai 3 -->
-                            <div class="floor-slide">
-                                <div class="floor-title-container">
-                                    <div class="text-5xl font-bold text-green-600">
-                                        <i class="fas fa-building-user mr-2"></i>Lantai 3
-                                    </div>
-                                    <div class="text-lg font-semibold text-gray-600 mb-6">( Third Floor )</div>
-                                </div>
-                                <div class="floor-content">
-                                    <div class="info-card rounded-xl p-6 shadow-lg"
-                                        style="background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);">
-                                        <div class="text-gray-800 font-poppins">
-                                            <h3 class="font-bold text-5xl mb-4 text-gray-900 text-center">
-                                                <i class="fas fa-door-open mr-2"></i>Informasi Ruangan
-                                            </h3>
-                                            <div class="w-full h-1 bg-gray-800 mb-4 rounded-full"></div>
-                                            <ul
-                                                class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-900">
-                                                <li>DIREKTUR UMUM DAN SDM</li>
-                                                <li>DIREKTUR PERENCANAAN DAN KEUANGAN</li>
-                                                <li>SATUAN PENGAWAS INTERNAL</li>
-                                                <li>SUBDIREKTORAT UMUM</li>
-                                                <li>SUBDIREKTORAT KEUANGAN DAN PERPAJAKAN</li>
-                                                <li>SUBDIREKTORAT SDM</li>
-                                                <li>RUANG DHARMAWANITA</li>
-                                                <li>RUANG RAPAT 303</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Lantai 4 -->
-                            <div class="floor-slide">
-                                <div class="floor-title-container">
-                                    <div class="text-5xl font-bold text-purple-600">
-                                        <i class="fas fa-building-user mr-2"></i>Lantai 4
-                                    </div>
-                                    <div class="text-lg font-semibold text-gray-600 mb-6">( Fourth Floor )</div>
-                                </div>
-                                <div class="floor-content">
-                                    <div class="info-card rounded-xl p-6 shadow-lg"
-                                        style="background: linear-gradient(135deg, #9333ea 0%, #7e22ce 100%);">
-                                        <div class="text-gray-800 font-poppins">
-                                            <h3 class="font-bold text-5xl mb-4 text-gray-900 text-center">
-                                                <i class="fas fa-door-open mr-2"></i>Informasi Ruangan
-                                            </h3>
-                                            <div class="w-full h-1 bg-gray-800 mb-4 rounded-full"></div>
-                                            <ul
-                                                class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-900">
-                                                <li>KETUA SENAT</li>
-                                                <li>KANTOR HUKUM</li>
-                                                <li>RUANG RAPAT SENAT</li>
-                                                <li>RUANG RAPAT 404</li>
-                                                <li>RUANG RAPAT 405</li>
-                                                <li>RUANG RAPAT 407</li>
-                                                <li>RUANG RAPAT VICON</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
 
-                        <!-- Navigasi Slide -->
+                        <!-- Floor Navigation -->
                         <div class="floor-nav">
-                            <div class="floor-nav-btn active" data-floor="0"></div>
-                            <div class="floor-nav-btn" data-floor="1"></div>
-                            <div class="floor-nav-btn" data-floor="2"></div>
-                            <div class="floor-nav-btn" data-floor="3"></div>
+                            @for($i = 0; $i < 4; $i++)
+                                <div class="floor-nav-btn {{ $i == 0 ? 'active' : '' }}" data-floor="{{ $i }}"></div>
+                            @endfor
                         </div>
                     </div>
                 </div>
-            </div>
-            <div
+            </section>
+
+            <!-- Schedule Section -->
+            <section
                 class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
                 <div class="font-poppins">
-                    <div
+                    <h2
                         class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
                         <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
-                    </div>
+                    </h2>
                 </div>
 
                 <div class="mt-6 w-4/5">
-                    <div class="schedule-card rounded-xl p-6 shadow-lg">
-                        <div class="text-white font-poppins space-y-4">
-                            <div class="border-b border-gray-500/30 pb-3">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <h3 class="font-bold text-lg"><i class="fas fa-users mr-2"></i>Rapat Koordinasi
-                                        </h3>
-                                        <p class="text-sm text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Ruang
-                                            Rapat 105</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-yellow-400"><i class="far fa-clock mr-1"></i>09:00
-                                            WIB</p>
-                                        <p class="text-sm text-gray-300"><i class="far fa-calendar-check mr-1"></i>Hari
-                                            ini</p>
-                                    </div>
-                                </div>
-                            </div>
+                    @include('partials.schedule-list')
+                </div>
+            </section>
+        </main>
 
-                            <div class="border-b border-gray-500/30 pb-3">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <h3 class="font-bold text-lg"><i class="fas fa-user-friends mr-2"></i>Pertemuan
-                                            Dekanat</h3>
-                                        <p class="text-sm text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Ruang
-                                            Direktur</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-yellow-400"><i class="far fa-clock mr-1"></i>13:30
-                                            WIB</p>
-                                        <p class="text-sm text-gray-300"><i class="far fa-calendar-check mr-1"></i>Hari
-                                            ini</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="border-b border-gray-500/30 pb-3">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <h3 class="font-bold text-lg"><i class="fas fa-chart-line mr-2"></i>Evaluasi
-                                            Kinerja</h3>
-                                        <p class="text-sm text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Ruang
-                                            Rapat 105</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-yellow-400"><i class="far fa-clock mr-1"></i>15:00
-                                            WIB</p>
-                                        <p class="text-sm text-gray-300"><i class="far fa-calendar-check mr-1"></i>Hari
-                                            ini</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="border-b border-gray-500/30 pb-3">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <h3 class="font-bold text-lg"><i
-                                                class="fas fa-handshake mr-2"></i>Penandatanganan MoU</h3>
-                                        <p class="text-sm text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Ruang
-                                            Rapat 407</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-yellow-400"><i class="far fa-clock mr-1"></i>16:30
-                                            WIB</p>
-                                        <p class="text-sm text-gray-300"><i class="far fa-calendar-check mr-1"></i>Hari
-                                            ini</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="pb-1">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <h3 class="font-bold text-lg"><i class="fas fa-trophy mr-2"></i>Rapat
-                                            Penganugerahan Prestasi</h3>
-                                        <p class="text-sm text-gray-300"><i class="fas fa-map-marker-alt mr-2"></i>Ruang
-                                            Command Center</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="font-semibold text-yellow-400"><i class="far fa-clock mr-1"></i>18:00
-                                            WIB</p>
-                                        <p class="text-sm text-gray-300"><i class="far fa-calendar-check mr-1"></i>Hari
-                                            ini</p>
-                                    </div>
-                                </div>
-                            </div>
+        <!-- Presence Section -->
+        <section class="presence-section py-2 flex-shrink-0">
+            <div class="grid grid-cols-5 gap-6 px-6">
+                @foreach(['Rektor', 'Wakil Rektor 1', 'Wakil Rektor 2', 'Wakil Rektor 3', 'Wakil Rektor 4'] as $jabatan)
+                    <div
+                        class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }}">
+                        <i class="fas fa-user-tie presence-icon"></i>
+                        <div class="presence-title">{{ $jabatan }}</div>
+                        <div
+                            class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }} font-semibold">
+                            <i
+                                class="fas fa-{{ $jabatan == 'Wakil Rektor 2' ? 'times' : 'check' }}-circle presence-status-icon"></i>
+                            {{ $jabatan == 'Wakil Rektor 2' ? 'Tidak Hadir' : 'Hadir' }}
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
-        </div>
+        </section>
 
-        <div class="presence-section py-2 flex-shrink-0">
-            <div class="grid grid-cols-5 gap-6 px-6">
-                <div
-                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box hadir">
-                    <i class="fas fa-user-tie presence-icon"></i>
-                    <div class="presence-title">Rektor</div>
-                    <div
-                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir hadir font-semibold">
-                        <i class="fas fa-check-circle presence-status-icon"></i>Hadir
-                    </div>
-                </div>
-                <div
-                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box hadir">
-                    <i class="fas fa-user-tie presence-icon"></i>
-                    <div class="presence-title">Wakil Rektor 1</div>
-                    <div
-                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir hadir font-semibold">
-                        <i class="fas fa-check-circle presence-status-icon"></i>Hadir
-                    </div>
-                </div>
-                <div
-                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box tidak-hadir">
-                    <i class="fas fa-user-tie presence-icon"></i>
-                    <div class="presence-title">Wakil Rektor 2</div>
-                    <div
-                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir tidak-hadir font-semibold">
-                        <i class="fas fa-times-circle presence-status-icon"></i>Tidak Hadir
-                    </div>
-                </div>
-                <div
-                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box hadir">
-                    <i class="fas fa-user-tie presence-icon"></i>
-                    <div class="presence-title">Wakil Rektor 3</div>
-                    <div
-                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir hadir font-semibold">
-                        <i class="fas fa-check-circle presence-status-icon"></i>Hadir
-                    </div>
-                </div>
-                <div
-                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box hadir">
-                    <i class="fas fa-user-tie presence-icon"></i>
-                    <div class="presence-title">Wakil Rektor 4</div>
-                    <div
-                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir hadir font-semibold">
-                        <i class="fas fa-check-circle presence-status-icon"></i>Hadir
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- More Information -->
-        <div class="bg-white text-center text-lg font-semibold py-4 border-t flex-shrink-0 relative flex items-center">
+        <!-- Footer Section -->
+        <footer
+            class="bg-white text-center text-lg font-semibold py-4 border-t flex-shrink-0 relative flex items-center">
             <div class="absolute left-0 bottom-1/2 transform translate-y-1/2">
                 <div id="liveclock" class="text-3xl font-bold text-white bg-gray-900 px-7 py-4 rounded-r-xl shadow-lg">
                     <i class="far fa-clock mr-2"></i><span>00:00</span>
@@ -652,151 +424,15 @@
             <div class="flex-1 ml-48 overflow-hidden">
                 <div class="marquee-container">
                     <div class="animate-marquee whitespace-nowrap text-gray-700">
-                        <i class="fas fa-bullhorn text-red-600 mr-3"></i>
-                        Pengumuman Rektorat: Rapat Koordinasi Pimpinan Universitas Pukul 09.00 WIB
-                        <span class="mx-8">|</span>
-                        <i class="fas fa-calendar-check text-blue-600 mr-3"></i>
-                        Agenda: Pertemuan Dekanat Seluruh Fakultas Pukul 13.30 WIB
-                        <span class="mx-8">|</span>
-                        <i class="fas fa-newspaper text-green-600 mr-3"></i>
-                        Berita Terkini: Penandatanganan MoU UNNES dengan Mitra Internasional
-                        <span class="mx-8">|</span>
-                        <i class="fas fa-info-circle text-yellow-600 mr-3"></i>
-                        Layanan Terpadu Rektorat Buka Pukul 08.00-16.00 WIB
+                        @include('partials.announcements')
                     </div>
                 </div>
             </div>
-        </div>
+        </footer>
     </div>
 
-    <script>
-        function updateClock() {
-            const now = new Date();
-
-            // Format time: HH:MM
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const timeString = `<i class="far fa-clock mr-2"></i>${hours}:${minutes}`;
-
-            // Update the element
-            document.getElementById('liveclock').innerHTML = timeString;
-
-            // Update every second untuk animasi yang lebih smooth
-            setTimeout(updateClock, 1000);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            // Tambahkan loading state
-            const loadingState = document.createElement('div');
-            loadingState.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
-            loadingState.innerHTML = `
-                <div class="bg-white p-5 rounded-lg shadow-xl">
-                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto"></div>
-                    <p class="mt-3 text-gray-700">Memuat Data...</p>
-                </div>
-            `;
-            document.body.appendChild(loadingState);
-
-            try {
-                updateClock();
-
-                // Menambahkan script untuk slide
-                const slides = document.querySelectorAll('.floor-slide');
-                const navBtns = document.querySelectorAll('.floor-nav-btn');
-                let currentSlide = 0;
-
-                function showSlide(index) {
-                    try {
-                        slides.forEach(slide => {
-                            slide.classList.remove('active');
-                            slide.style.transform = `translateX(-${index * 100}%)`;
-                        });
-                        slides[index].classList.add('active');
-
-                        navBtns.forEach(btn => btn.classList.remove('active'));
-                        navBtns[index].classList.add('active');
-                    } catch (error) {
-                        console.error('Error showing slide:', error);
-                    }
-                }
-
-                function nextSlide() {
-                    currentSlide = (currentSlide + 1) % slides.length;
-                    showSlide(currentSlide);
-                }
-
-                function prevSlide() {
-                    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-                    showSlide(currentSlide);
-                }
-
-                // Event Listeners
-                navBtns.forEach((btn, index) => {
-                    btn.addEventListener('click', () => {
-                        currentSlide = index;
-                        showSlide(currentSlide);
-                    });
-                });
-
-                // Keyboard navigation
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') {
-                        prevSlide();
-                    } else if (e.key === 'ArrowRight') {
-                        nextSlide();
-                    }
-                });
-
-                // Touch events untuk mobile
-                let touchStartX = 0;
-                let touchEndX = 0;
-
-                document.addEventListener('touchstart', (e) => {
-                    touchStartX = e.changedTouches[0].screenX;
-                });
-
-                document.addEventListener('touchend', (e) => {
-                    touchEndX = e.changedTouches[0].screenX;
-                    handleSwipe();
-                });
-
-                function handleSwipe() {
-                    const swipeThreshold = 50;
-                    const swipeLength = touchEndX - touchStartX;
-
-                    if (Math.abs(swipeLength) > swipeThreshold) {
-                        if (swipeLength > 0) {
-                            prevSlide();
-                        } else {
-                            nextSlide();
-                        }
-                    }
-                }
-
-                // Auto slide setiap 10 detik
-                setInterval(nextSlide, 10000);
-
-                // Hapus loading state setelah semua selesai
-                setTimeout(() => {
-                    loadingState.remove();
-                }, 1000);
-
-            } catch (error) {
-                console.error('Error initializing app:', error);
-                loadingState.innerHTML = `
-                    <div class="bg-white p-5 rounded-lg shadow-xl">
-                        <div class="text-red-600 text-center mb-3">
-                            <i class="fas fa-exclamation-circle text-4xl"></i>
-                        </div>
-                        <p class="text-gray-700">Terjadi kesalahan saat memuat aplikasi</p>
-                        <button onclick="location.reload()" class="mt-3 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                            Muat Ulang
-                        </button>
-                    </div>
-                `;
-            }
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="{{ asset('js/landscape.js') }}"></script>
 </body>
 
 </html>
