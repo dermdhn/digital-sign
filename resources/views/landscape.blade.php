@@ -28,299 +28,11 @@
     <script src="https://kit.fontawesome.com/0dbc56c7a8.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('css/landscape.css') }}">
     <style>
-        html,
-        body {
-            overflow: hidden;
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-            background: #f0f2f5;
-        }
-
-        .font-poppins {
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        .header-gradient {
-            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-        }
-
-        .info-card {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-        }
-
-        .schedule-card {
-            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-        }
-
-        .presence-section {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-        }
-
-        .status-hadir {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            text-align: center;
-            padding: 8px 0;
-            font-size: 1.1rem;
-        }
-
-        .kotak-hadir {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            min-height: 200px;
-        }
-
-        .kotak-hadir.hadir {
-            background: linear-gradient(135deg, rgba(167, 243, 208, 0.9) 0%, rgba(110, 231, 183, 0.9) 100%);
-            border: 3px solid #10B981;
-        }
-
-        .kotak-hadir.tidak-hadir {
-            background: linear-gradient(135deg, rgba(254, 202, 202, 0.9) 0%, rgba(252, 165, 165, 0.9) 100%);
-            border: 3px solid #EF4444;
-            opacity: 0.8;
-        }
-
-        .kotak-hadir:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.2);
-        }
-
-        .status-hadir.hadir {
-            background: #10B981;
-            color: white;
-            border-top: 2px solid #059669;
-        }
-
-        .status-hadir.tidak-hadir {
-            background: #EF4444;
-            color: white;
-            border-top: 2px solid #DC2626;
-        }
-
-        .presence-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-            color: #1F2937;
-        }
-
-        .presence-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #1F2937;
-        }
-
-        .presence-status-icon {
-            font-size: 1.2rem;
-            margin-right: 0.5rem;
-        }
-
-        /* Responsif untuk gambar background dan konten */
-        @media (max-width: 1280px) {
-            .header-title {
-                font-size: 1.75rem;
-                line-height: 2rem;
-            }
-
-            .header-subtitle {
-                font-size: 0.875rem;
-            }
-
-            .floor-title {
-                font-size: 2.5rem;
-            }
-
-            .presence-box {
-                font-size: 1.5rem;
-                padding: 1rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header-bg-img {
-                height: 100% !important;
-                transform: translateY(0) !important;
-            }
-
-            .header-logo {
-                height: 3rem;
-                width: auto;
-            }
-
-            .header-title {
-                font-size: 1.25rem;
-                line-height: 1.5rem;
-            }
-
-            .header-subtitle {
-                font-size: 0.75rem;
-            }
-
-            .floor-title {
-                font-size: 2rem;
-            }
-
-            .info-list {
-                font-size: 0.875rem;
-            }
-
-            .presence-box {
-                font-size: 1.25rem;
-                padding: 0.5rem;
-            }
-        }
-
-        /* Tambahkan style untuk animasi marquee */
-        @keyframes marquee {
-            0% {
-                transform: translateX(100%);
-                opacity: 1;
-            }
-
-            95% {
-                transform: translateX(-150%);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateX(-155%);
-                opacity: 0;
-            }
-        }
-
-        .marquee-container {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .marquee-container::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 200px;
-            background: linear-gradient(to left, transparent, white);
-            z-index: 2;
-        }
-
-        .animate-marquee {
-            display: inline-block;
-            animation: marquee 40s linear infinite;
-            margin-left: 200px;
-        }
-
-        #liveclock {
-            z-index: 3;
-            position: relative;
-        }
-
-        /* Tambahkan style untuk slide lantai */
-        .floor-slider {
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .floor-slides {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-            width: 100%;
-            margin-top: 1.5rem;
-        }
-
-        .floor-slide {
-            min-width: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .floor-title-container {
-            text-align: center;
-            width: 100%;
-        }
-
-        .floor-content {
-            width: 80%;
-            margin-top: -0.5rem;
-        }
-
-        .floor-slide.active {
-            opacity: 1;
-        }
-
-        .floor-nav {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-        }
-
-        .floor-nav-btn {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(156, 163, 175, 0.5);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .floor-nav-btn.active {
-            background: #dc2626;
-            transform: scale(1.2);
-        }
-
-        .floor-arrows {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px;
-            transform: translateY(-50%);
-            z-index: 10;
-        }
-
-        .floor-arrow {
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .floor-arrow:hover {
-            background: rgba(0, 0, 0, 0.8);
-        }
+    /* Tambahan style yang tidak ada di landscape.css */
+    #liveclock {
+        z-index: 3;
+        position: relative;
+    }
     </style>
 </head>
 
@@ -352,72 +64,75 @@
                 <div class="font-poppins w-full">
                     <div class="floor-slider">
                         <div class="floor-slides">
-                            @foreach(['Lantai 1' => 'First Floor', 'Lantai 2' => 'Second Floor', 'Lantai 3' => 'Third Floor', 'Lantai 4' => 'Fourth Floor'] as $lantai => $floor)
-                                <div class="floor-slide {{ $loop->first ? 'active' : '' }}">
-                                    <div class="floor-title-container">
-                                        <div
-                                            class="text-5xl font-bold text-{{ $loop->iteration == 1 ? 'red' : ($loop->iteration == 2 ? 'blue' : ($loop->iteration == 3 ? 'green' : 'purple')) }}-600">
-                                            <i class="fas fa-building-user mr-2"></i>{{ $lantai }}
-                                        </div>
-                                        <div class="text-lg font-semibold text-gray-600 mb-6">( {{ $floor }} )</div>
+                            @foreach(['Lantai 1' => 'First Floor', 'Lantai 2' => 'Second Floor', 'Lantai 3' => 'Third
+                            Floor', 'Lantai 4' => 'Fourth Floor'] as $lantai => $floor)
+                            <div class="floor-slide {{ $loop->first ? 'active' : '' }}">
+                                <div class="floor-title-container">
+                                    <div
+                                        class="text-5xl font-bold text-{{ $loop->iteration == 1 ? 'red' : ($loop->iteration == 2 ? 'blue' : ($loop->iteration == 3 ? 'green' : 'purple')) }}-600">
+                                        <i class="fas fa-building-user mr-2"></i>{{ $lantai }}
                                     </div>
-                                    <div class="floor-content">
-                                        @include("partials.floor-content-{$loop->iteration}")
-                                    </div>
+                                    <div class="text-lg font-semibold text-gray-600 mb-6">( {{ $floor }} )</div>
                                 </div>
+                                <div class="floor-content">
+                                    @include("partials.floor-content-{$loop->iteration}")
+                                </div>
+                            </div>
                             @endforeach
                         </div>
 
                         <!-- Floor Navigation -->
                         <div class="floor-nav">
-                            @for($i = 0; $i < 4; $i++)
-                                <div class="floor-nav-btn {{ $i == 0 ? 'active' : '' }}" data-floor="{{ $i }}"></div>
-                            @endfor
+
+                            @for($i = 0; $i < 4; $i++) <div class="floor-nav-btn {{ $i == 0 ? 'active' : '' }}"
+                                data-floor="{{ $i }}">
                         </div>
+                        @endfor
                     </div>
                 </div>
-            </section>
+    </div>
+    </section>
 
-            <!-- Schedule Section -->
-            <section
-                class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
-                <div class="font-poppins">
-                    <h2
-                        class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
-                        <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
-                    </h2>
-                </div>
+    <!-- Schedule Section -->
+    <sec tion
+        class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
+        <div class="font-poppins">
+            <h2
+                class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
+                <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
+            </h2>
+        </div>
 
-                <div class="mt-6 w-4/5">
-                    @include('partials.schedule-list')
-                </div>
-            </section>
+        <div class="mt-6 w-4/5">
+            @include('partials.schedule-list')
+        </div>
+        </section>
         </main>
 
         <!-- Presence Section -->
         <section class="presence-section py-2 flex-shrink-0">
             <div class="grid grid-cols-5 gap-6 px-6">
                 @foreach(['Rektor', 'Wakil Rektor 1', 'Wakil Rektor 2', 'Wakil Rektor 3', 'Wakil Rektor 4'] as $jabatan)
+                <div
+                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }}">
+                    <i class="fas fa-user-tie presence-icon"></i>
+                    <div class="presence-title">{{ $jabatan }}</div>
                     <div
-                        class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }}">
-                        <i class="fas fa-user-tie presence-icon"></i>
-                        <div class="presence-title">{{ $jabatan }}</div>
-                        <div
-                            class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }} font-semibold">
-                            <i
-                                class="fas fa-{{ $jabatan == 'Wakil Rektor 2' ? 'times' : 'check' }}-circle presence-status-icon"></i>
-                            {{ $jabatan == 'Wakil Rektor 2' ? 'Tidak Hadir' : 'Hadir' }}
-                        </div>
+                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }} font-semibold">
+                        <i
+                            class="fas fa-{{ $jabatan == 'Wakil Rektor 2' ? 'times' : 'check' }}-circle presence-status-icon"></i>
+                        {{ $jabatan == 'Wakil Rektor 2' ? 'Tidak Hadir' : 'Hadir' }}
                     </div>
+                </div>
                 @endforeach
             </div>
         </section>
 
         <!-- Footer Section -->
-        <footer
+        <foo ter
             class="bg-white text-center text-lg font-semibold py-4 border-t flex-shrink-0 relative flex items-center">
             <div class="absolute left-0 bottom-1/2 transform translate-y-1/2">
-                <div id="liveclock" class="text-3xl font-bold text-white bg-gray-900 px-7 py-4 rounded-r-xl shadow-lg">
+                <div id="liveclock" class="text-3xl font-bold text-white bg-gray-900 px-7 py-4 rounded-tr-xl shadow-lg">
                     <i class="far fa-clock mr-2"></i><span>00:00</span>
                 </div>
             </div>
@@ -428,11 +143,10 @@
                     </div>
                 </div>
             </div>
-        </footer>
-    </div>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/landscape.js') }}"></script>
+            </footer>
+            </div>
+            <!-- Scripts -->
+            <script src="{{ asset('js/landscape.js') }}"></script>
 </body>
 
 </html>

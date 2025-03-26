@@ -1,5 +1,5 @@
 <div class="info-card rounded-xl p-6 shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl"
-    style="background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%); cursor: pointer;">
+    style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); cursor: pointer;">
     <div class="text-gray-800 font-poppins transition-all duration-300">
         <h3
             class="font-bold text-5xl mb-4 text-gray-900 text-center transform transition-all duration-300 hover:translate-y-[-2px]">

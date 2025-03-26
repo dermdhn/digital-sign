@@ -31,22 +31,28 @@ $chunks = array_chunk($schedules, 5);
         <div class="schedule-slide" data-index="{{ $index }}">
             <div class="text-white font-poppins space-y-4">
                 @foreach($scheduleGroup as $schedule)
-                <div class="border-b border-gray-500/30 pb-3 last:pb-1 last:border-b-0">
+                <div class="schedule-item rounded-lg p-4 transition-all duration-300">
                     <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="font-bold text-lg">
-                                <i class="fas fa-{{ $schedule['icon'] }} mr-2"></i>{{ $schedule['title'] }}
+                        <div class="flex-grow">
+                            <h3 class="group flex items-center mb-2">
+                                <i
+                                    class="fas fa-{{ $schedule['icon'] }} mr-3 text-yellow-400 transition-transform duration-300 group-hover:scale-110 text-xl"></i>
+                                <span
+                                    class="hover:text-yellow-400 transition-colors duration-300">{{ $schedule['title'] }}</span>
                             </h3>
-                            <p class="text-sm text-gray-300">
-                                <i class="fas fa-map-marker-alt mr-2"></i>{{ $schedule['location'] }}
+                            <p class="location-text flex items-center">
+                                <i class="fas fa-map-marker-alt mr-2 text-red-400"></i>
+                                <span>{{ $schedule['location'] }}</span>
                             </p>
                         </div>
-                        <div class="text-right">
-                            <p class="font-semibold text-yellow-400">
-                                <i class="far fa-clock mr-1"></i>{{ $schedule['time'] }} WIB
+                        <div class="text-right ml-6">
+                            <p class="time-text flex items-center justify-end mb-1">
+                                <i class="far fa-clock mr-2 animate-pulse"></i>
+                                <span>{{ $schedule['time'] }} WIB</span>
                             </p>
-                            <p class="text-sm text-gray-300">
-                                <i class="far fa-calendar-check mr-1"></i>Hari ini
+                            <p class="date-text flex items-center justify-end">
+                                <i class="far fa-calendar-check mr-2 text-green-400"></i>
+                                <span>Hari ini</span>
                             </p>
                         </div>
                     </div>
@@ -57,9 +63,10 @@ $chunks = array_chunk($schedules, 5);
         @endforeach
     </div>
 
-    <div class="flex justify-center mt-4 space-x-2">
+    <div class="flex justify-center mt-8 space-x-3">
         @foreach($chunks as $index => $scheduleGroup)
-        <button class="schedule-dot w-2 h-2 rounded-full bg-gray-400" data-index="{{ $index }}"></button>
+        <button class="schedule-dot w-2 h-2 rounded-full bg-gray-400/50 transition-all duration-300 hover:bg-gray-300"
+            data-index="{{ $index }}"></button>
         @endforeach
     </div>
 </div>
@@ -74,18 +81,135 @@ $chunks = array_chunk($schedules, 5);
     position: absolute;
     width: 100%;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    transform: translateY(20px);
 }
 
 .schedule-slide.active {
     opacity: 1;
     position: relative;
     pointer-events: auto;
+    transform: translateY(0);
 }
 
 .schedule-dot.active {
-    background-color: white;
+    background-color: #FBBF24;
+    width: 24px;
+    border-radius: 9999px;
+}
+
+.schedule-item {
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.schedule-item h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    letter-spacing: 0.025em;
+}
+
+.schedule-item .location-text {
+    font-size: 0.95rem;
+    color: #E2E8F0;
+    letter-spacing: 0.01em;
+}
+
+.schedule-item .time-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #FCD34D;
+}
+
+.schedule-item .date-text {
+    font-size: 0.95rem;
+    color: #A0AEC0;
+}
+
+.schedule-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.schedule-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.schedule-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.schedule-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.schedule-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.schedule-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.schedule-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 0;
+    background: #FBBF24;
+    transition: height 0.3s ease;
+}
+
+.schedule-item:hover::before {
+    height: 100%;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+.scale-102 {
+    scale: 1.02;
+}
+
+.schedule-card {
+    background: linear-gradient(135deg, #2C3E50 0%, #1a202c 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 </style>
 
