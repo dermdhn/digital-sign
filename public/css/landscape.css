@@ -115,7 +115,7 @@ html, body {
 .floor-nav-btn.active {
     width: 2.5rem;
     border-radius: 12px;
-    background: #dc2626;
+    background: #f3bb02;
     transform: scale(1.1);
 }
 
@@ -217,15 +217,19 @@ html, body {
 
 /* Marquee Animation */
 @keyframes marquee {
-    0% { transform: translateX(100%); opacity: 1; }
-    95% { transform: translateX(-150%); opacity: 1; }
-    100% { transform: translateX(-155%); opacity: 0; }
+    0% { transform: translateX(100vw); opacity: 1; }
+    80% { transform: translateX(-250vw); opacity: 1; }
+    81% { transform: translateX(-250vw); opacity: 0; }
+    82% { transform: translateX(100vw); opacity: 0; }
+    83% { transform: translateX(100vw); opacity: 1; }
+    100% { transform: translateX(100vw); opacity: 1; }
 }
 
 .marquee-container {
     width: 100%;
     overflow: hidden;
     position: relative;
+    height: 100%;
 }
 
 .marquee-container::before {
@@ -234,7 +238,7 @@ html, body {
     left: 0;
     top: 0;
     height: 100%;
-    width: 200px;
+    width: 150px;
     background: linear-gradient(to left, transparent, white);
     z-index: 2;
 }
@@ -242,7 +246,8 @@ html, body {
 .animate-marquee {
     display: inline-block;
     animation: marquee 40s linear infinite;
-    margin-left: 200px;
+    white-space: nowrap;
+    margin-left: 150px;
 }
 
 /* Schedule Navigation */
@@ -257,10 +262,131 @@ html, body {
 }
 
 .schedule-dot.active {
-    background-color: #ffffff;
-    width: 2.5rem;
-    border-radius: 12px;
-    transform: scale(1.1);
+    background-color: #FBBF24;
+    width: 24px;
+    border-radius: 9999px;
+}
+
+/* Schedule Components */
+.schedule-slider {
+    position: relative;
+    width: 100%;
+}
+
+.schedule-slide {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    transform: translateY(20px);
+}
+
+.schedule-slide.active {
+    opacity: 1;
+    position: relative;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.schedule-item {
+    position: relative;
+    overflow: hidden;
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    background: rgba(255, 255, 255, 0.05);
+    margin-bottom: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.schedule-item h3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    letter-spacing: 0.025em;
+}
+
+.schedule-item .location-text {
+    font-size: 0.95rem;
+    color: #E2E8F0;
+    letter-spacing: 0.01em;
+}
+
+.schedule-item .time-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #FCD34D;
+}
+
+.schedule-item .date-text {
+    font-size: 0.95rem;
+    color: #A0AEC0;
+}
+
+.schedule-item .date-text span {
+    color: #FCD34D;
+    font-weight: 500;
+}
+
+.schedule-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 0;
+    background: #FBBF24;
+    transition: height 0.3s ease;
+}
+
+.schedule-item:hover::before {
+    height: 100%;
+}
+
+.schedule-card {
+    background: linear-gradient(135deg, #2C3E50 0%, #1a202c 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+.schedule-item:nth-child(1) { animation-delay: 0.1s; }
+.schedule-item:nth-child(2) { animation-delay: 0.2s; }
+.schedule-item:nth-child(3) { animation-delay: 0.3s; }
+
+.scale-102 {
+    scale: 1.02;
 }
 
 /* Responsive Design */
