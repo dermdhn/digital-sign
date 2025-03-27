@@ -1,4 +1,6 @@
-/* Reset & Base Styles */
+/* ==========================================================================
+   Reset & Base Styles
+   ========================================================================== */
 html, body {
     overflow: hidden;
     height: 100vh;
@@ -7,12 +9,13 @@ html, body {
     background: #f0f2f5;
 }
 
-/* Typography */
+/* ==========================================================================
+   Typography & Common Effects
+   ========================================================================== */
 .font-poppins {
     font-family: 'Poppins', sans-serif;
 }
 
-/* Common Effects */
 .glass-effect {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(10px);
@@ -20,7 +23,9 @@ html, body {
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-/* Header Section */
+/* ==========================================================================
+   Header Styles
+   ========================================================================== */
 .header-gradient {
     background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
 }
@@ -40,18 +45,22 @@ html, body {
     min-height: 100%;
 }
 
-/* Card Components */
+/* ==========================================================================
+   Card Components
+   ========================================================================== */
 .info-card {
     background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
 }
 
 .schedule-card {
-    background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    background: linear-gradient(135deg, #2C3E50 0%, #1a202c 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Floor Navigation & Slider */
+/* ==========================================================================
+   Floor Navigation & Slider
+   ========================================================================== */
 .floor-slider {
     position: relative;
     overflow: hidden;
@@ -147,7 +156,9 @@ html, body {
     background: rgba(0, 0, 0, 0.8);
 }
 
-/* Presence Section */
+/* ==========================================================================
+   Presence Section
+   ========================================================================== */
 .presence-section {
     background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
 }
@@ -217,7 +228,9 @@ html, body {
     border-top: 2px solid #DC2626;
 }
 
-/* Marquee Animation */
+/* ==========================================================================
+   Marquee Animation
+   ========================================================================== */
 @keyframes marquee {
     0% { transform: translateX(100vw); opacity: 1; }
     93% { transform: translateX(-250vw); opacity: 1; }
@@ -252,24 +265,9 @@ html, body {
     margin-left: 150px;
 }
 
-/* Schedule Navigation */
-.schedule-dot {
-    transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.schedule-dot:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-    transform: scale(1.2);
-}
-
-.schedule-dot.active {
-    background-color: #FBBF24;
-    width: 24px;
-    border-radius: 9999px;
-}
-
-/* Schedule Components */
+/* ==========================================================================
+   Schedule Components
+   ========================================================================== */
 .schedule-slider {
     position: relative;
     width: 100%;
@@ -350,12 +348,26 @@ html, body {
     height: 100%;
 }
 
-.schedule-card {
-    background: linear-gradient(135deg, #2C3E50 0%, #1a202c 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+/* Schedule Navigation */
+.schedule-dot {
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
-/* Animation */
+.schedule-dot:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    transform: scale(1.2);
+}
+
+.schedule-dot.active {
+    background-color: #FBBF24;
+    width: 24px;
+    border-radius: 9999px;
+}
+
+/* ==========================================================================
+   Animations
+   ========================================================================== */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -368,15 +380,9 @@ html, body {
 }
 
 @keyframes pulse {
-    0% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-    100% {
-        opacity: 1;
-    }
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
 }
 
 .animate-pulse {
@@ -391,7 +397,9 @@ html, body {
     scale: 1.02;
 }
 
-/* Responsive Design */
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
 @media (max-width: 1280px) {
     .header-title {
         font-size: 1.75rem;
