@@ -153,8 +153,10 @@ html, body {
 }
 
 .presence-title {
-    font-size: 1.2rem;
+    font-size: 2rem;
+    font-weight: bold;
     margin-bottom: 0.5rem;
+    padding-bottom: 1.5rem;
     color: #1F2937;
 }
 
@@ -200,7 +202,7 @@ html, body {
     width: 100%;
     text-align: center;
     padding: 8px 0;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 }
 
 .status-hadir.hadir {
@@ -218,10 +220,10 @@ html, body {
 /* Marquee Animation */
 @keyframes marquee {
     0% { transform: translateX(100vw); opacity: 1; }
-    80% { transform: translateX(-250vw); opacity: 1; }
-    81% { transform: translateX(-250vw); opacity: 0; }
-    82% { transform: translateX(100vw); opacity: 0; }
-    83% { transform: translateX(100vw); opacity: 1; }
+    93% { transform: translateX(-250vw); opacity: 1; }
+    94% { transform: translateX(-250vw); opacity: 0; }
+    95% { transform: translateX(100vw); opacity: 0; }
+    96% { transform: translateX(100vw); opacity: 1; }
     100% { transform: translateX(100vw); opacity: 1; }
 }
 
@@ -245,7 +247,7 @@ html, body {
 
 .animate-marquee {
     display: inline-block;
-    animation: marquee 40s linear infinite;
+    animation: marquee 60s linear infinite;
     white-space: nowrap;
     margin-left: 150px;
 }
@@ -301,13 +303,13 @@ html, body {
 }
 
 .schedule-item h3 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     line-height: 1.75rem;
     letter-spacing: 0.025em;
 }
 
 .schedule-item .location-text {
-    font-size: 0.95rem;
+    font-size: 1.3rem;
     color: #E2E8F0;
     letter-spacing: 0.01em;
 }
@@ -319,7 +321,7 @@ html, body {
 }
 
 .schedule-item .date-text {
-    font-size: 0.95rem;
+    font-size: 1.3rem;
     color: #A0AEC0;
 }
 
