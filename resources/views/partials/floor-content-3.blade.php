@@ -7,7 +7,7 @@
         </h3>
         <div class="w-full h-1 bg-gray-300 mb-4 rounded-full transform transition-all duration-300"></div>
         <ul
-            class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-lg text-gray-800 transition-all duration-300">
+            class="list-decimal pl-5 space-y-2 text-left font-bold info-list text-xl text-gray-800 transition-all duration-300">
             <li>DIREKTUR UMUM DAN SDM</li>
             <li>DIREKTUR PERENCANAAN DAN KEUANGAN</li>
             <li>SATUAN PENGAWAS INTERNAL</li>

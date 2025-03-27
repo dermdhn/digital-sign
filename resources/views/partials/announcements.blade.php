@@ -24,9 +24,9 @@
 @endphp
 
 @foreach($announcements as $announcement)
-    <i class="fas fa-{{ $announcement['icon'] }} text-{{ $announcement['color'] }}-600 mr-3"></i>
-    {{ $announcement['text'] }}
+    <i class="fas fa-{{ $announcement['icon'] }} text-{{ $announcement['color'] }}-600 mr-3 text-2xl"></i>
+    <span class="text-2xl">{{ $announcement['text'] }}</span>
     @if(!$loop->last)
-        <span class="mx-8">|</span>
+        <span class="mx-8 text-2xl">|</span>
     @endif
 @endforeach
