@@ -28,11 +28,11 @@
     <script src="https://kit.fontawesome.com/0dbc56c7a8.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ asset('css/landscape.css') }}">
     <style>
-    /* style yang tidak ada di landscape.css */
-    #liveclock {
-        z-index: 3;
-        position: relative;
-    }
+        /* style yang tidak ada di landscape.css */
+        #liveclock {
+            z-index: 3;
+            position: relative;
+        }
     </style>
 </head>
 
@@ -69,45 +69,46 @@
                         <div class="floor-slides">
                             @foreach(['Lantai 1' => 'First Floor', 'Lantai 2' => 'Second Floor', 'Lantai 3' => 'Third
                             Floor', 'Lantai 4' => 'Fourth Floor'] as $lantai => $floor)
-                            <div class="floor-slide {{ $loop->first ? 'active' : '' }}">
-                                <div class="floor-title-container">
-                                    <div
-                                        class="text-5xl font-bold text-{{ $loop->iteration == 1 ? 'red' : ($loop->iteration == 2 ? 'red' : ($loop->iteration == 3 ? 'red' : 'red')) }}-600">
-                                        <i class="fas fa-building-user mr-2"></i>{{ $lantai }}
+                                <div class="floor-slide {{ $loop->first ? 'active' : '' }}">
+                                    <div class="floor-title-container">
+                                        <div
+                                            class="text-5xl font-bold text-{{ $loop->iteration == 1 ? 'red' : ($loop->iteration == 2 ? 'red' : ($loop->iteration == 3 ? 'red' : 'red')) }}-600">
+                                            <i class="fas fa-building-user mr-2"></i>{{ $lantai }}
+                                        </div>
+                                        <div class="text-lg font-semibold text-gray-600 mb-6">( {{ $floor }} )</div>
                                     </div>
-                                    <div class="text-lg font-semibold text-gray-600 mb-6">( {{ $floor }} )</div>
+                                    <div class="floor-content">
+                                        @include("partials.floor-content-{$loop->iteration}")
+                                    </div>
                                 </div>
-                                <div class="floor-content">
-                                    @include("partials.floor-content-{$loop->iteration}")
-                                </div>
-                            </div>
                             @endforeach
                         </div>
 
                         <!-- Floor Navigation -->
                         <div class="floor-nav">
-                            @for($i = 0; $i < 4; $i++) <div class="floor-nav-btn {{ $i == 0 ? 'active' : '' }}"
-                                data-floor="{{ $i }}">
+
+                                           @for($i = 0; $i < 4; $i++) <div class="floor-nav-btn {{ $i == 0 ? 'active' : '' }}"
+                                                    data-floor="{{ $i }}">
+                                            </div>
+                                        @endfor
                         </div>
-                        @endfor
-                    </div>
-                </div>
-    </div>
+                            </div>
+            </div>
     </section>
-
-    <!-- Schedule Section -->
-    <sec tion
-        class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
-        <div class="font-poppins">
-            <h2
-                class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
-                <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
-            </h2>
+      
+              <!-- Schedule Section -->
+          <sec   tion
+                class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
+             <div    class="font-poppins">
+                 <h2
+                           class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
+                        <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
+                    </h2>
         </div>
-
-        <div class="mt-6 w-4/5">
-            @include('partials.schedule-list')
-        </div>
+   
+                <div      class="mt-6 w-4/5">
+                    @include('partials.schedule-list')
+                </div>
         </section>
         </main>
 
@@ -115,26 +116,26 @@
         <section class="presence-section py-2 flex-shrink-0">
             <div class="grid grid-cols-5 gap-6 px-6">
                 @foreach(['Rektor', 'Wakil Rektor 1', 'Wakil Rektor 2', 'Wakil Rektor 3', 'Wakil Rektor 4'] as $jabatan)
-                <div
-                    class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }}">
-                    <i class="fas fa-user-tie presence-icon"></i>
-                    <div class="presence-title">{{ $jabatan }}</div>
                     <div
-                        class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }} font-semibold">
-                        <i
-                            class="fas fa-{{ $jabatan == 'Wakil Rektor 2' ? 'times' : 'check' }}-circle presence-status-icon"></i>
-                        {{ $jabatan == 'Wakil Rektor 2' ? 'Tidak Hadir' : 'Hadir' }}
+                        class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }}">
+                        <i class="fas fa-user-tie presence-icon"></i>
+                        <div class="presence-title">{{ $jabatan }}</div>
+                        <div
+                            class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }} font-semibold">
+                            <i
+                                class="fas fa-{{ $jabatan == 'Wakil Rektor 2' ? 'times' : 'check' }}-circle presence-status-icon"></i>
+                            {{ $jabatan == 'Wakil Rektor 2' ? 'Tidak Hadir' : 'Hadir' }}
+                        </div>
                     </div>
-                </div>
                 @endforeach
             </div>
         </section>
 
         <!-- Footer Section -->
         <foo ter
-            class="bg-white text-center text-lg font-semibold py-3 border-t flex-shrink-0 relative flex items-center">
+            class="bg-white text-center text-lg font-semibold mt py-1 border-t flex-shrink-0 relative flex items-center">
             <div class="absolute left-0 bottom-1/2 transform translate-y-1/2">
-                <div id="liveclock" class="text-3xl font-bold text-white bg-gray-900 px-7 py-4 rounded-tr-xl shadow-lg">
+                <div id="liveclock" class="text-3xl font-bold text-white bg-gray-900 px-7 py-2 rounded-tr-xl shadow-lg">
                     <i class="far fa-clock mr-2"></i><span>00:00</span>
                 </div>
             </div>
@@ -145,9 +146,9 @@
                     </div>
                 </div>
             </div>
-            </footer>
-            </div>
-            <!-- Scripts -->
+    </footer>
+    </div>
+    <!-- Scripts -->
             <script src="{{ asset('js/landscape.js') }}"></script>
 </body>
 
