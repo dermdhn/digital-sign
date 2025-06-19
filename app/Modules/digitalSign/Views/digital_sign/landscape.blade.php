@@ -78,7 +78,7 @@
                                         <div class="text-lg font-semibold text-gray-600 mb-6">( {{ $floor }} )</div>
                                     </div>
                                     <div class="floor-content">
-                                        @include("partials.floor-content-{$loop->iteration}")
+                                        @include("digitalSign::digital_sign.partials.floor-content-{$loop->iteration}")
                                     </div>
                                 </div>
                             @endforeach
@@ -95,7 +95,7 @@
                             </div>
             </div>
     </section>
-      
+
               <!-- Schedule Section -->
           <sec   tion
                 class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
@@ -105,9 +105,9 @@
                         <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
                     </h2>
         </div>
-   
+
                 <div      class="mt-6 w-4/5">
-                    @include('partials.schedule-list')
+                    @include('digitalSign::digital_sign.partials.schedule-list')
                 </div>
         </section>
         </main>
@@ -142,7 +142,7 @@
             <div class="flex-1 ml-48 overflow-hidden">
                 <div class="marquee-container">
                     <div class="animate-marquee whitespace-nowrap text-gray-700">
-                        @include('partials.announcements')
+                        @include('digitalSign::digital_sign.partials.announcements')
                     </div>
                 </div>
             </div>

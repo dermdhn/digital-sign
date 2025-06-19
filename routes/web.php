@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/landscape', function () {
-    return view('landscape');
-});
+// Route::get('/landscape', function () {
+//     return view('landscape');
+// });
