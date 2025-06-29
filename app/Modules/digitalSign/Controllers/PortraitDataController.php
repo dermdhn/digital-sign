@@ -256,6 +256,7 @@ class PortraitDataController extends BaseController
             $portraitSetting->id = Str::uuid();
             $portraitSetting->version = Str::random(50);
             $portraitSetting->created_by = Auth::user()->id_user;
+            $portraitSetting->nama_template = 'default';
             $portraitSetting->save();
         }
 
@@ -324,6 +325,7 @@ class PortraitDataController extends BaseController
             $portraitSetting->id = Str::uuid();
             $portraitSetting->version = Str::random(50);
             $portraitSetting->created_by = Auth::user()->id_user;
+            $portraitSetting->nama_template = 'default';
             $portraitSetting->save();
         }
 
@@ -357,6 +359,7 @@ class PortraitDataController extends BaseController
             $portraitSetting->id = Str::uuid();
             $portraitSetting->version = Str::random(50);
             $portraitSetting->created_by = Auth::user()->id_user;
+            $portraitSetting->nama_template = 'default';
             $portraitSetting->save();
         }
 
