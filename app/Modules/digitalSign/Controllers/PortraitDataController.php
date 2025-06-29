@@ -2,25 +2,28 @@
 
 namespace App\Modules\digitalSign\Controllers;
 
+use App\Modules\digitalSign\Models\PortraitSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use MyUnnes\Base\Libs\BApp;
 use MyUnnes\Base\Helpers\Helper as Help;
 use MyUnnes\Base\Services\Crud;
 use Illuminate\Pagination\Paginator;
 use MyUnnes\Base\Controllers\BaseController;
-use App\Modules\digitalSign\Models\Rooms;
+use App\Modules\digitalSign\Models\PortraitData;
 
 
-class RoomsController extends BaseController
+class PortraitDataController extends BaseController
 {
     // Model database
     protected $model;
-    protected $title = 'Rooms'; // Judul Halaman
-    protected $subtitle = 'Manajemen data Rooms'; // Subtitle Halaman
+    protected $title = 'Portrait Data'; // Judul Halaman
+    protected $subtitle = 'Manajemen data Portrait Data'; // Subtitle Halaman
     protected $breadcrumbs = [];
     protected $add_title = ''; // Title tambahan jika diperlukan ex. terdapat referensi {(User: <code>$nm_user</code>)}
-    protected $base_route = 'rooms'; // Base route name untuk CRUD {sys_user_role}
+    protected $base_route = 'portrait_data'; // Base route name untuk CRUD {sys_user_role}
     protected $route_params = [];
     protected $dt_order = ['created_at', 'ASC'];
     protected $use_validate = false; // Jika memerlukan validasi data
@@ -32,14 +35,14 @@ class RoomsController extends BaseController
     protected $pagination_limit = 25; // Limit pagination
     protected $boolean_column = []; // Menampilkan Ya/Tidak | Aktif/Tidak Aktif, dst.. untuk boolean value
     protected $boolean_key = 'ya_tidak'; // Key boolean yg digunakan --> config(Base.str_boolean)
-    protected $currency_column = ['floor_id',];
+    protected $currency_column = [];
     protected $code_column = [];
     protected $queue_column = NULL;
     protected $date_column = [];
     protected $datetime_column = [];
     protected $use_datatable = false;
-    protected $default_view = 'digitalSign::rooms.index';
-    protected $default_form = 'digitalSign::rooms.form';
+    protected $default_view = 'digitalSign::portrait_data.index';
+    protected $default_form = 'digitalSign::portrait_data.form';
     protected $use_filter = false;
     protected $form_filter = [
         // {Nama Kolom}  => [0 => {filter_method => '=' || 'like' || '<' || '>' dsb}, 1 => { STRING || Object Form Collective dengen format `forward_static_call_array` => [ [Form, formType], [params] ] }]
@@ -51,17 +54,18 @@ class RoomsController extends BaseController
     protected $help;
     protected $app;
     protected $table_columns = [
-        'floor_id' => 'Floor Id',
-        'nama' => 'Nama',
-        'order' => 'Order',
-        'kode_ruang' => 'Kode Ruang',
-        'is_active' => 'Is Active',
+        'heading' => 'Heading',
+        'subheading' => 'Subheading',
+        'nama_tokoh' => 'Nama Tokoh',
+        'jabatan_tokoh' => 'Jabatan Tokoh',
+        'gambar_tokoh' => 'Gambar Tokoh',
+        'is_aktif' => 'Is Aktif',
 
     ];
 
     public function __construct()
     {
-        $this->model = new Rooms;
+        $this->model = new PortraitData;
 
         if (sizeof($this->breadcrumbs) == 0) {
             $this->breadcrumbs = [
@@ -73,42 +77,48 @@ class RoomsController extends BaseController
         $this->app = (new BApp);
 
         $this->form = [
-            'floor_id' => [
-                '',
-                [
-                    ['Form', 'hidden'],
-                    ['floor_id', NULL, ['class' => 'form-control', 'id' => 'floor_id', 'placeholder' => 'ex: isikan data di sini']]
-                ]
-            ],
-            'nama' => [
-                'Nama Ruangan',
+            'heading' => [
+                'Heading',
                 [
                     ['Form', 'text'],
-                    ['nama', NULL, ['class' => 'form-control ', 'id' => 'nama', 'placeholder' => 'ex: isikan data di sini']]
+                    ['heading', NULL, ['class' => 'form-control ', 'id' => 'heading', 'placeholder' => 'ex: isikan data di sini']]
                 ]
             ],
-            'order' => [
-                'Order',
-                [
-                    ['Form', 'number'],
-                    ['order', NULL, ['class' => 'form-control ', 'id' => 'order', 'placeholder' => 'ex: isikan data di sini']]
-                ]
-            ],
-            'kode_ruang' => [
-                'Kode Ruang',
+            'subheading' => [
+                'Subheading',
                 [
                     ['Form', 'text'],
-                    ['kode_ruang', NULL, ['class' => 'form-control ', 'id' => 'kode_ruang', 'placeholder' => 'ex: isikan data di sini']]
+                    ['subheading', NULL, ['class' => 'form-control ', 'id' => 'subheading', 'placeholder' => 'ex: isikan data di sini']]
                 ]
             ],
-            'is_active' => [
-                'Is Active',
+            'nama_tokoh' => [
+                'Nama Tokoh',
                 [
                     ['Form', 'text'],
-                    ['is_active', NULL, ['class' => 'form-control ', 'id' => 'is_active', 'placeholder' => 'ex: isikan data di sini']]
+                    ['nama_tokoh', NULL, ['class' => 'form-control ', 'id' => 'nama_tokoh', 'placeholder' => 'ex: isikan data di sini']]
                 ]
             ],
-
+            'jabatan_tokoh' => [
+                'Jabatan Tokoh',
+                [
+                    ['Form', 'text'],
+                    ['jabatan_tokoh', NULL, ['class' => 'form-control ', 'id' => 'jabatan_tokoh', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+            'gambar_tokoh' => [
+                'Gambar Tokoh (PNG)',
+                [
+                    ['Form', 'file'],
+                    ['gambar_tokoh', NULL, ['class' => 'form-control', 'accept' => 'image/png']]
+                ]
+            ],
+            'is_aktif' => [
+                'Tampilkan?',
+                [
+                    ['Form', 'select'],
+                    ['is_aktif', ['1' => 'Ya', '0' => 'Tidak'], null, ['class' => 'form-select', 'id' => 'is_aktif']]
+                ]
+            ]
         ];
 
         // Hanya dimasukkan data yang akan digunakan di semua view
@@ -126,18 +136,13 @@ class RoomsController extends BaseController
      */
     public function index()
     {
-        // dd(request()->all());
         // default data
         $data = $this->data;
         // tambahan data yang digunakan di view
         $data['table_columns'] = $this->table_columns;
         $data['use_validate'] = $this->use_validate;
         $data['model'] = $this->model;
-        $data['route_params'] = ['floor_id' => request('floor_id')];
-        $data['add_header_left'] = '<a href="'.route('floors.read').'" class="btn btn-secondary">
-            <i class="fa fa-arrow-left"></i> Kembali ke Floors
-        </a>';
-        
+
         if (!isset($this->q)) {
             $this->q = $this->model->query();
         }
@@ -218,15 +223,11 @@ class RoomsController extends BaseController
     {
         // default data
         $data = $this->data;
-        // dd(request('floor_id'));
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
         $data['form_route'] = [$data['base_route'] . '.store', $data['route_params']];
         $data['data'] = [];
-        $data['route_params'] = ['floor_id' => request('floor_id')];
-        $data['form']['floor_id'][1][0][1] = 'hidden';
-        $data['form']['floor_id'][1][1][1] = request('floor_id');
         return view($this->default_form, $data);
     }
 
@@ -238,6 +239,26 @@ class RoomsController extends BaseController
      */
     public function store(Request $req)
     {
+        if ($req->hasFile('gambar_tokoh')) {
+            $filename = 'tokoh_' . time() . '.png';
+            $req->file('gambar_tokoh')->storeAs('public/portrait', $filename);
+            $req->merge(['gambar_tokoh' => 'portrait/' . $filename]);
+        }
+
+        // update portraitdata setting version
+        $portraitSetting = PortraitSetting::first();
+        if ($portraitSetting) {
+            $portraitSetting->version = Str::random(50); // generate
+            $portraitSetting->save();
+        } else {
+            // Jika tidak ada setting, buat baru
+            $portraitSetting = new PortraitSetting();
+            $portraitSetting->id = Str::uuid();
+            $portraitSetting->version = Str::random(50);
+            $portraitSetting->created_by = Auth::user()->id_user;
+            $portraitSetting->save();
+        }
+
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
 
         return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
@@ -269,6 +290,43 @@ class RoomsController extends BaseController
      */
     public function update(Request $req)
     {
+        $portrait = $this->model->findOrFail($req->id);
+        $gambar_lama = $portrait->gambar_tokoh;
+
+        // Tangani upload file PNG baru jika ada
+        if ($req->hasFile('gambar_tokoh')) {
+            $file = $req->file('gambar_tokoh');
+
+            // Simpan file baru
+            $filename = 'tokoh_' . time() . '.png';
+            $file->storeAs('public/portrait', $filename);
+
+            // Hapus gambar lama jika ada
+            if ($gambar_lama && Storage::exists('public/' . $gambar_lama)) {
+                Storage::delete('public/' . $gambar_lama);
+            }
+
+            // Update request dengan path baru
+            $req->merge(['gambar_tokoh' => 'portrait/' . $filename]);
+        } else {
+            // Jangan menimpa gambar lama jika tidak ada file baru
+            $req->merge(['gambar_tokoh' => $gambar_lama]);
+        }
+
+        // update portraitdata setting version
+        $portraitSetting = PortraitSetting::first();
+        if ($portraitSetting) {
+            $portraitSetting->version = Str::random(50); // generate
+            $portraitSetting->save();
+        } else {
+            // Jika tidak ada setting, buat baru
+            $portraitSetting = new PortraitSetting();
+            $portraitSetting->id = Str::uuid();
+            $portraitSetting->version = Str::random(50);
+            $portraitSetting->created_by = Auth::user()->id_user;
+            $portraitSetting->save();
+        }
+
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
 
         return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
@@ -287,6 +345,20 @@ class RoomsController extends BaseController
         $dt->deleted_by = Auth::user()->id_user;
         $dt->save();
         $dt->delete();
+
+        // update portraitdata setting version
+        $portraitSetting = PortraitSetting::first();
+        if ($portraitSetting) {
+            $portraitSetting->version = Str::random(50); // generate
+            $portraitSetting->save();
+        } else {
+            // Jika tidak ada setting, buat baru
+            $portraitSetting = new PortraitSetting();
+            $portraitSetting->id = Str::uuid();
+            $portraitSetting->version = Str::random(50);
+            $portraitSetting->created_by = Auth::user()->id_user;
+            $portraitSetting->save();
+        }
 
         return redirect()->back()->with('alert', ['success', trans('Base::alert.delete_success_txt')]);
     }

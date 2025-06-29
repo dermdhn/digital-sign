@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('jadwal', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('title');
+            $table->string('nama_kegiatan');
             $table->string('icon')->default('fa-calendar-check');
-            $table->string('room_id');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time')->nullable();
-            $table->text('description');
+            $table->foreignUuid('id_ruangan');
+            $table->dateTime('waktu_mulai');
+            $table->dateTime('waktu_selesai');
+
             $table->timestamps();
             $table->softDeletes();
             $table->uuid('created_by')->nullable();

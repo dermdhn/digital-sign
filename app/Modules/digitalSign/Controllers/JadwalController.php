@@ -10,6 +10,7 @@ use MyUnnes\Base\Services\Crud;
 use Illuminate\Pagination\Paginator;
 use MyUnnes\Base\Controllers\BaseController;
 use App\Modules\digitalSign\Models\Jadwal;
+use App\Modules\digitalSign\Models\Ruangan;
 
 
 class JadwalController extends BaseController
@@ -51,21 +52,19 @@ class JadwalController extends BaseController
     protected $help;
     protected $app;
     protected $table_columns = [
-        'title' => 'Title',
-			'icon' => 'Icon',
-			'room_id' => 'Room Id',
-			'start_time' => 'Start Time',
-			'end_time' => 'End Time',
-			'description' => 'Description',
-			
+        'nama_kegiatan' => 'Nama Kegiatan',
+        'icon' => 'Icon',
+        'ruangan.nama' => 'Ruangan',
+        'waktu_mulai' => 'Waktu Mulai',
+        'waktu_selesai' => 'Waktu Selesai',
+
     ];
 
     public function __construct()
     {
         $this->model = new Jadwal;
 
-        if(sizeof($this->breadcrumbs) == 0)
-        {
+        if (sizeof($this->breadcrumbs) == 0) {
             $this->breadcrumbs = [
                 'Dashboard' => route(config('myunnes.dashboard_route'))
             ];
@@ -74,57 +73,100 @@ class JadwalController extends BaseController
         $this->help = (new Help);
         $this->app = (new BApp);
 
+        $this->use_filter = true;
+        $this->form_filter = [
+            'nama_kegiatan' => [
+                0 => 'like',
+                1 => [
+                    'Nama Kegiatan',
+                    [
+                        ['Form', 'text'],
+                        ['nama_kegiatan', NULL, ['class' => 'form-control', 'id' => 'nama_kegiatan', 'placeholder' => 'Cari nama kegiatan...']]
+                    ]
+                ]
+            ],
+            'id_ruangan' => [
+                0 => '=',
+                1 => [
+                    'Ruangan',
+                    [
+                        ['Form', 'select'],
+                        [
+                            'id_ruangan',
+                            Ruangan::orderBy('urutan')->pluck('nama', 'id')->toArray(),
+                            NULL,
+                            ['class' => 'form-select select2', 'id' => 'id_ruangan', 'placeholder' => '-- Semua Ruangan --']
+                        ]
+                    ]
+                ]
+            ],
+        ];
+
         $this->form = [
-            'title' => [
-					'Title',
-					[
-						['Form', 'text'],
-						['title', NULL, ['class' => 'form-control ', 'id' => 'title', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'icon' => [
-					'Icon',
-					[
-						['Form', 'text'],
-						['icon', NULL, ['class' => 'form-control ', 'id' => 'icon', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'room_id' => [
-					'Room Id',
-					[
-						['Form', 'text'],
-						['room_id', NULL, ['class' => 'form-control ', 'id' => 'room_id', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'start_time' => [
-					'Start Time',
-					[
-						['Form', 'text'],
-						['start_time', NULL, ['class' => 'form-control datetimepicker', 'id' => 'start_time', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'end_time' => [
-					'End Time',
-					[
-						['Form', 'text'],
-						['end_time', NULL, ['class' => 'form-control datetimepicker', 'id' => 'end_time', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'description' => [
-					'Description',
-					[
-						['Form', 'textarea'],
-						['description', NULL, ['class' => 'form-control ', 'id' => 'description', 'placeholder' => 'ex: isikan data di sini', 'rows' => '3']]
-					]
-				],
-				
+            'nama_kegiatan' => [
+                'Nama Kegiatan',
+                [
+                    ['Form', 'text'],
+                    ['nama_kegiatan', NULL, ['class' => 'form-control ', 'id' => 'nama_kegiatan', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+            'icon' => [
+                'Icon',
+                [
+                    ['Form', 'select'],
+                    [
+                        'icon',
+                        [
+                            '' => '-- Pilih Ikon --',
+                            'fa-door-open' => 'Pintu Terbuka (Umum)',
+                            'fa-chalkboard' => 'Ruang Kelas',
+                            'fa-flask' => 'Laboratorium',
+                            'fa-briefcase' => 'Ruang Kerja/Kantor',
+                            'fa-users' => 'Ruang Rapat',
+                            'fa-tv' => 'Ruang Presentasi',
+                            'fa-bed' => 'Ruang Istirahat',
+                            'fa-couch' => 'Ruang Tamu/Lobi',
+                            'fa-shower' => 'Kamar Mandi',
+                            'fa-box-open' => 'Gudang/Storage',
+                            'fa-fan' => 'Ruang Mesin/Utility',
+                            'fa-server' => 'Ruang Server',
+                            'fa-hospital' => 'Ruang Kesehatan',
+                            'fa-utensils' => 'Kantin/Dapur',
+                            'fa-lock' => 'Ruang Pribadi/Terkunci'
+                        ],
+                        NULL,
+                        ['class' => 'form-select select2', 'id' => 'icon']
+                    ]
+                ]
+            ],
+            'id_ruangan' => [
+                'Ruangan',
+                [
+                    ['Form', 'select'],
+                    ['id_ruangan',  Ruangan::all()->pluck('nama', 'id'), NULL, ['class' => 'form-select select2', 'id' => 'id_ruangan', 'placeholder' => '-- pilih --']]
+                ]
+            ],
+            'waktu_mulai' => [
+                'Waktu Mulai',
+                [
+                    ['Form', 'text'],
+                    ['waktu_mulai', NULL, ['class' => 'form-control datetimepicker', 'id' => 'waktu_mulai', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+            'waktu_selesai' => [
+                'Waktu Selesai',
+                [
+                    ['Form', 'text'],
+                    ['waktu_selesai', NULL, ['class' => 'form-control datetimepicker', 'id' => 'waktu_selesai', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+
         ];
 
         // Hanya dimasukkan data yang akan digunakan di semua view
         $dt_to_view = ['title', 'subtitle', 'breadcrumbs', 'add_title', 'base_route', 'route_params', 'add_header_right', 'add_header_left', 'boolean_column', 'boolean_key', 'currency_column', 'code_column', 'pagination_limit', 'use_pagination', 'use_datatable', 'add_action', 'app', 'help', 'use_filter', 'form_filter', 'filters', 'queue_column', 'date_column', 'datetime_column'];
 
-        foreach ($dt_to_view as $v)
-        {
+        foreach ($dt_to_view as $v) {
             $this->data[$v] = $this->{$v};
         }
     }
@@ -143,73 +185,53 @@ class JadwalController extends BaseController
         $data['use_validate'] = $this->use_validate;
         $data['model'] = $this->model;
 
-        if(!isset($this->q))
-        {
+        if (!isset($this->q)) {
             $this->q = $this->model->query();
         }
         $data['filters'] = [];
-        if($this->use_filter && sizeof($this->form_filter) > 0)
-        {
-            $data['filters'] = session('filter-'.$this->base_route);
+        if ($this->use_filter && sizeof($this->form_filter) > 0) {
+            $data['filters'] = session('filter-' . $this->base_route);
             $data['form_filter'] = $this->form_filter;
         }
 
         // main data
-        if(is_array($this->data_method) && sizeof($this->data_method) == 2)
-        {
+        if (is_array($this->data_method) && sizeof($this->data_method) == 2) {
             $data['data'] = call_user_func_array(array($this->model, $this->data_method[0]), $this->data_method[1]);
-        }
-        else
-        {
-            if($this->use_filter)
-            {
-                foreach ($this->form_filter as $kF => $f)
-                {
-                    if(isset($data['filters'][$kF]))
-                    {
+        } else {
+            if ($this->use_filter) {
+                foreach ($this->form_filter as $kF => $f) {
+                    if (isset($data['filters'][$kF])) {
                         $ff = $data['filters'][$kF];
-                        if($f[0] == 'like')
-                            $ff = '%'.$data['filters'][$kF].'%';
+                        if ($f[0] == 'like')
+                            $ff = '%' . $data['filters'][$kF] . '%';
                         $this->q->where($kF, $f[0], $ff);
                     }
                 }
             }
 
-            if(is_string(@$this->dt_order[0]))
-            {
+            if (is_string(@$this->dt_order[0])) {
                 $q = $this->q->orderBy($this->dt_order[0], $this->dt_order[1]);
-            }
-            else
-            {
+            } else {
                 $q = $this->q;
-                foreach ($this->dt_order as $o)
-                {
+                foreach ($this->dt_order as $o) {
                     $q->orderBy($o[0], $o[1]);
                 }
             }
 
-            if($this->use_pagination)
-            {
-                if (session('firstPage'))
-                {
+            if ($this->use_pagination) {
+                if (session('firstPage')) {
                     $current_page = 1;
-                }
-                elseif (request()->get('page') && request()->get('page') > 0)
-                {
+                } elseif (request()->get('page') && request()->get('page') > 0) {
                     $current_page = request()->get('page');
+                } else {
+                    $current_page = (int) session('last-page-' . $this->base_route) ?? 1;
                 }
-                else
-                {
-                    $current_page = (int) session('last-page-'.$this->base_route) ?? 1;
-                }
-                session()->put('last-page-'.$this->base_route, $current_page);
-                Paginator::currentPageResolver(function() use ($current_page) {
+                session()->put('last-page-' . $this->base_route, $current_page);
+                Paginator::currentPageResolver(function () use ($current_page) {
                     return $current_page;
                 });
                 $data['data'] = $q->paginate($this->pagination_limit);
-            }
-            else
-            {
+            } else {
                 $data['data'] = $q->get();
             }
         }
@@ -225,14 +247,12 @@ class JadwalController extends BaseController
     public function filter(Request $req)
     {
         $dt = [];
-        foreach ($this->form_filter as $kf => $vf)
-        {
-            if($req->has($kf) && $req->input($kf) != '')
-            {
+        foreach ($this->form_filter as $kf => $vf) {
+            if ($req->has($kf) && $req->input($kf) != '') {
                 $dt[$kf] = $req->input($kf);
             }
         }
-        session()->put('filter-'.$this->base_route, $dt);
+        session()->put('filter-' . $this->base_route, $dt);
         return redirect()->back()->with(['firstPage' => 1]);
     }
 
@@ -248,7 +268,7 @@ class JadwalController extends BaseController
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
-        $data['form_route'] = [$data['base_route'].'.store', $data['route_params']];
+        $data['form_route'] = [$data['base_route'] . '.store', $data['route_params']];
         $data['data'] = [];
         return view($this->default_form, $data);
     }
@@ -262,8 +282,8 @@ class JadwalController extends BaseController
     public function store(Request $req)
     {
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
-        
-        return redirect(route($this->base_route.'.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
+
+        return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
     }
 
     /**
@@ -279,7 +299,7 @@ class JadwalController extends BaseController
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
-        $data['form_route'] = [$data['base_route'].'.update', $data['route_params']];
+        $data['form_route'] = [$data['base_route'] . '.update', $data['route_params']];
         $data['data'] = $this->model->findOrFail($id);
         return view($this->default_form, $data);
     }
@@ -293,8 +313,8 @@ class JadwalController extends BaseController
     public function update(Request $req)
     {
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
-        
-        return redirect(route($this->base_route.'.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
+
+        return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
     }
 
     /**
@@ -306,7 +326,7 @@ class JadwalController extends BaseController
     public function delete($id)
     {
         $dt = $this->model->findOrFail($id);
-        $this->app->log('Menghapus data '.$this->title.'. id='.$dt->{$this->model->getKeyName()}.'.', $dt->getAttributes());
+        $this->app->log('Menghapus data ' . $this->title . '. id=' . $dt->{$this->model->getKeyName()} . '.', $dt->getAttributes());
         $dt->deleted_by = Auth::user()->id_user;
         $dt->save();
         $dt->delete();

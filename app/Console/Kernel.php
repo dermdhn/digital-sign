@@ -12,7 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // jagan lupa tambahkan cron
+        // * * * * * /usr/local/bin/php /path_laravel/artisan schedule:run 
+        $schedule->command('jadwal:hapus-kadaluarsa')->everyMinute();
     }
 
     /**

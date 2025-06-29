@@ -9,18 +9,18 @@ use MyUnnes\Base\Helpers\Helper as Help;
 use MyUnnes\Base\Services\Crud;
 use Illuminate\Pagination\Paginator;
 use MyUnnes\Base\Controllers\BaseController;
-use App\Modules\digitalSign\Models\Floors;
+use App\Modules\digitalSign\Models\TeksBerjalan;
 
 
-class FloorsController extends BaseController
+class TeksBerjalanController extends BaseController
 {
     // Model database
     protected $model;
-    protected $title = 'Floors'; // Judul Halaman
-    protected $subtitle = 'Manajemen data Floors'; // Subtitle Halaman
+    protected $title = 'Teks Berjalan'; // Judul Halaman
+    protected $subtitle = 'Manajemen data Teks Berjalan'; // Subtitle Halaman
     protected $breadcrumbs = [];
     protected $add_title = ''; // Title tambahan jika diperlukan ex. terdapat referensi {(User: <code>$nm_user</code>)}
-    protected $base_route = 'floors'; // Base route name untuk CRUD {sys_user_role}
+    protected $base_route = 'teks_berjalan'; // Base route name untuk CRUD {sys_user_role}
     protected $route_params = [];
     protected $dt_order = ['created_at', 'ASC'];
     protected $use_validate = false; // Jika memerlukan validasi data
@@ -38,32 +38,30 @@ class FloorsController extends BaseController
     protected $date_column = [];
     protected $datetime_column = [];
     protected $use_datatable = false;
-    protected $default_view = 'digitalSign::floors.index';
-    protected $default_form = 'digitalSign::floors.form';
+    protected $default_view = 'digitalSign::teks_berjalan.index';
+    protected $default_form = 'digitalSign::teks_berjalan.form';
     protected $use_filter = false;
     protected $form_filter = [
         // {Nama Kolom}  => [0 => {filter_method => '=' || 'like' || '<' || '>' dsb}, 1 => { STRING || Object Form Collective dengen format `forward_static_call_array` => [ [Form, formType], [params] ] }]
     ]; #
     protected $filters = [];
-    protected $add_action = [[
-        0 => 'rooms.read', 1 => ['floor_id', 'id'], 2 => 'Ruangan', 3 => 'btn-sm', 4 => 'bi-menu-down']
-    ]; # berisi array action [ [0 => route_name, 1 => route_params ['key_route', 'nm_field'], 2 => btn_title, 3 => add_class, 4 => btn_icon] ]
+    protected $add_action = NULL; # berisi array action [ [0 => route_name, 1 => route_params ['key_route', 'nm_field'], 2 => btn_title, 3 => add_class, 4 => btn_icon] ]
     protected $data = [];
     protected $q = NULL;
     protected $help;
     protected $app;
     protected $table_columns = [
-        'floor_number' => 'Floor Number',
-			'title' => 'Title',
-			
+        'konten' => 'Konten',
+        'icon' => 'Icon',
+        'urutan' => 'Urutan',
+
     ];
 
     public function __construct()
     {
-        $this->model = new Floors;
+        $this->model = new TeksBerjalan;
 
-        if(sizeof($this->breadcrumbs) == 0)
-        {
+        if (sizeof($this->breadcrumbs) == 0) {
             $this->breadcrumbs = [
                 'Dashboard' => route(config('myunnes.dashboard_route'))
             ];
@@ -72,29 +70,65 @@ class FloorsController extends BaseController
         $this->help = (new Help);
         $this->app = (new BApp);
 
+        $this->use_filter = true;
+        $this->form_filter = [
+            'konten' => [
+                0 => 'like',
+                1 => [
+                    'Isi Konten',
+                    [
+                        ['Form', 'text'],
+                        ['konten', NULL, ['class' => 'form-control', 'id' => 'konten', 'placeholder' => 'Cari isi konten...']]
+                    ]
+                ]
+            ]
+        ];
+
         $this->form = [
-            'floor_number' => [
-					'Floor Number',
-					[
-						['Form', 'number'],
-						['floor_number', NULL, ['class' => 'form-control ', 'id' => 'floor_number', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'title' => [
-					'Title',
-					[
-						['Form', 'text'],
-						['title', NULL, ['class' => 'form-control ', 'id' => 'title', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				
+            'konten' => [
+                'Konten',
+                [
+                    ['Form', 'text'],
+                    ['konten', NULL, ['class' => 'form-control ', 'id' => 'konten', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+            'icon' => [
+                'Icon',
+                [
+                    ['Form', 'select'],
+                    [
+                        'icon',
+                        [
+                            'fa-bell' => 'Bell',
+                            'fa-clock' => 'Clock',
+                            'fa-calendar-alt' => 'Calendar',
+                            'fa-comment-dots' => 'Chat',
+                            'fa-smile' => 'Smile',
+                            'fa-map-marker-alt' => 'Location',
+                            'fa-home' => 'Home',
+                            'fa-info-circle' => 'Info',
+                            'fa-bolt' => 'Lightning',
+                            'fa-star' => 'Star'
+                        ],
+                        NULL,
+                        ['class' => 'form-select select2', 'id' => 'icon']
+                    ]
+                ]
+            ],
+            'urutan' => [
+                'Urutan',
+                [
+                    ['Form', 'number'],
+                    ['urutan', NULL, ['class' => 'form-control ', 'id' => 'urutan', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+
         ];
 
         // Hanya dimasukkan data yang akan digunakan di semua view
         $dt_to_view = ['title', 'subtitle', 'breadcrumbs', 'add_title', 'base_route', 'route_params', 'add_header_right', 'add_header_left', 'boolean_column', 'boolean_key', 'currency_column', 'code_column', 'pagination_limit', 'use_pagination', 'use_datatable', 'add_action', 'app', 'help', 'use_filter', 'form_filter', 'filters', 'queue_column', 'date_column', 'datetime_column'];
 
-        foreach ($dt_to_view as $v)
-        {
+        foreach ($dt_to_view as $v) {
             $this->data[$v] = $this->{$v};
         }
     }
@@ -113,73 +147,53 @@ class FloorsController extends BaseController
         $data['use_validate'] = $this->use_validate;
         $data['model'] = $this->model;
 
-        if(!isset($this->q))
-        {
+        if (!isset($this->q)) {
             $this->q = $this->model->query();
         }
         $data['filters'] = [];
-        if($this->use_filter && sizeof($this->form_filter) > 0)
-        {
-            $data['filters'] = session('filter-'.$this->base_route);
+        if ($this->use_filter && sizeof($this->form_filter) > 0) {
+            $data['filters'] = session('filter-' . $this->base_route);
             $data['form_filter'] = $this->form_filter;
         }
 
         // main data
-        if(is_array($this->data_method) && sizeof($this->data_method) == 2)
-        {
+        if (is_array($this->data_method) && sizeof($this->data_method) == 2) {
             $data['data'] = call_user_func_array(array($this->model, $this->data_method[0]), $this->data_method[1]);
-        }
-        else
-        {
-            if($this->use_filter)
-            {
-                foreach ($this->form_filter as $kF => $f)
-                {
-                    if(isset($data['filters'][$kF]))
-                    {
+        } else {
+            if ($this->use_filter) {
+                foreach ($this->form_filter as $kF => $f) {
+                    if (isset($data['filters'][$kF])) {
                         $ff = $data['filters'][$kF];
-                        if($f[0] == 'like')
-                            $ff = '%'.$data['filters'][$kF].'%';
+                        if ($f[0] == 'like')
+                            $ff = '%' . $data['filters'][$kF] . '%';
                         $this->q->where($kF, $f[0], $ff);
                     }
                 }
             }
 
-            if(is_string(@$this->dt_order[0]))
-            {
+            if (is_string(@$this->dt_order[0])) {
                 $q = $this->q->orderBy($this->dt_order[0], $this->dt_order[1]);
-            }
-            else
-            {
+            } else {
                 $q = $this->q;
-                foreach ($this->dt_order as $o)
-                {
+                foreach ($this->dt_order as $o) {
                     $q->orderBy($o[0], $o[1]);
                 }
             }
 
-            if($this->use_pagination)
-            {
-                if (session('firstPage'))
-                {
+            if ($this->use_pagination) {
+                if (session('firstPage')) {
                     $current_page = 1;
-                }
-                elseif (request()->get('page') && request()->get('page') > 0)
-                {
+                } elseif (request()->get('page') && request()->get('page') > 0) {
                     $current_page = request()->get('page');
+                } else {
+                    $current_page = (int) session('last-page-' . $this->base_route) ?? 1;
                 }
-                else
-                {
-                    $current_page = (int) session('last-page-'.$this->base_route) ?? 1;
-                }
-                session()->put('last-page-'.$this->base_route, $current_page);
-                Paginator::currentPageResolver(function() use ($current_page) {
+                session()->put('last-page-' . $this->base_route, $current_page);
+                Paginator::currentPageResolver(function () use ($current_page) {
                     return $current_page;
                 });
                 $data['data'] = $q->paginate($this->pagination_limit);
-            }
-            else
-            {
+            } else {
                 $data['data'] = $q->get();
             }
         }
@@ -195,14 +209,12 @@ class FloorsController extends BaseController
     public function filter(Request $req)
     {
         $dt = [];
-        foreach ($this->form_filter as $kf => $vf)
-        {
-            if($req->has($kf) && $req->input($kf) != '')
-            {
+        foreach ($this->form_filter as $kf => $vf) {
+            if ($req->has($kf) && $req->input($kf) != '') {
                 $dt[$kf] = $req->input($kf);
             }
         }
-        session()->put('filter-'.$this->base_route, $dt);
+        session()->put('filter-' . $this->base_route, $dt);
         return redirect()->back()->with(['firstPage' => 1]);
     }
 
@@ -218,7 +230,7 @@ class FloorsController extends BaseController
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
-        $data['form_route'] = [$data['base_route'].'.store', $data['route_params']];
+        $data['form_route'] = [$data['base_route'] . '.store', $data['route_params']];
         $data['data'] = [];
         return view($this->default_form, $data);
     }
@@ -232,8 +244,8 @@ class FloorsController extends BaseController
     public function store(Request $req)
     {
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
-        
-        return redirect(route($this->base_route.'.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
+
+        return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
     }
 
     /**
@@ -249,7 +261,7 @@ class FloorsController extends BaseController
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
-        $data['form_route'] = [$data['base_route'].'.update', $data['route_params']];
+        $data['form_route'] = [$data['base_route'] . '.update', $data['route_params']];
         $data['data'] = $this->model->findOrFail($id);
         return view($this->default_form, $data);
     }
@@ -263,8 +275,8 @@ class FloorsController extends BaseController
     public function update(Request $req)
     {
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
-        
-        return redirect(route($this->base_route.'.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
+
+        return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
     }
 
     /**
@@ -276,7 +288,7 @@ class FloorsController extends BaseController
     public function delete($id)
     {
         $dt = $this->model->findOrFail($id);
-        $this->app->log('Menghapus data '.$this->title.'. id='.$dt->{$this->model->getKeyName()}.'.', $dt->getAttributes());
+        $this->app->log('Menghapus data ' . $this->title . '. id=' . $dt->{$this->model->getKeyName()} . '.', $dt->getAttributes());
         $dt->deleted_by = Auth::user()->id_user;
         $dt->save();
         $dt->delete();

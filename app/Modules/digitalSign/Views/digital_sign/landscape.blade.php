@@ -22,6 +22,8 @@
 
     <!-- Styles -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     {{--
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"> --}}
@@ -66,45 +68,39 @@
                 class="bg-white/50 text-gray-800 flex flex-col items-center justify-start pt-4 text-lg backdrop-blur-sm">
                 <div class="font-poppins w-full">
                     <div class="floor-slider">
-                        <div class="floor-slides">
-                            @foreach(['Lantai 1' => 'First Floor', 'Lantai 2' => 'Second Floor', 'Lantai 3' => 'Third
-                            Floor', 'Lantai 4' => 'Fourth Floor'] as $lantai => $floor)
-                                <div class="floor-slide {{ $loop->first ? 'active' : '' }}">
+                        <div class="floor-slides floor-slider-container">
+                            @foreach($lantaidanruangan as $index => $lantai)
+                                <div class="floor-slide {{ $index == 0 ? 'active' : '' }}">
                                     <div class="floor-title-container">
-                                        <div
-                                            class="text-5xl font-bold text-{{ $loop->iteration == 1 ? 'red' : ($loop->iteration == 2 ? 'red' : ($loop->iteration == 3 ? 'red' : 'red')) }}-600">
-                                            <i class="fas fa-building-user mr-2"></i>{{ $lantai }}
+                                        <div class="text-5xl font-bold text-red-600">
+                                            <i class="fas fa-building-user mr-2"></i>{{ $lantai->nama }}
                                         </div>
-                                        <div class="text-lg font-semibold text-gray-600 mb-6">( {{ $floor }} )</div>
+                                        <div class="text-lg font-semibold text-gray-600 mb-6">({{ $lantai->label }})</div>
                                     </div>
                                     <div class="floor-content">
-                                        @include("digitalSign::digital_sign.partials.floor-content-{$loop->iteration}")
+                                        @include('digitalSign::digital_sign.partials.floor-content-dinamis', ['ruangan' => $lantai->ruangan])
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
                         <!-- Floor Navigation -->
-                        <div class="floor-nav">
-
-                                           @for($i = 0; $i < 4; $i++) <div class="floor-nav-btn {{ $i == 0 ? 'active' : '' }}"
-                                                    data-floor="{{ $i }}">
-                                            </div>
-                                        @endfor
+                        <div class="floor-nav floor-nav-container">
+                            @foreach($lantaidanruangan as $index => $lt)
+                                <div class="floor-nav-btn {{ $index == 0 ? 'active' : '' }}" data-floor="{{ $index }}"></div>
+                            @endforeach
                         </div>
-                            </div>
+                    </div>
             </div>
     </section>
 
-              <!-- Schedule Section -->
-          <sec   tion
-                class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
-             <div    class="font-poppins">
-                 <h2
-                           class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
-                        <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
-                    </h2>
-        </div>
+        <!-- Schedule Section -->
+        <section class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
+            <div class="font-poppins">
+                <h2 class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
+                    <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
+                </h2>
+            </div>
 
                 <div      class="mt-6 w-4/5">
                     @include('digitalSign::digital_sign.partials.schedule-list')
@@ -115,16 +111,16 @@
         <!-- Presence Section -->
         <section class="presence-section py-2 flex-shrink-0">
             <div class="grid grid-cols-5 gap-6 px-6">
-                @foreach(['Rektor', 'Wakil Rektor 1', 'Wakil Rektor 2', 'Wakil Rektor 3', 'Wakil Rektor 4'] as $jabatan)
+                @foreach($kehadiran as $item)
                     <div
-                        class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }}">
+                        class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ strtolower($item->status) === 'tidak hadir' ? 'tidak-hadir' : 'hadir' }}">
                         <i class="fas fa-user-tie presence-icon"></i>
-                        <div class="presence-title">{{ $jabatan }}</div>
+                        <div class="presence-title">{{ $item->nama_jabatan }}</div>
                         <div
-                            class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ $jabatan == 'Wakil Rektor 2' ? 'tidak-hadir' : 'hadir' }} font-semibold">
+                            class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ strtolower($item->status) === 'tidak hadir' ? 'tidak-hadir' : 'hadir' }} font-semibold">
                             <i
-                                class="fas fa-{{ $jabatan == 'Wakil Rektor 2' ? 'times' : 'check' }}-circle presence-status-icon"></i>
-                            {{ $jabatan == 'Wakil Rektor 2' ? 'Tidak Hadir' : 'Hadir' }}
+                                class="fas fa-{{ strtolower($item->status) === 'tidak hadir' ? 'times' : 'check' }}-circle presence-status-icon"></i>
+                            {{ ucfirst($item->status) }}
                         </div>
                     </div>
                 @endforeach
@@ -132,7 +128,7 @@
         </section>
 
         <!-- Footer Section -->
-        <foo ter
+        <footer
             class="bg-white text-center text-lg font-semibold mt py-1 border-t flex-shrink-0 relative flex items-center">
             <div class="absolute left-0 bottom-1/2 transform translate-y-1/2">
                 <div id="liveclock" class="text-3xl font-bold text-white bg-gray-900 px-7 py-2 rounded-tr-xl shadow-lg">
@@ -146,7 +142,7 @@
                     </div>
                 </div>
             </div>
-    </footer>
+        </footer>
     </div>
     <!-- Scripts -->
             <script src="{{ asset('js/landscape.js') }}"></script>

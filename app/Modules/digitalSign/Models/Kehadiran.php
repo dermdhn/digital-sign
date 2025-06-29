@@ -15,12 +15,12 @@ class Kehadiran extends Model
 	protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 	protected $table = 'kehadiran';
 	protected $primaryKey = 'id';
-    protected $fillable = ['is_presence', 'tanggal',  'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['nama_jabatan', 'status',  'created_by', 'updated_by', 'deleted_by'];
 
     public static function validation_data($update_id = "NULL") {
         return [
-	        'is_presence'		=> 'required',
-            'tanggal'		=> 'required',
+	        'nama_jabatan'		=> 'required|string',
+            'status'		=> 'required|string',
             
         ];
     }

@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rooms', function (Blueprint $table) {
+        Schema::create('portrait_setting', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('floor_id')->index();
-            $table->string('nama');
-            $table->integer('order')->default(0);
-            $table->string('kode_ruang');
-            $table->boolean('is_active')->default(true);
+
+            $table->string('nama_template');
+            $table->string('version');
+
             $table->timestamps();
             $table->softDeletes();
             $table->uuid('created_by')->nullable();
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rooms');
+        Schema::dropIfExists('portrait_setting');
     }
 };

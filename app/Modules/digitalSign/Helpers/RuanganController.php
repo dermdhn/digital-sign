@@ -9,18 +9,19 @@ use MyUnnes\Base\Helpers\Helper as Help;
 use MyUnnes\Base\Services\Crud;
 use Illuminate\Pagination\Paginator;
 use MyUnnes\Base\Controllers\BaseController;
-use App\Modules\digitalSign\Models\Jabatan;
+use App\Modules\digitalSign\Models\Ruangan;
+use App\Modules\digitalSign\Models\Lantai;
 
 
-class JabatanController extends BaseController
+class RuanganController extends BaseController
 {
     // Model database
     protected $model;
-    protected $title = 'Jabatan'; // Judul Halaman
-    protected $subtitle = 'Manajemen data Jabatan'; // Subtitle Halaman
+    protected $title = 'Ruangan'; // Judul Halaman
+    protected $subtitle = 'Manajemen data Ruangan'; // Subtitle Halaman
     protected $breadcrumbs = [];
     protected $add_title = ''; // Title tambahan jika diperlukan ex. terdapat referensi {(User: <code>$nm_user</code>)}
-    protected $base_route = 'jabatan'; // Base route name untuk CRUD {sys_user_role}
+    protected $base_route = 'ruangan'; // Base route name untuk CRUD {sys_user_role}
     protected $route_params = [];
     protected $dt_order = ['created_at', 'ASC'];
     protected $use_validate = false; // Jika memerlukan validasi data
@@ -38,8 +39,8 @@ class JabatanController extends BaseController
     protected $date_column = [];
     protected $datetime_column = [];
     protected $use_datatable = false;
-    protected $default_view = 'digitalSign::jabatan.index';
-    protected $default_form = 'digitalSign::jabatan.form';
+    protected $default_view = 'digitalSign::ruangan.index';
+    protected $default_form = 'digitalSign::ruangan.form';
     protected $use_filter = false;
     protected $form_filter = [
         // {Nama Kolom}  => [0 => {filter_method => '=' || 'like' || '<' || '>' dsb}, 1 => { STRING || Object Form Collective dengen format `forward_static_call_array` => [ [Form, formType], [params] ] }]
@@ -51,20 +52,18 @@ class JabatanController extends BaseController
     protected $help;
     protected $app;
     protected $table_columns = [
-        'uuid' => 'Uuid',
-			'name' => 'Name',
-			'is_presence' => 'Is Presence',
-			'order' => 'Order',
-			'is_active' => 'Is Active',
-			
+        'lantai.nama' => 'Lantai',
+        'nama' => 'Nama',
+        'urutan' => 'Urutan',
+        'is_aktif' => 'Is Aktif',
+
     ];
 
     public function __construct()
     {
-        $this->model = new Jabatan;
+        $this->model = new Ruangan;
 
-        if(sizeof($this->breadcrumbs) == 0)
-        {
+        if (sizeof($this->breadcrumbs) == 0) {
             $this->breadcrumbs = [
                 'Dashboard' => route(config('myunnes.dashboard_route'))
             ];
@@ -73,50 +72,70 @@ class JabatanController extends BaseController
         $this->help = (new Help);
         $this->app = (new BApp);
 
+        $this->use_filter = true;
+        $this->form_filter  = [
+            'id_lantai' => [
+                0 => '=',
+                1 => [
+                    'Lantai',
+                    [
+                        ['Form', 'select'],
+                        [
+                            'id_lantai',
+                            Lantai::orderBy('urutan')->pluck('nama', 'id')->toArray(),
+                            NULL,
+                            ['class' => 'form-select select2', 'id' => 'id_lantai', 'placeholder' => '-- Semua Lantai --']
+                        ]
+                    ]
+                ]
+            ],
+            'nama' => [
+                0 => 'like',
+                1 => [
+                    'Nama Ruangan',
+                    [
+                        ['Form', 'text'],
+                        ['nama', NULL, ['class' => 'form-control', 'id' => 'nama', 'placeholder' => 'Cari nama ruangan...']]
+                    ]
+                ]
+            ]
+        ];
+
         $this->form = [
-            'uuid' => [
-					'Uuid',
-					[
-						['Form', 'text'],
-						['uuid', NULL, ['class' => 'form-control ', 'id' => 'uuid', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'name' => [
-					'Name',
-					[
-						['Form', 'text'],
-						['name', NULL, ['class' => 'form-control ', 'id' => 'name', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'is_presence' => [
-					'Is Presence',
-					[
-						['Form', 'text'],
-						['is_presence', NULL, ['class' => 'form-control ', 'id' => 'is_presence', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'order' => [
-					'Order',
-					[
-						['Form', 'number'],
-						['order', NULL, ['class' => 'form-control ', 'id' => 'order', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'is_active' => [
-					'Is Active',
-					[
-						['Form', 'text'],
-						['is_active', NULL, ['class' => 'form-control ', 'id' => 'is_active', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				
+            'id_lantai' => [
+                'Lantai',
+                [
+                    ['Form', 'select'],
+                    ['id_lantai',  Lantai::all()->pluck('nama', 'id'), NULL, ['class' => 'form-select select2', 'id' => 'id_lantai', 'placeholder' => '-- pilih --']]
+                ]
+            ],
+            'nama' => [
+                'Nama',
+                [
+                    ['Form', 'text'],
+                    ['nama', NULL, ['class' => 'form-control ', 'id' => 'nama', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+            'urutan' => [
+                'Urutan',
+                [
+                    ['Form', 'number'],
+                    ['urutan', NULL, ['class' => 'form-control ', 'id' => 'urutan', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+            'is_aktif' => [
+                'Tampilkan',
+                [
+                    ['Form', 'select'],
+                    ['is_aktif', ['1' => 'Ya', '0' => 'Tidak'], null, ['class' => 'form-select', 'id' => 'is_aktif']]
+                ]
+            ]
         ];
 
         // Hanya dimasukkan data yang akan digunakan di semua view
         $dt_to_view = ['title', 'subtitle', 'breadcrumbs', 'add_title', 'base_route', 'route_params', 'add_header_right', 'add_header_left', 'boolean_column', 'boolean_key', 'currency_column', 'code_column', 'pagination_limit', 'use_pagination', 'use_datatable', 'add_action', 'app', 'help', 'use_filter', 'form_filter', 'filters', 'queue_column', 'date_column', 'datetime_column'];
 
-        foreach ($dt_to_view as $v)
-        {
+        foreach ($dt_to_view as $v) {
             $this->data[$v] = $this->{$v};
         }
     }
@@ -135,73 +154,53 @@ class JabatanController extends BaseController
         $data['use_validate'] = $this->use_validate;
         $data['model'] = $this->model;
 
-        if(!isset($this->q))
-        {
+        if (!isset($this->q)) {
             $this->q = $this->model->query();
         }
         $data['filters'] = [];
-        if($this->use_filter && sizeof($this->form_filter) > 0)
-        {
-            $data['filters'] = session('filter-'.$this->base_route);
+        if ($this->use_filter && sizeof($this->form_filter) > 0) {
+            $data['filters'] = session('filter-' . $this->base_route);
             $data['form_filter'] = $this->form_filter;
         }
 
         // main data
-        if(is_array($this->data_method) && sizeof($this->data_method) == 2)
-        {
+        if (is_array($this->data_method) && sizeof($this->data_method) == 2) {
             $data['data'] = call_user_func_array(array($this->model, $this->data_method[0]), $this->data_method[1]);
-        }
-        else
-        {
-            if($this->use_filter)
-            {
-                foreach ($this->form_filter as $kF => $f)
-                {
-                    if(isset($data['filters'][$kF]))
-                    {
+        } else {
+            if ($this->use_filter) {
+                foreach ($this->form_filter as $kF => $f) {
+                    if (isset($data['filters'][$kF])) {
                         $ff = $data['filters'][$kF];
-                        if($f[0] == 'like')
-                            $ff = '%'.$data['filters'][$kF].'%';
+                        if ($f[0] == 'like')
+                            $ff = '%' . $data['filters'][$kF] . '%';
                         $this->q->where($kF, $f[0], $ff);
                     }
                 }
             }
 
-            if(is_string(@$this->dt_order[0]))
-            {
+            if (is_string(@$this->dt_order[0])) {
                 $q = $this->q->orderBy($this->dt_order[0], $this->dt_order[1]);
-            }
-            else
-            {
+            } else {
                 $q = $this->q;
-                foreach ($this->dt_order as $o)
-                {
+                foreach ($this->dt_order as $o) {
                     $q->orderBy($o[0], $o[1]);
                 }
             }
 
-            if($this->use_pagination)
-            {
-                if (session('firstPage'))
-                {
+            if ($this->use_pagination) {
+                if (session('firstPage')) {
                     $current_page = 1;
-                }
-                elseif (request()->get('page') && request()->get('page') > 0)
-                {
+                } elseif (request()->get('page') && request()->get('page') > 0) {
                     $current_page = request()->get('page');
+                } else {
+                    $current_page = (int) session('last-page-' . $this->base_route) ?? 1;
                 }
-                else
-                {
-                    $current_page = (int) session('last-page-'.$this->base_route) ?? 1;
-                }
-                session()->put('last-page-'.$this->base_route, $current_page);
-                Paginator::currentPageResolver(function() use ($current_page) {
+                session()->put('last-page-' . $this->base_route, $current_page);
+                Paginator::currentPageResolver(function () use ($current_page) {
                     return $current_page;
                 });
                 $data['data'] = $q->paginate($this->pagination_limit);
-            }
-            else
-            {
+            } else {
                 $data['data'] = $q->get();
             }
         }
@@ -217,14 +216,12 @@ class JabatanController extends BaseController
     public function filter(Request $req)
     {
         $dt = [];
-        foreach ($this->form_filter as $kf => $vf)
-        {
-            if($req->has($kf) && $req->input($kf) != '')
-            {
+        foreach ($this->form_filter as $kf => $vf) {
+            if ($req->has($kf) && $req->input($kf) != '') {
                 $dt[$kf] = $req->input($kf);
             }
         }
-        session()->put('filter-'.$this->base_route, $dt);
+        session()->put('filter-' . $this->base_route, $dt);
         return redirect()->back()->with(['firstPage' => 1]);
     }
 
@@ -240,7 +237,7 @@ class JabatanController extends BaseController
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
-        $data['form_route'] = [$data['base_route'].'.store', $data['route_params']];
+        $data['form_route'] = [$data['base_route'] . '.store', $data['route_params']];
         $data['data'] = [];
         return view($this->default_form, $data);
     }
@@ -254,8 +251,8 @@ class JabatanController extends BaseController
     public function store(Request $req)
     {
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
-        
-        return redirect(route($this->base_route.'.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
+
+        return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
     }
 
     /**
@@ -271,7 +268,7 @@ class JabatanController extends BaseController
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
-        $data['form_route'] = [$data['base_route'].'.update', $data['route_params']];
+        $data['form_route'] = [$data['base_route'] . '.update', $data['route_params']];
         $data['data'] = $this->model->findOrFail($id);
         return view($this->default_form, $data);
     }
@@ -285,8 +282,8 @@ class JabatanController extends BaseController
     public function update(Request $req)
     {
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
-        
-        return redirect(route($this->base_route.'.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
+
+        return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
     }
 
     /**
@@ -298,7 +295,7 @@ class JabatanController extends BaseController
     public function delete($id)
     {
         $dt = $this->model->findOrFail($id);
-        $this->app->log('Menghapus data '.$this->title.'. id='.$dt->{$this->model->getKeyName()}.'.', $dt->getAttributes());
+        $this->app->log('Menghapus data ' . $this->title . '. id=' . $dt->{$this->model->getKeyName()} . '.', $dt->getAttributes());
         $dt->deleted_by = Auth::user()->id_user;
         $dt->save();
         $dt->delete();

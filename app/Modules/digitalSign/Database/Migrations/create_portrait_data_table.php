@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jabatan', function (Blueprint $table) {
+        Schema::create('portrait_data', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name');
-            $table->boolean('is_presence')->default(false);
-            $table->integer('order')->default(0);
-            $table->boolean('is_active')->default(true);
+
+            $table->string('heading');
+            $table->string('subheading')->nullable();
+            $table->string('nama_tokoh');
+            $table->string('jabatan_tokoh');
+            $table->string('gambar_tokoh')->nullable(); // Contoh: 'nama_file.png'
+            $table->boolean('is_aktif'); // Contoh: 'nama_file.png'
+
             $table->timestamps();
             $table->softDeletes();
             $table->uuid('created_by')->nullable();
@@ -34,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jabatan');
+        Schema::dropIfExists('portrait_data');
     }
 };

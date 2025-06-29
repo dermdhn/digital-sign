@@ -127,7 +127,7 @@
                                                     {!! $help->processInfo($r->{$db_col}) !!}
                                                 @elseif(str($db_col)->contains('.'))
                                                     @php $rels = explode('.',$db_col) @endphp
-                                                    {{ $r->{$rels[0]}->{$rels[1]} }}
+                                                    {{ optional($r->{$rels[0]})->{$rels[1]} ?? '' }}
                                                 @else
                                                     {{ $r->{$db_col} }}
                                                 @endif

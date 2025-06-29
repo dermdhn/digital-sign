@@ -1,7 +1,8 @@
 /* ==========================================================================
    Reset & Base Styles
    ========================================================================== */
-html, body {
+html,
+body {
     overflow: hidden;
     height: 100vh;
     margin: 0;
@@ -13,7 +14,7 @@ html, body {
    Typography & Common Effects
    ========================================================================== */
 .font-poppins {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
 }
 
 .glass-effect {
@@ -54,7 +55,7 @@ html, body {
 }
 
 .schedule-card {
-    background: linear-gradient(135deg, #2C3E50 0%, #1a202c 100%);
+    background: linear-gradient(135deg, #2c3e50 0%, #1a202c 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -66,25 +67,22 @@ html, body {
     overflow: hidden;
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 .floor-slides {
     display: flex;
-    transition: transform 0.5s ease-in-out;
     width: 100%;
-    margin-top: 1.5rem;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
 }
 
 .floor-slide {
-    min-width: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    flex: 0 0 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
 }
 
 .floor-slide.active {
@@ -168,13 +166,13 @@ html, body {
     font-weight: bold;
     margin-bottom: 0.5rem;
     padding-bottom: 1.5rem;
-    color: #1F2937;
+    color: #1f2937;
 }
 
 .presence-icon {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: #1F2937;
+    color: #1f2937;
 }
 
 .presence-status-icon {
@@ -190,13 +188,21 @@ html, body {
 }
 
 .kotak-hadir.hadir {
-    background: linear-gradient(135deg, rgba(167, 243, 208, 0.9) 0%, rgba(110, 231, 183, 0.9) 100%);
-    border: 3px solid #10B981;
+    background: linear-gradient(
+        135deg,
+        rgba(167, 243, 208, 0.9) 0%,
+        rgba(110, 231, 183, 0.9) 100%
+    );
+    border: 3px solid #10b981;
 }
 
 .kotak-hadir.tidak-hadir {
-    background: linear-gradient(135deg, rgba(254, 202, 202, 0.9) 0%, rgba(252, 165, 165, 0.9) 100%);
-    border: 3px solid #EF4444;
+    background: linear-gradient(
+        135deg,
+        rgba(254, 202, 202, 0.9) 0%,
+        rgba(252, 165, 165, 0.9) 100%
+    );
+    border: 3px solid #ef4444;
     opacity: 0.8;
 }
 
@@ -217,52 +223,68 @@ html, body {
 }
 
 .status-hadir.hadir {
-    background: #10B981;
+    background: #10b981;
     color: white;
     border-top: 2px solid #059669;
 }
 
 .status-hadir.tidak-hadir {
-    background: #EF4444;
+    background: #ef4444;
     color: white;
-    border-top: 2px solid #DC2626;
+    border-top: 2px solid #dc2626;
 }
 
 /* ==========================================================================
    Marquee Animation
    ========================================================================== */
 @keyframes marquee {
-    0% { transform: translateX(100vw); opacity: 1; }
-    93% { transform: translateX(-250vw); opacity: 1; }
-    94% { transform: translateX(-250vw); opacity: 0; }
-    95% { transform: translateX(100vw); opacity: 0; }
-    96% { transform: translateX(100vw); opacity: 1; }
-    100% { transform: translateX(100vw); opacity: 1; }
+    0% {
+        transform: translateX(100vw);
+        opacity: 1;
+    }
+    93% {
+        transform: translateX(-250vw);
+        opacity: 1;
+    }
+    94% {
+        transform: translateX(-250vw);
+        opacity: 0;
+    }
+    95% {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+    96% {
+        transform: translateX(100vw);
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(100vw);
+        opacity: 1;
+    }
 }
 
 .marquee-container {
-    width: 100%;
-    overflow: hidden;
     position: relative;
-    height: 40px;
-}
-
-.marquee-container::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 150px;
-    background: linear-gradient(to left, transparent, white);
-    z-index: 2;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 2.5rem;
 }
 
 .animate-marquee {
     display: inline-block;
-    animation: marquee 60s linear infinite;
     white-space: nowrap;
-    margin-left: 150px;
+    padding-left: 100%;
+    animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
 }
 
 /* ==========================================================================
@@ -308,23 +330,23 @@ html, body {
 
 .schedule-item .location-text {
     font-size: 1.3rem;
-    color: #E2E8F0;
+    color: #e2e8f0;
     letter-spacing: 0.01em;
 }
 
 .schedule-item .time-text {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #FCD34D;
+    color: #fcd34d;
 }
 
 .schedule-item .date-text {
     font-size: 1.3rem;
-    color: #A0AEC0;
+    color: #a0aec0;
 }
 
 .schedule-item .date-text span {
-    color: #FCD34D;
+    color: #fcd34d;
     font-weight: 500;
 }
 
@@ -334,13 +356,13 @@ html, body {
 }
 
 .schedule-item::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
     width: 4px;
     height: 0;
-    background: #FBBF24;
+    background: #fbbf24;
     transition: height 0.3s ease;
 }
 
@@ -360,7 +382,7 @@ html, body {
 }
 
 .schedule-dot.active {
-    background-color: #FBBF24;
+    background-color: #fbbf24;
     width: 24px;
     border-radius: 9999px;
 }
@@ -380,18 +402,30 @@ html, body {
 }
 
 @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .animate-pulse {
     animation: pulse 2s infinite;
 }
 
-.schedule-item:nth-child(1) { animation-delay: 0.1s; }
-.schedule-item:nth-child(2) { animation-delay: 0.2s; }
-.schedule-item:nth-child(3) { animation-delay: 0.3s; }
+.schedule-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+.schedule-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.schedule-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
 
 .scale-102 {
     scale: 1.02;
@@ -435,4 +469,4 @@ html, body {
     .info-list {
         font-size: 0.875rem;
     }
-} 
+}

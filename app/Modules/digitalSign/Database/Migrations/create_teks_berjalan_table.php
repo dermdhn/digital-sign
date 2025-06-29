@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('floors', function (Blueprint $table) {
+        Schema::create('teks_berjalan', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('floor_number');
-            $table->string('title')->default('Informasi Ruangan');
+            $table->string('konten');
+            $table->string('icon')->default('fa-calendar-check');
+            $table->integer('urutan')->default(0);
+
             $table->timestamps();
             $table->softDeletes();
             $table->uuid('created_by')->nullable();
@@ -32,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('floors');
+        Schema::dropIfExists('teks_berjalan');
     }
 };

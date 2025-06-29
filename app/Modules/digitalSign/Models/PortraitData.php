@@ -8,22 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Rooms extends Model 
+class PortraitData extends Model 
 {
     use HasFactory, SoftDeletes, HasUuids;
 
 	protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-	protected $table = 'rooms';
+	protected $table = 'portrait_data';
 	protected $primaryKey = 'id';
-    protected $fillable = ['floor_id', 'nama', 'order', 'kode_ruang', 'is_active',  'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['heading', 'subheading', 'nama_tokoh', 'jabatan_tokoh', 'gambar_tokoh', 'is_aktif',  'created_by', 'updated_by', 'deleted_by'];
 
     public static function validation_data($update_id = "NULL") {
         return [
-	        'floor_id'		=> 'required',
-            'nama'		=> 'required|string',
-            'order'		=> 'required|number',
-            'kode_ruang'		=> 'required|string',
-            'is_active'		=> 'required',
+	        'heading'		=> 'required|string',
+            'subheading'		=> 'required|string',
+            'nama_tokoh'		=> 'required|string',
+            'jabatan_tokoh'		=> 'required|string',
+            'gambar_tokoh'		=> 'required|string',
+            'is_aktif'		=> 'required',
             
         ];
     }

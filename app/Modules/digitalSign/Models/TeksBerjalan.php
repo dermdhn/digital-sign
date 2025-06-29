@@ -8,25 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class Jabatan extends Model 
+class TeksBerjalan extends Model
 {
     use HasFactory, SoftDeletes, HasUuids;
 
 	protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-	protected $table = 'jabatan';
-	protected $primaryKey = 'uuid';
-    protected $fillable = ['uuid', 'name', 'is_presence', 'order', 'is_active',  'created_by', 'updated_by', 'deleted_by'];
+	protected $table = 'teks_berjalan';
+	protected $primaryKey = 'id';
+    protected $fillable = ['konten', 'icon', 'urutan',  'created_by', 'updated_by', 'deleted_by'];
 
     public static function validation_data($update_id = "NULL") {
         return [
-	        'uuid'		=> 'required|string',
-            'name'		=> 'required|string',
-            'is_presence'		=> 'required',
-            'order'		=> 'required|number',
-            'is_active'		=> 'required',
-            
+	        'konten'		=> 'required|string',
+            'icon'		=> 'required|string',
+            'urutan'		=> 'required|numeric',
+
         ];
     }
 
-	
+
 }

@@ -15,9 +15,10 @@ return new class extends Migration
     {
         Schema::create('kehadiran', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->boolean('is_presence')->default(0);
-            $table->dateTime('tanggal');
+            $table->string('nama_jabatan');
+            $table->string('status');
             $table->timestamps();
+
             $table->softDeletes();
             $table->uuid('created_by')->nullable();
             $table->uuid('updated_by')->nullable();

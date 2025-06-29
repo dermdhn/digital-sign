@@ -51,17 +51,16 @@ class KehadiranController extends BaseController
     protected $help;
     protected $app;
     protected $table_columns = [
-        'is_presence' => 'Is Presence',
-			'tanggal' => 'Tanggal',
-			
+        'nama_jabatan' => 'Nama Jabatan',
+        'status' => 'Status',
+
     ];
 
     public function __construct()
     {
         $this->model = new Kehadiran;
 
-        if(sizeof($this->breadcrumbs) == 0)
-        {
+        if (sizeof($this->breadcrumbs) == 0) {
             $this->breadcrumbs = [
                 'Dashboard' => route(config('myunnes.dashboard_route'))
             ];
@@ -70,29 +69,42 @@ class KehadiranController extends BaseController
         $this->help = (new Help);
         $this->app = (new BApp);
 
+        $this->use_filter = true;
+        $this->form_filter = [
+            'nama_jabatan' => [
+                0 => 'like',
+                1 => [
+                    'Nama Jabatan',
+                    [
+                        ['Form', 'text'],
+                        ['nama_jabatan', NULL, ['class' => 'form-control', 'id' => 'nama_jabatan', 'placeholder' => 'Cari nama jabatan...']]
+                    ]
+                ]
+            ]
+        ];
+
         $this->form = [
-            'is_presence' => [
-					'Is Presence',
-					[
-						['Form', 'text'],
-						['is_presence', NULL, ['class' => 'form-control ', 'id' => 'is_presence', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				'tanggal' => [
-					'Tanggal',
-					[
-						['Form', 'text'],
-						['tanggal', NULL, ['class' => 'form-control datetimepicker', 'id' => 'tanggal', 'placeholder' => 'ex: isikan data di sini']]
-					]
-				],
-				
+            'nama_jabatan' => [
+                'Nama Jabatan',
+                [
+                    ['Form', 'text'],
+                    ['nama_jabatan', NULL, ['class' => 'form-control ', 'id' => 'nama_jabatan', 'placeholder' => 'ex: isikan data di sini']]
+                ]
+            ],
+            'status' => [
+                'Status',
+                [
+                    ['Form', 'select'],
+                    ['status', ['Hadir' => 'Hadir', 'Tidak Hadir' => 'Tidak Hadir'], NULL, ['class' => 'form-select select2']]
+                ]
+            ],
+
         ];
 
         // Hanya dimasukkan data yang akan digunakan di semua view
         $dt_to_view = ['title', 'subtitle', 'breadcrumbs', 'add_title', 'base_route', 'route_params', 'add_header_right', 'add_header_left', 'boolean_column', 'boolean_key', 'currency_column', 'code_column', 'pagination_limit', 'use_pagination', 'use_datatable', 'add_action', 'app', 'help', 'use_filter', 'form_filter', 'filters', 'queue_column', 'date_column', 'datetime_column'];
 
-        foreach ($dt_to_view as $v)
-        {
+        foreach ($dt_to_view as $v) {
             $this->data[$v] = $this->{$v};
         }
     }
@@ -111,73 +123,53 @@ class KehadiranController extends BaseController
         $data['use_validate'] = $this->use_validate;
         $data['model'] = $this->model;
 
-        if(!isset($this->q))
-        {
+        if (!isset($this->q)) {
             $this->q = $this->model->query();
         }
         $data['filters'] = [];
-        if($this->use_filter && sizeof($this->form_filter) > 0)
-        {
-            $data['filters'] = session('filter-'.$this->base_route);
+        if ($this->use_filter && sizeof($this->form_filter) > 0) {
+            $data['filters'] = session('filter-' . $this->base_route);
             $data['form_filter'] = $this->form_filter;
         }
 
         // main data
-        if(is_array($this->data_method) && sizeof($this->data_method) == 2)
-        {
+        if (is_array($this->data_method) && sizeof($this->data_method) == 2) {
             $data['data'] = call_user_func_array(array($this->model, $this->data_method[0]), $this->data_method[1]);
-        }
-        else
-        {
-            if($this->use_filter)
-            {
-                foreach ($this->form_filter as $kF => $f)
-                {
-                    if(isset($data['filters'][$kF]))
-                    {
+        } else {
+            if ($this->use_filter) {
+                foreach ($this->form_filter as $kF => $f) {
+                    if (isset($data['filters'][$kF])) {
                         $ff = $data['filters'][$kF];
-                        if($f[0] == 'like')
-                            $ff = '%'.$data['filters'][$kF].'%';
+                        if ($f[0] == 'like')
+                            $ff = '%' . $data['filters'][$kF] . '%';
                         $this->q->where($kF, $f[0], $ff);
                     }
                 }
             }
 
-            if(is_string(@$this->dt_order[0]))
-            {
+            if (is_string(@$this->dt_order[0])) {
                 $q = $this->q->orderBy($this->dt_order[0], $this->dt_order[1]);
-            }
-            else
-            {
+            } else {
                 $q = $this->q;
-                foreach ($this->dt_order as $o)
-                {
+                foreach ($this->dt_order as $o) {
                     $q->orderBy($o[0], $o[1]);
                 }
             }
 
-            if($this->use_pagination)
-            {
-                if (session('firstPage'))
-                {
+            if ($this->use_pagination) {
+                if (session('firstPage')) {
                     $current_page = 1;
-                }
-                elseif (request()->get('page') && request()->get('page') > 0)
-                {
+                } elseif (request()->get('page') && request()->get('page') > 0) {
                     $current_page = request()->get('page');
+                } else {
+                    $current_page = (int) session('last-page-' . $this->base_route) ?? 1;
                 }
-                else
-                {
-                    $current_page = (int) session('last-page-'.$this->base_route) ?? 1;
-                }
-                session()->put('last-page-'.$this->base_route, $current_page);
-                Paginator::currentPageResolver(function() use ($current_page) {
+                session()->put('last-page-' . $this->base_route, $current_page);
+                Paginator::currentPageResolver(function () use ($current_page) {
                     return $current_page;
                 });
                 $data['data'] = $q->paginate($this->pagination_limit);
-            }
-            else
-            {
+            } else {
                 $data['data'] = $q->get();
             }
         }
@@ -193,14 +185,12 @@ class KehadiranController extends BaseController
     public function filter(Request $req)
     {
         $dt = [];
-        foreach ($this->form_filter as $kf => $vf)
-        {
-            if($req->has($kf) && $req->input($kf) != '')
-            {
+        foreach ($this->form_filter as $kf => $vf) {
+            if ($req->has($kf) && $req->input($kf) != '') {
                 $dt[$kf] = $req->input($kf);
             }
         }
-        session()->put('filter-'.$this->base_route, $dt);
+        session()->put('filter-' . $this->base_route, $dt);
         return redirect()->back()->with(['firstPage' => 1]);
     }
 
@@ -216,7 +206,7 @@ class KehadiranController extends BaseController
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
-        $data['form_route'] = [$data['base_route'].'.store', $data['route_params']];
+        $data['form_route'] = [$data['base_route'] . '.store', $data['route_params']];
         $data['data'] = [];
         return view($this->default_form, $data);
     }
@@ -230,8 +220,8 @@ class KehadiranController extends BaseController
     public function store(Request $req)
     {
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
-        
-        return redirect(route($this->base_route.'.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
+
+        return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.create_success_txt')]);
     }
 
     /**
@@ -247,7 +237,7 @@ class KehadiranController extends BaseController
         // tambahan data yang digunakan di view
         $data['model'] = $this->model;
         $data['form'] = $this->form;
-        $data['form_route'] = [$data['base_route'].'.update', $data['route_params']];
+        $data['form_route'] = [$data['base_route'] . '.update', $data['route_params']];
         $data['data'] = $this->model->findOrFail($id);
         return view($this->default_form, $data);
     }
@@ -261,8 +251,8 @@ class KehadiranController extends BaseController
     public function update(Request $req)
     {
         $dt = (new Crud)->saveData($req, $this->model, $this->except_save, $this->title, $this->currency_column);
-        
-        return redirect(route($this->base_route.'.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
+
+        return redirect(route($this->base_route . '.read', $this->route_params))->with('alert', ['success', trans('Base::alert.update_success_txt')]);
     }
 
     /**
@@ -274,7 +264,7 @@ class KehadiranController extends BaseController
     public function delete($id)
     {
         $dt = $this->model->findOrFail($id);
-        $this->app->log('Menghapus data '.$this->title.'. id='.$dt->{$this->model->getKeyName()}.'.', $dt->getAttributes());
+        $this->app->log('Menghapus data ' . $this->title . '. id=' . $dt->{$this->model->getKeyName()} . '.', $dt->getAttributes());
         $dt->deleted_by = Auth::user()->id_user;
         $dt->save();
         $dt->delete();
