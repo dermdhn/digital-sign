@@ -8,6 +8,22 @@ const slideDuration = 7000;
 const transitionDelay = 1000;
 let slideTimer = null;
 
+document.addEventListener(
+    "touchmove",
+    function (e) {
+        e.preventDefault();
+    },
+    { passive: false }
+);
+
+window.addEventListener(
+    "wheel",
+    function (e) {
+        e.preventDefault();
+    },
+    { passive: false }
+);
+
 function showOpening() {
     clearTimeout(slideTimer); // pastikan tidak ada tumpang tindih
     slidesWrapper.classList.remove("active");
