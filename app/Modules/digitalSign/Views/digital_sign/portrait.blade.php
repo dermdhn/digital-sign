@@ -57,15 +57,17 @@
                 slide.style.display = 'none';
                 resetAnimations(slide);
             });
-            setTimeout(() => {
-                opening.classList.remove('fadein');
-                opening.classList.add('fadeout');
+            @if(count($slides) > 0)
                 setTimeout(() => {
-                    opening.style.display = 'none';
-                    opening.classList.remove('fadeout');
-                    showNextSlide();
-                }, fadeDuration);
-            }, openingDuration);
+                    opening.classList.remove('fadein');
+                    opening.classList.add('fadeout');
+                    setTimeout(() => {
+                        opening.style.display = 'none';
+                        opening.classList.remove('fadeout');
+                        showNextSlide();
+                    }, fadeDuration);
+                }, openingDuration);
+            @endif
         }
 
         function showNextSlide() {

@@ -86,7 +86,7 @@ Route::get('/landscape', function () {
 
 Route::get('/portrait', function () {
     // Mengambil data slide aktif
-    $slides = PortraitData::where('is_aktif', true)->get();
+    $slides = PortraitData::where('is_aktif', true)->orderBy('urutan')->get();
 
     // Mengambil template yang aktif
     $template = PortraitSetting::first(); // Ambil template pertama (atau Anda bisa mengubah logika ini)

@@ -60,6 +60,7 @@ class PortraitDataController extends BaseController
         'jabatan_tokoh' => 'Jabatan Tokoh',
         'gambar_tokoh' => 'Gambar Tokoh',
         'nama_template' => 'Nama Template',
+        'urutan' => 'Urutan',
         'is_aktif' => 'Is Aktif',
 
     ];
@@ -125,6 +126,13 @@ class PortraitDataController extends BaseController
                 [
                     ['Form', 'select'],
                     ['nama_template', $templates, null, ['class' => 'form-select', 'id' => 'nama_template']]
+                ]
+            ],
+            'urutan' => [
+                'Urutan',
+                [
+                    ['Form', 'number'],
+                    ['urutan', NULL, ['class' => 'form-control', 'id' => 'urutan', 'placeholder' => 'ex: isikan data di sini']]
                 ]
             ],
             'is_aktif' => [
