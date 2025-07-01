@@ -1,50 +1,16 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Digital Signage UNNES</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/portrait.css') }}">
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-    <body>
+<div class="slide w-full h-full flex p-8 relative" id="slide-{{ $index }}" style="background: url('bg2.png') center center / cover no-repeat; aspect-ratio:9/16; max-width:100vw; max-height:100vh;">
+    <div>
+        <img src="/logobaru.png" alt="Logo UNNES" class="h-36 fadein">
+        <h1 class="text-[96px] font-bold fadein">{{ $slide->heading }}</h1>
+        <h2 class="text-[72px] -mt-10 font-semibold fadein">{{ $slide->subheading }}</h2>
 
-        <div id="version" style="display: none;">{{ $version }}</div>
-        <!-- OPENING -->
-        <div class="section active" id="opening">
-            <div class="main-content">
-            <img src="/UNNES2.png" alt="Logo UNNES" class="logo-unnes">
-            <div class="unnes-text">UNNES</div>
-            <div class="welcome-text">SELAMAT DATANG<br>DI GEDUNG REKTORAT<br>UNNES</div>
-            <div class="footer-text">UNIVERSITAS NEGERI SEMARANG</div>
-            </div>
+        @if (!empty($slide->gambar_tokoh))
+            <img src="{{ asset("storage/{$slide->gambar_tokoh}") }}" alt="{{ $slide->nama_tokoh }}" class="h-[1100px] object-cover ml-8 rounded-xl absolute bottom-[300px] right-0 fadein">
+        @endif
+
+        <div class="absolute min-h-[125px] rounded-l-full pl-16 p-4 w-[80%] bg-red-500 right-0 bottom-[145px] fadein">
+            <div class="font-bold text-[75px]">{{ $slide->nama_tokoh }}</div>
+            <div class=" text-[50px] -mt-4">{{ $slide->jabatan_tokoh }}</div>
         </div>
-
-        <!-- SLIDES -->
-        <div class="section" id="slides">
-            @foreach ($slides as $index => $slide)
-            <div class="slide {{ $index === 0 ? 'active' : '' }}">
-            <div class="container{{ ($index % 3 === 1) ? '2' : (($index % 3 === 2) ? '3' : '') }}">
-                <div class="content">
-                <div class="header-section">
-                    <img src="{{ asset('logobaru.png') }}" alt="Logo UNNES" class="logo">
-                    <h1 class="title">{{ $slide->heading }}</h1>
-                    <h2 class="subtitle">{{ $slide->subheading }}</h2>
-                </div>
-                <div class="profile-section">
-                    <img src="{{ asset('storage/' . $slide->gambar_tokoh) }}" alt="{{ $slide->nama_tokoh }}" class="profile-image">
-                </div>
-                <div class="name-box">
-                    <h2 class="name">{{ strtoupper($slide->nama_tokoh) }}</h2>
-                    <p class="position">{{ $slide->jabatan_tokoh }}</p>
-                </div>
-                </div>
-            </div>
-            </div>
-            @endforeach
-        </div>
-
-        <script src="{{ asset('js/portrait.js') }}"></script>
-    </body>
-</html>
+    </div>
+</div>

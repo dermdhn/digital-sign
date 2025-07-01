@@ -59,6 +59,7 @@ class PortraitDataController extends BaseController
         'nama_tokoh' => 'Nama Tokoh',
         'jabatan_tokoh' => 'Jabatan Tokoh',
         'gambar_tokoh' => 'Gambar Tokoh',
+        'nama_template' => 'Nama Template',
         'is_aktif' => 'Is Aktif',
 
     ];
@@ -75,6 +76,13 @@ class PortraitDataController extends BaseController
 
         $this->help = (new Help);
         $this->app = (new BApp);
+
+        $templatePath = base_path('app/Modules/digitalSign/Views/digital_sign/template/');
+        $templates = [];
+        foreach (glob($templatePath . '*.blade.php') as $file) {
+            $filename = basename($file, '.blade.php');
+            $templates[$filename] = $filename;
+        }
 
         $this->form = [
             'heading' => [
@@ -110,6 +118,13 @@ class PortraitDataController extends BaseController
                 [
                     ['Form', 'file'],
                     ['gambar_tokoh', NULL, ['class' => 'form-control', 'accept' => 'image/png']]
+                ]
+            ],
+            'nama_template' => [
+                'Nama Template',
+                [
+                    ['Form', 'select'],
+                    ['nama_template', $templates, null, ['class' => 'form-select', 'id' => 'nama_template']]
                 ]
             ],
             'is_aktif' => [
@@ -253,10 +268,7 @@ class PortraitDataController extends BaseController
         } else {
             // Jika tidak ada setting, buat baru
             $portraitSetting = new PortraitSetting();
-            $portraitSetting->id = Str::uuid();
             $portraitSetting->version = Str::random(50);
-            $portraitSetting->created_by = Auth::user()->id_user;
-            $portraitSetting->nama_template = 'default';
             $portraitSetting->save();
         }
 
@@ -322,10 +334,7 @@ class PortraitDataController extends BaseController
         } else {
             // Jika tidak ada setting, buat baru
             $portraitSetting = new PortraitSetting();
-            $portraitSetting->id = Str::uuid();
             $portraitSetting->version = Str::random(50);
-            $portraitSetting->created_by = Auth::user()->id_user;
-            $portraitSetting->nama_template = 'default';
             $portraitSetting->save();
         }
 
@@ -356,10 +365,7 @@ class PortraitDataController extends BaseController
         } else {
             // Jika tidak ada setting, buat baru
             $portraitSetting = new PortraitSetting();
-            $portraitSetting->id = Str::uuid();
             $portraitSetting->version = Str::random(50);
-            $portraitSetting->created_by = Auth::user()->id_user;
-            $portraitSetting->nama_template = 'default';
             $portraitSetting->save();
         }
 

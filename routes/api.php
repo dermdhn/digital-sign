@@ -27,8 +27,8 @@ Route::get('/landscape-data', function () {
     return response()->json([
         'jadwal' => Jadwal::with('ruangan.lantai')->orderBy('waktu_mulai')->get(),
         'kehadiran' => Kehadiran::all(),
-        'teksBerjalan' => TeksBerjalan::orderBy('urutan')->get(),
-        'pengumuman' => TeksBerjalan::orderBy('urutan')->get(),
+        'teksBerjalan' => TeksBerjalan::where('is_aktif', true)->orderBy('urutan')->get(),
+        'pengumuman' => TeksBerjalan::where('is_aktif', true)->orderBy('urutan')->get(),
         'lantaidanruangan' => Lantai::with(['ruangan' => function ($q) {
             $q->where('is_aktif', true)->orderBy('urutan');
         }])->where('is_aktif', true)->orderBy('urutan')->get()

@@ -56,7 +56,6 @@ class RuanganController extends BaseController
         'nama' => 'Nama',
         'urutan' => 'Urutan',
         'is_aktif' => 'Is Aktif',
-
     ];
 
     public function __construct()

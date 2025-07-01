@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('nama_tokoh');
             $table->string('jabatan_tokoh');
             $table->string('gambar_tokoh')->nullable(); // Contoh: 'nama_file.png'
+            $table->string('nama_template')->default('default');
             $table->boolean('is_aktif'); // Contoh: 'nama_file.png'
 
             $table->timestamps();

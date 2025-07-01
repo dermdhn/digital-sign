@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('portrait_setting', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->string('nama_template');
             $table->string('version');
 
             $table->timestamps();

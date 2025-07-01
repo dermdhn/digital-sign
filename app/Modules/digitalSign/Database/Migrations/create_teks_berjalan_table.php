@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('konten');
             $table->string('icon')->default('fa-calendar-check');
+            $table->boolean('is_aktif')->default(true);
             $table->integer('urutan')->default(0);
 
             $table->timestamps();

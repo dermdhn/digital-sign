@@ -54,6 +54,7 @@ class TeksBerjalanController extends BaseController
         'konten' => 'Konten',
         'icon' => 'Icon',
         'urutan' => 'Urutan',
+        'is_aktif' => 'Tampilkan',
 
     ];
 
@@ -122,7 +123,13 @@ class TeksBerjalanController extends BaseController
                     ['urutan', NULL, ['class' => 'form-control ', 'id' => 'urutan', 'placeholder' => 'ex: isikan data di sini']]
                 ]
             ],
-
+            'is_aktif' => [
+                'Tampilkan',
+                [
+                    ['Form', 'select'],
+                    ['is_aktif', ['1' => 'Ya', '0' => 'Tidak'], null, ['class' => 'form-select', 'id' => 'is_aktif']]
+                ]
+            ]
         ];
 
         // Hanya dimasukkan data yang akan digunakan di semua view

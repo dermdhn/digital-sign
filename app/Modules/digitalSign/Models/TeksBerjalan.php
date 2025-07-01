@@ -12,19 +12,18 @@ class TeksBerjalan extends Model
 {
     use HasFactory, SoftDeletes, HasUuids;
 
-	protected $dates = ['created_at', 'updated_at', 'deleted_at'];
-	protected $table = 'teks_berjalan';
-	protected $primaryKey = 'id';
-    protected $fillable = ['konten', 'icon', 'urutan',  'created_by', 'updated_by', 'deleted_by'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $table = 'teks_berjalan';
+    protected $primaryKey = 'id';
+    protected $fillable = ['konten', 'icon', 'urutan', 'is_aktif',  'created_by', 'updated_by', 'deleted_by'];
 
-    public static function validation_data($update_id = "NULL") {
+    public static function validation_data($update_id = "NULL")
+    {
         return [
-	        'konten'		=> 'required|string',
-            'icon'		=> 'required|string',
-            'urutan'		=> 'required|numeric',
-
+            'konten'        => 'required|string',
+            'icon'        => 'required|string',
+            'urutan'        => 'required|numeric',
+            'is_aktif'        => 'required',
         ];
     }
-
-
 }

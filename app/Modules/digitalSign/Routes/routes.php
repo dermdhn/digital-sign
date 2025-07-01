@@ -75,7 +75,7 @@ Route::get('/landscape', function () {
         ->orderBy('waktu_mulai')
         ->get();
     $kehadiran = Kehadiran::all();
-    $teksBerjalan = TeksBerjalan::orderBy('urutan')->get();
+    $teksBerjalan = TeksBerjalan::where('is_aktif', true)->orderBy('urutan')->get();
     $pengumuman = TeksBerjalan::orderBy('urutan')->get();
     $lantaidanruangan = Lantai::with(['ruangan' => function ($q) {
         $q->where('is_aktif', true)->orderBy('urutan');
@@ -96,7 +96,7 @@ Route::get('/portrait', function () {
     // Menentukan nama file Blade berdasarkan template
     $templateName = $template ? $template->nama_template : 'default'; // default jika tidak ada template
 
-    return view("digitalSign::digital_sign.template.$templateName", compact('slides', 'version'));
+    return view("digitalSign::digital_sign.portrait", compact('slides', 'version'));
 })->name('portrait');
 
 /**
