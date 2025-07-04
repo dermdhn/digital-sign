@@ -292,122 +292,119 @@ function reinitScheduleSlider() {
     }
 }
 
-updateClock();
-fetchDataAndUpdate();
-setInterval(fetchDataAndUpdate, 10000);
-
 function updateLantaiDanRuangan(lantaidanruangan) {
+    console.log("[DEBUG] ⏳ Memulai updateLantaiDanRuangan");
+    console.log("[DEBUG] 📦 Data diterima:", lantaidanruangan);
+
     const container = document.querySelector(".floor-slider-container");
     const navContainer = document.querySelector(".floor-nav-container");
 
-    if (!container || !navContainer) return;
+    if (!container || !navContainer) {
+        console.warn("[DEBUG] ❌ Container tidak ditemukan");
+        return;
+    }
 
-    const noDataHTML = `
-        <div class="w-full py-16 px-6 text-center flex-col justify-center items-center">
-            <div class="text-4xl text-gray-500 font-bold mb-4">
-                <i class="fas fa-building-slash mr-2"></i>Tidak ada data lantai
-            </div>
-            <p class="text-lg text-gray-600">Silakan tambahkan data lantai pada sistem terlebih dahulu.</p>
-        </div>
-    `;
-
-    // Handle kondisi tidak ada data
     if (!Array.isArray(lantaidanruangan) || lantaidanruangan.length === 0) {
-        container.innerHTML = `<div class="no-data-message w-full">${noDataHTML}</div>`;
+        console.warn(
+            "[DEBUG] ⚠️ Tidak ada data lantai/ruangan. Menampilkan fallback"
+        );
+        container.innerHTML = `<div class="no-data-message w-full py-16 px-6 text-center">
+            <div class="text-4xl text-gray-500 font-bold mb-4"><i class="fas fa-building-slash mr-2"></i>Tidak ada data lantai</div>
+            <p class="text-lg text-gray-600">Silakan tambahkan data lantai pada sistem terlebih dahulu.</p>
+        </div>`;
         navContainer.innerHTML = "";
         isFirstFloorInit = true;
         return;
     }
 
-    // Hapus fallback jika sebelumnya muncul
-    const existingFallback = container.querySelector(".no-data-message");
-    if (existingFallback) {
-        container.innerHTML = "";
-        navContainer.innerHTML = "";
-    }
-
     const existingSlides = container.querySelectorAll(".floor-slide").length;
+    console.log("[DEBUG] 🧩 Slide saat ini di DOM:", existingSlides);
+    console.log("[DEBUG] 🧩 Slide dari data API:", lantaidanruangan.length);
 
-    // Render ulang jika jumlah slide berubah atau inisialisasi pertama
     if (isFirstFloorInit || existingSlides !== lantaidanruangan.length) {
+        console.log(
+            "[DEBUG] 🔄 Melakukan render ulang karena init pertama atau jumlah berubah"
+        );
         container.innerHTML = "";
         navContainer.innerHTML = "";
 
         lantaidanruangan.forEach((lantai, index) => {
-            let roomsHTML = "";
-
-            if (lantai.ruangan && lantai.ruangan.length > 0) {
-                roomsHTML = `
-        <ul class="list-decimal pl-5 space-y-2 text-left font-semibold text-lg">
-            ${lantai.ruangan
-                .map((r) => `<li>${r.nama.toUpperCase()}</li>`)
-                .join("")}
-        </ul>`;
-            } else {
-                roomsHTML = `<p class="text-center text-gray-500 font-semibold">Tidak ada ruangan aktif.</p>`;
-            }
+            console.log(
+                `[DEBUG] 🏢 Rendering lantai ${index + 1}: ${lantai.nama}`
+            );
+            const roomsHTML = lantai.ruangan?.length
+                ? `<ul class="list-decimal pl-5 space-y-2 text-left font-semibold text-lg">
+                    ${lantai.ruangan
+                        .map((r) => `<li>${r.nama.toUpperCase()}</li>`)
+                        .join("")}
+                </ul>`
+                : `<p class="text-center text-gray-500 font-semibold">Tidak ada ruangan aktif.</p>`;
 
             const slideHTML = `
-    <div class="floor-slide ${index === 0 ? "active" : ""} relative pb-24">
-        <div class="floor-title-container">
-            <div class="text-5xl font-bold text-red-600">
-                <i class="fas fa-building-user mr-2"></i>${lantai.nama}
-            </div>
-            <div class="text-lg font-semibold text-gray-600 mb-6">(${
-                lantai.label
-            })</div>
-        </div>
-        <div class="floor-content">
-            <div class="info-card rounded-xl p-6 shadow-lg transition hover:scale-105 bg-white/90">
-                <div class="text-gray-700 font-poppins">
-                    <h3 class="font-bold text-4xl mb-4 text-gray-800 text-center">Informasi Ruangan</h3>
-                    <div class="w-full h-1 bg-gray-200 mb-4 rounded-full"></div>
-                    ${roomsHTML}
-                </div>
-            </div>
-        </div>
-        ${
-            lantaidanruangan.length > 1
-                ? `<div class="floor-nav-container absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2 justify-center">
-                    ${lantaidanruangan
-                        .map(
-                            (_, btnIndex) =>
-                                `<div class="floor-nav-btn ${
-                                    btnIndex === index ? "active" : ""
-                                }" data-floor="${btnIndex}"></div>`
-                        )
-                        .join("")}
-                </div>`
-                : ""
-        }
-    </div>`;
+                <div class="floor-slide ${
+                    index === 0 ? "active" : ""
+                } relative pb-20">
+                    <div class="floor-title-container">
+                        <div class="text-5xl font-bold text-red-600"><i class="fas fa-building-user mr-2"></i>${
+                            lantai.nama
+                        }</div>
+                        <div class="text-lg font-semibold text-gray-600 mb-6">(${
+                            lantai.label
+                        })</div>
+                    </div>
+                    <div class="floor-content">
+                        <div class="info-card rounded-xl p-6 shadow-lg transition hover:scale-105 bg-white/90">
+                            <div class="text-gray-700 font-poppins">
+                                <h3 class="font-bold text-4xl mb-4 text-gray-800 text-center">Informasi Ruangan</h3>
+                                <div class="w-full h-1 bg-gray-200 mb-4 rounded-full"></div>
+                                ${roomsHTML}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
 
             container.insertAdjacentHTML("beforeend", slideHTML);
+
+            if (lantaidanruangan.length > 1) {
+                navContainer.insertAdjacentHTML(
+                    "beforeend",
+                    `
+                    <div class="floor-nav-btn ${
+                        index === 0 ? "active" : ""
+                    }" data-floor="${index}"></div>
+                `
+                );
+            }
         });
+
+        console.log("[DEBUG] 💣 Menginisialisasi ulang slider...");
         requestAnimationFrame(() => {
-            if (floorSliderInstance) floorSliderInstance.destroy();
+            if (floorSliderInstance) {
+                console.log("[DEBUG] 💥 Destroy slider sebelumnya");
+                floorSliderInstance.destroy();
+            }
             floorSliderInstance = new FloorSlider();
+            console.log("[DEBUG] ✅ Slider aktif");
         });
 
         isFirstFloorInit = false;
     } else {
-        // Update isi ruangan saja jika jumlah slide tidak berubah
+        console.log(
+            "[DEBUG] 📝 Jumlah tidak berubah, hanya update isi ruangan"
+        );
+
         const slideEls = container.querySelectorAll(".floor-slide");
         lantaidanruangan.forEach((lantai, index) => {
             const slide = slideEls[index];
             if (!slide) return;
 
-            let roomsHTML = "";
-            if (lantai.ruangan && lantai.ruangan.length > 0) {
-                roomsHTML = `
-                    <ul class="list-decimal pl-5 space-y-2 text-left font-semibold text-lg">
-                        ${lantai.ruangan
-                            .map((r) => `<li>${r.nama.toUpperCase()}</li>`)
-                            .join("")}
-                    </ul>`;
-            } else {
-                roomsHTML = `<p class="text-center text-gray-500 font-semibold">Tidak ada ruangan aktif.</p>`;
-            }
+            const roomsHTML = lantai.ruangan?.length
+                ? `<ul class="list-decimal pl-5 space-y-2 text-left font-semibold text-lg">
+                    ${lantai.ruangan
+                        .map((r) => `<li>${r.nama.toUpperCase()}</li>`)
+                        .join("")}
+                </ul>`
+                : `<p class="text-center text-gray-500 font-semibold">Tidak ada ruangan aktif.</p>`;
 
             const infoCard = slide.querySelector(".info-card .text-gray-700");
             if (infoCard) {
@@ -420,97 +417,60 @@ function updateLantaiDanRuangan(lantaidanruangan) {
         });
     }
 
-    // Render slide baru
-    container.innerHTML = "";
-    navContainer.innerHTML = "";
-
-    lantaidanruangan.forEach((lantai, index) => {
-        let roomsHTML = "";
-
-        if (lantai.ruangan && lantai.ruangan.length > 0) {
-            roomsHTML = `
-            <ul class="list-decimal pl-5 space-y-2 text-left font-semibold text-lg">
-                ${lantai.ruangan
-                    .map((r) => `<li>${r.nama.toUpperCase()}</li>`)
-                    .join("")}
-            </ul>`;
-        } else {
-            roomsHTML = `<p class="text-center text-gray-500 font-semibold">Tidak ada ruangan aktif.</p>`;
-        }
-
-        const slideHTML = `
-        <div class="floor-slide ${index === 0 ? "active" : ""}">
-            <div class="floor-title-container">
-                <div class="text-5xl font-bold text-red-600">
-                    <i class="fas fa-building-user mr-2"></i>${lantai.nama}
-                </div>
-                <div class="text-lg font-semibold text-gray-600 mb-6">(${
-                    lantai.label
-                })</div>
-            </div>
-            <div class="floor-content">
-                <div class="info-card rounded-xl p-6 shadow-lg transition hover:scale-105 bg-white/90">
-                    <div class="text-gray-700 font-poppins">
-                        <h3 class="font-bold text-4xl mb-4 text-gray-800 text-center">Informasi Ruangan</h3>
-                        <div class="w-full h-1 bg-gray-200 mb-4 rounded-full"></div>
-                        ${roomsHTML}
-                    </div>
-                </div>
-            </div>
-        </div>`;
-
-        container.insertAdjacentHTML("beforeend", slideHTML);
-    });
-
-    // Baru setelah semua slide dibuat, tambahkan dots jika perlu
-    if (lantaidanruangan.length > 1) {
-        lantaidanruangan.forEach((lantai, index) => {
-            navContainer.insertAdjacentHTML(
-                "beforeend",
-                `<div class="floor-nav-btn ${
-                    index === 0 ? "active" : ""
-                }" data-floor="${index}"></div>`
-            );
-        });
-    }
+    console.log("[DEBUG] 🟢 updateLantaiDanRuangan selesai");
 }
 
 function updateKehadiran(kehadiran) {
     const container = document.querySelector(".presence-section .grid");
     if (!container) return;
 
-    kehadiran.forEach((item, index) => {
-        let box = container.children[index];
+    const cols = 5;
+    const count = Array.isArray(kehadiran) ? kehadiran.length : 0;
+    let start = 0;
+    if (count < cols) {
+        start = Math.floor((cols - count) / 2);
+    }
 
-        // Jika belum ada elemen, tambahkan baru
-        if (!box) {
-            box = document.createElement("div");
+    // Build the grid with empty and filled boxes
+    for (let i = 0; i < cols; i++) {
+        let box = container.children[i];
+        if (i < start || i >= start + count) {
+            // Empty cell
+            if (!box) {
+                box = document.createElement("div");
+                container.appendChild(box);
+            } else {
+                box.className = "";
+                box.innerHTML = "";
+            }
+        } else {
+            // Filled cell
+            const item = kehadiran[i - start];
+            const isHadir = String(item.status).toLowerCase() !== "tidak hadir";
+            const icon = isHadir ? "check" : "times";
+            const statusClass = isHadir ? "hadir" : "tidak-hadir";
+            const statusLabel = item.status.charAt(0).toUpperCase() + item.status.slice(1);
+
+            if (!box) {
+                box = document.createElement("div");
+                container.appendChild(box);
+            }
             box.className =
-                "glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box";
-            container.appendChild(box);
+                "glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box " +
+                statusClass;
+            box.innerHTML = `
+                <i class="fas fa-user-tie presence-icon"></i>
+                <div class="presence-title">${item.nama_jabatan}</div>
+                <div class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir ${statusClass} font-semibold">
+                    <i class="fas fa-${icon}-circle presence-status-icon"></i>
+                    ${statusLabel}
+                </div>
+            `;
         }
+    }
 
-        const isHadir = item.status.toLowerCase() !== "tidak hadir";
-        const icon = isHadir ? "check" : "times";
-        const statusClass = isHadir ? "hadir" : "tidak-hadir";
-        const statusLabel =
-            item.status.charAt(0).toUpperCase() + item.status.slice(1);
-
-        box.classList.remove("hadir", "tidak-hadir");
-        box.classList.add(statusClass);
-
-        box.innerHTML = `
-            <i class="fas fa-user-tie presence-icon"></i>
-            <div class="presence-title">${item.nama_jabatan}</div>
-            <div class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir ${statusClass} font-semibold">
-                <i class="fas ${icon}-circle presence-status-icon"></i>
-                ${statusLabel}
-            </div>
-        `;
-    });
-
-    // Hapus elemen lebih jika data berkurang
-    while (container.children.length > kehadiran.length) {
+    // Remove extra boxes if any
+    while (container.children.length > cols) {
         container.removeChild(container.lastChild);
     }
 }

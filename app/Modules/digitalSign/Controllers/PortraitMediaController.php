@@ -59,7 +59,7 @@ class PortraitMediaController extends BaseController
         'media_type' => 'Media Type',
         'durasi' => 'Durasi',
         'urutan' => 'Urutan',
-
+        'is_aktif' => 'Is Aktif',
     ];
 
     public function __construct()
@@ -74,6 +74,20 @@ class PortraitMediaController extends BaseController
 
         $this->help = (new Help);
         $this->app = (new BApp);
+
+        $this->use_filter = true;
+        $this->form_filter = [
+            'nama' => [
+                0 => 'like',
+                1 => [
+                    'Nama',
+                    [
+                        ['Form', 'text'],
+                        ['nama', NULL, ['class' => 'form-control', 'id' => 'nama', 'placeholder' => 'Cari nama...']]
+                    ]
+                ]
+            ]
+        ];
 
         $this->form = [
             'nama' => [
@@ -113,7 +127,13 @@ class PortraitMediaController extends BaseController
                     ['urutan', NULL, ['class' => 'form-control ', 'id' => 'urutan', 'placeholder' => 'ex: isikan data di sini']]
                 ]
             ],
-
+            'is_aktif' => [
+                'Tampilkan?',
+                [
+                    ['Form', 'select'],
+                    ['is_aktif', ['1' => 'Ya', '0' => 'Tidak'], null, ['class' => 'form-select', 'id' => 'is_aktif']]
+                ]
+            ]
         ];
 
         // Hanya dimasukkan data yang akan digunakan di semua view

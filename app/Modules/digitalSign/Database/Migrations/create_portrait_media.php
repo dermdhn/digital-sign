@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('media');
             $table->string('media_type');
             $table->integer('durasi');
+            $table->boolean('is_aktif')->default(true);
             $table->integer('urutan')->default(1);
 
             $table->timestamps();

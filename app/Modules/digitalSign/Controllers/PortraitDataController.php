@@ -78,6 +78,20 @@ class PortraitDataController extends BaseController
         $this->help = (new Help);
         $this->app = (new BApp);
 
+        $this->use_filter = true;
+        $this->form_filter = [
+            'nama' => [
+                0 => 'like',
+                1 => [
+                    'Nama',
+                    [
+                        ['Form', 'text'],
+                        ['nama', NULL, ['class' => 'form-control', 'id' => 'nama', 'placeholder' => 'Cari nama...']]
+                    ]
+                ]
+            ]
+        ];
+
         $templatePath = base_path('app/Modules/digitalSign/Views/digital_sign/template/');
         $templates = [];
         foreach (glob($templatePath . '*.blade.php') as $file) {

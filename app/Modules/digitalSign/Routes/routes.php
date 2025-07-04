@@ -87,7 +87,7 @@ Route::get('/landscape', function () {
 
 Route::get('/portrait', function () {
     $slides = PortraitData::where('is_aktif', true)->orderBy('urutan')->get();
-    $media = PortraitMedia::orderBy('urutan')->get(); // <- ambil semua media diurutkan
+    $media = PortraitMedia::where('is_aktif', true)->orderBy('urutan')->get(); //
 
     $template = PortraitSetting::first();
     $version = $template ? $template->version : 'default';

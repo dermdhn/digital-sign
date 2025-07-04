@@ -15,7 +15,7 @@ class PortraitMedia extends Model
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     protected $table = 'portrait_media';
     protected $primaryKey = 'id';
-    protected $fillable = ['nama', 'media', 'media_type', 'durasi', 'urutan',  'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['nama', 'media', 'media_type', 'durasi', 'urutan', 'is_aktif',  'created_by', 'updated_by', 'deleted_by'];
 
     public static function validation_data($update_id = "NULL")
     {
@@ -24,6 +24,7 @@ class PortraitMedia extends Model
             'media' => 'required|string',
             'media_type'        => 'required|string',
             'durasi' => 'nullable|numeric|min:1',
+            'is_aktif' => 'required',
             'urutan'        => 'required|numeric',
         ];
     }

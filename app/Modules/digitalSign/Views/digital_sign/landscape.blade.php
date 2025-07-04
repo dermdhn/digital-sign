@@ -64,46 +64,15 @@
         <!-- Main Content -->
         <main class="grid grid-cols-2 flex-grow bg-gray-50">
             <!-- Floor Information -->
-            <section class="bg-white/50 text-gray-800 flex flex-col items-center {{ count($lantaidanruangan) > 1 ? 'justify-start pt-8' : 'justify-center' }} text-lg backdrop-blur-sm h-full min-h-[300px] p-6">
+            <section class="bg-white/50 text-gray-800 flex flex-col justify-start  text-lg backdrop-blur-sm h-full min-h-[300px] p-6 pt-8 {{ count($lantaidanruangan) <= 1 ? '!justify-normal' : '' }}">
                 <div class="font-poppins w-full">
-                    <div class="floor-slider relative"> <!-- Tambahkan relative untuk positioning -->
+                    <div class="floor-slider relative">
 
-                        <!-- Slides -->
-                        <div class="floor-slides floor-slider-container">
-                            @if(count($lantaidanruangan) > 0)
-                                @foreach($lantaidanruangan as $index => $lantai)
-                                    <div class="floor-slide {{ $index == 0 ? 'active' : '' }} pb-20 md:pb-16 sm:pb-24">
-                                        <div class="floor-title-container">
-                                            <div class="text-5xl font-bold text-red-600">
-                                                <i class="fas fa-building-user mr-2"></i>{{ $lantai->nama }}
-                                            </div>
-                                            <div class="text-lg font-semibold text-gray-600 mb-6">({{ $lantai->label }})</div>
-                                        </div>
-                                        <div class="floor-content">
-                                            @include('digitalSign::digital_sign.partials.floor-content-dinamis', ['ruangan' => $lantai->ruangan])
-                                        </div>
-                                    </div>
-                                @endforeach
-                            @else
-                                <div class="flex items-center justify-center h-full w-full text-center">
-                                    <div>
-                                        <div class="text-4xl text-gray-500 font-bold mb-2">
-                                            <i class="fas fa-building-slash mr-2"></i>Tidak ada data lantai
-                                        </div>
-                                        <p class="text-lg text-gray-600">Silakan tambahkan data lantai pada sistem terlebih dahulu.</p>
-                                    </div>
-                                </div>
-                            @endif
-                        </div>
+                        <!-- SLIDE CONTAINER -->
+                        <div class="floor-slides floor-slider-container"></div>
 
-                        <!-- Floor Navigation (dot) -->
-                        @if(count($lantaidanruangan) > 1)
-                                <div class="floor-nav-container mt-6 flex justify-center items-center gap-2">
-                                @foreach($lantaidanruangan as $index => $lt)
-                                    <div class="floor-nav-btn {{ $index == 0 ? 'active' : '' }}" data-floor="{{ $index }}"></div>
-                                @endforeach
-                            </div>
-                        @endif
+                        <!-- NAV CONTAINER -->
+                        <div class="floor-nav-container mt-6 flex justify-center items-center gap-2"></div>
 
                     </div>
                 </div>
@@ -125,20 +94,33 @@
 
         <!-- Presence Section -->
         <section class="presence-section py-2 flex-shrink-0">
+            @php
+                $count = count($kehadiran);
+                $cols = 5;
+                $start = 0;
+                if ($count < $cols) {
+                    $start = intval(($cols - $count) / 2);
+                }
+            @endphp
             <div class="grid grid-cols-5 gap-6 px-6">
-                @foreach($kehadiran as $item)
-                    <div
-                        class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ strtolower($item->status) === 'tidak hadir' ? 'tidak-hadir' : 'hadir' }}">
-                        <i class="fas fa-user-tie presence-icon"></i>
-                        <div class="presence-title">{{ $item->nama_jabatan }}</div>
+                @for($i = 0; $i < $cols; $i++)
+                    @if($i < $start || $i >= $start + $count)
+                        <div></div>
+                    @else
+                        @php $item = $kehadiran[$i - $start]; @endphp
                         <div
-                            class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ strtolower($item->status) === 'tidak hadir' ? 'tidak-hadir' : 'hadir' }} font-semibold">
-                            <i
-                                class="fas fa-{{ strtolower($item->status) === 'tidak hadir' ? 'times' : 'check' }}-circle presence-status-icon"></i>
-                            {{ ucfirst($item->status) }}
+                            class="glass-effect rounded-xl flex flex-col items-center justify-center relative overflow-hidden kotak-hadir presence-box {{ strtolower($item->status) === 'tidak hadir' ? 'tidak-hadir' : 'hadir' }}">
+                            <i class="fas fa-user-tie presence-icon"></i>
+                            <div class="presence-title">{{ $item->nama_jabatan }}</div>
+                            <div
+                                class="text-center py-2 px-8 rounded-t-lg absolute bottom-0 left-1/2 status-hadir {{ strtolower($item->status) === 'tidak hadir' ? 'tidak-hadir' : 'hadir' }} font-semibold">
+                                <i
+                                    class="fas fa-{{ strtolower($item->status) === 'tidak hadir' ? 'times' : 'check' }}-circle presence-status-icon"></i>
+                                {{ ucfirst($item->status) }}
+                            </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endif
+                @endfor
             </div>
         </section>
 
