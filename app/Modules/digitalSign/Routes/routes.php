@@ -1,6 +1,5 @@
 <?php
 
-use App\Modules\digitalSign\Controllers\PortraitSettingController;
 use App\Modules\digitalSign\Models\TeksBerjalan;
 use Illuminate\Support\Facades\Route;
 use App\Modules\digitalSign\Controllers\TestController;
@@ -121,21 +120,6 @@ Route::controller(App\Modules\digitalSign\Controllers\PortraitDataController::cl
     Route::get('/delete/{id}', 'delete')->name('delete');
 });
 
-/**
- * Routes of digitalSign/PortraitSetting module
- */
-Route::controller(App\Modules\digitalSign\Controllers\PortraitSettingController::class)->middleware(['web', 'auth'])->name('portrait_setting.')->prefix('portrait-setting')->group(function () {
-    Route::get('/', 'index')->name('read');
-    Route::post('/filter', 'filter')->name('filter.read');
-    Route::get('/create', 'create')->name('create');
-    Route::post('/store', 'store')->name('store');
-    Route::get('/edit/{id}', 'edit')->name('edit');
-    Route::post('/update', 'update')->name('update');
-    Route::get('/delete/{id}', 'delete')->name('delete');
-});
-
-Route::get('portrait-setting/preview/{template}', [PortraitSettingController::class, 'preview'])
-    ->name('portrait_setting.preview');
 
 /**
  * Routes of digitalSign/PortraitMedia module
