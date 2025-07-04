@@ -45,7 +45,9 @@ class FloorSlider {
         clearInterval(this.interval); // hentikan interval
         this.navBtns.forEach((btn) => {
             const clone = btn.cloneNode(true);
-            btn.parentNode.replaceChild(clone, btn); // hapus event listener lama
+            if (btn.parentNode) {
+                btn.parentNode.replaceChild(clone, btn); // hapus event listener lama
+            }
         });
     }
 
@@ -300,65 +302,96 @@ function updateLantaiDanRuangan(lantaidanruangan) {
 
     if (!container || !navContainer) return;
 
-    // Kosongkan hanya saat inisialisasi pertama
-    if (isFirstFloorInit) {
+    const noDataHTML = `
+        <div class="w-full py-16 px-6 text-center flex-col justify-center items-center">
+            <div class="text-4xl text-gray-500 font-bold mb-4">
+                <i class="fas fa-building-slash mr-2"></i>Tidak ada data lantai
+            </div>
+            <p class="text-lg text-gray-600">Silakan tambahkan data lantai pada sistem terlebih dahulu.</p>
+        </div>
+    `;
+
+    // Handle kondisi tidak ada data
+    if (!Array.isArray(lantaidanruangan) || lantaidanruangan.length === 0) {
+        container.innerHTML = `<div class="no-data-message w-full">${noDataHTML}</div>`;
+        navContainer.innerHTML = "";
+        isFirstFloorInit = true;
+        return;
+    }
+
+    // Hapus fallback jika sebelumnya muncul
+    const existingFallback = container.querySelector(".no-data-message");
+    if (existingFallback) {
+        container.innerHTML = "";
+        navContainer.innerHTML = "";
+    }
+
+    const existingSlides = container.querySelectorAll(".floor-slide").length;
+
+    // Render ulang jika jumlah slide berubah atau inisialisasi pertama
+    if (isFirstFloorInit || existingSlides !== lantaidanruangan.length) {
         container.innerHTML = "";
         navContainer.innerHTML = "";
 
         lantaidanruangan.forEach((lantai, index) => {
             let roomsHTML = "";
+
             if (lantai.ruangan && lantai.ruangan.length > 0) {
                 roomsHTML = `
-                    <ul class="list-decimal pl-5 space-y-2 text-left font-semibold text-lg">
-                        ${lantai.ruangan
-                            .map((r) => `<li>${r.nama.toUpperCase()}</li>`)
-                            .join("")}
-                    </ul>`;
+        <ul class="list-decimal pl-5 space-y-2 text-left font-semibold text-lg">
+            ${lantai.ruangan
+                .map((r) => `<li>${r.nama.toUpperCase()}</li>`)
+                .join("")}
+        </ul>`;
             } else {
                 roomsHTML = `<p class="text-center text-gray-500 font-semibold">Tidak ada ruangan aktif.</p>`;
             }
 
             const slideHTML = `
-                <div class="floor-slide ${index === 0 ? "active" : ""}">
-                    <div class="floor-title-container">
-                        <div class="text-5xl font-bold text-red-600">
-                            <i class="fas fa-building-user mr-2"></i>${
-                                lantai.nama
-                            }
-                        </div>
-                        <div class="text-lg font-semibold text-gray-600 mb-6">(${
-                            lantai.label
-                        })</div>
-                    </div>
-                    <div class="floor-content">
-                        <div class="info-card rounded-xl p-6 shadow-lg transition hover:scale-105 bg-white/90">
-                            <div class="text-gray-700 font-poppins">
-                                <h3 class="font-bold text-4xl mb-4 text-gray-800 text-center">Informasi Ruangan</h3>
-                                <div class="w-full h-1 bg-gray-200 mb-4 rounded-full"></div>
-                                ${roomsHTML}
-                            </div>
-                        </div>
-                    </div>
+    <div class="floor-slide ${index === 0 ? "active" : ""} relative pb-24">
+        <div class="floor-title-container">
+            <div class="text-5xl font-bold text-red-600">
+                <i class="fas fa-building-user mr-2"></i>${lantai.nama}
+            </div>
+            <div class="text-lg font-semibold text-gray-600 mb-6">(${
+                lantai.label
+            })</div>
+        </div>
+        <div class="floor-content">
+            <div class="info-card rounded-xl p-6 shadow-lg transition hover:scale-105 bg-white/90">
+                <div class="text-gray-700 font-poppins">
+                    <h3 class="font-bold text-4xl mb-4 text-gray-800 text-center">Informasi Ruangan</h3>
+                    <div class="w-full h-1 bg-gray-200 mb-4 rounded-full"></div>
+                    ${roomsHTML}
                 </div>
-            `;
+            </div>
+        </div>
+        ${
+            lantaidanruangan.length > 1
+                ? `<div class="floor-nav-container absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2 justify-center">
+                    ${lantaidanruangan
+                        .map(
+                            (_, btnIndex) =>
+                                `<div class="floor-nav-btn ${
+                                    btnIndex === index ? "active" : ""
+                                }" data-floor="${btnIndex}"></div>`
+                        )
+                        .join("")}
+                </div>`
+                : ""
+        }
+    </div>`;
 
             container.insertAdjacentHTML("beforeend", slideHTML);
-
-            navContainer.insertAdjacentHTML(
-                "beforeend",
-                `<div class="floor-nav-btn ${
-                    index === 0 ? "active" : ""
-                }" data-floor="${index}"></div>`
-            );
         });
-
         requestAnimationFrame(() => {
+            if (floorSliderInstance) floorSliderInstance.destroy();
             floorSliderInstance = new FloorSlider();
         });
 
-        isFirstFloorInit = false; // agar tidak reset terus
+        isFirstFloorInit = false;
     } else {
-        // Hanya update isi ruangan jika sudah ada
+        // Update isi ruangan saja jika jumlah slide tidak berubah
         const slideEls = container.querySelectorAll(".floor-slide");
         lantaidanruangan.forEach((lantai, index) => {
             const slide = slideEls[index];
@@ -384,6 +417,60 @@ function updateLantaiDanRuangan(lantaidanruangan) {
                     ${roomsHTML}
                 `;
             }
+        });
+    }
+
+    // Render slide baru
+    container.innerHTML = "";
+    navContainer.innerHTML = "";
+
+    lantaidanruangan.forEach((lantai, index) => {
+        let roomsHTML = "";
+
+        if (lantai.ruangan && lantai.ruangan.length > 0) {
+            roomsHTML = `
+            <ul class="list-decimal pl-5 space-y-2 text-left font-semibold text-lg">
+                ${lantai.ruangan
+                    .map((r) => `<li>${r.nama.toUpperCase()}</li>`)
+                    .join("")}
+            </ul>`;
+        } else {
+            roomsHTML = `<p class="text-center text-gray-500 font-semibold">Tidak ada ruangan aktif.</p>`;
+        }
+
+        const slideHTML = `
+        <div class="floor-slide ${index === 0 ? "active" : ""}">
+            <div class="floor-title-container">
+                <div class="text-5xl font-bold text-red-600">
+                    <i class="fas fa-building-user mr-2"></i>${lantai.nama}
+                </div>
+                <div class="text-lg font-semibold text-gray-600 mb-6">(${
+                    lantai.label
+                })</div>
+            </div>
+            <div class="floor-content">
+                <div class="info-card rounded-xl p-6 shadow-lg transition hover:scale-105 bg-white/90">
+                    <div class="text-gray-700 font-poppins">
+                        <h3 class="font-bold text-4xl mb-4 text-gray-800 text-center">Informasi Ruangan</h3>
+                        <div class="w-full h-1 bg-gray-200 mb-4 rounded-full"></div>
+                        ${roomsHTML}
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+        container.insertAdjacentHTML("beforeend", slideHTML);
+    });
+
+    // Baru setelah semua slide dibuat, tambahkan dots jika perlu
+    if (lantaidanruangan.length > 1) {
+        lantaidanruangan.forEach((lantai, index) => {
+            navContainer.insertAdjacentHTML(
+                "beforeend",
+                `<div class="floor-nav-btn ${
+                    index === 0 ? "active" : ""
+                }" data-floor="${index}"></div>`
+            );
         });
     }
 }

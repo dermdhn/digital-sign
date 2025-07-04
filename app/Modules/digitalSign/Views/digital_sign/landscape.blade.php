@@ -64,48 +64,63 @@
         <!-- Main Content -->
         <main class="grid grid-cols-2 flex-grow bg-gray-50">
             <!-- Floor Information -->
-            <section
-                class="bg-white/50 text-gray-800 flex flex-col items-center justify-start pt-4 text-lg backdrop-blur-sm">
+            <section class="bg-white/50 text-gray-800 flex flex-col items-center {{ count($lantaidanruangan) > 1 ? 'justify-start pt-8' : 'justify-center' }} text-lg backdrop-blur-sm h-full min-h-[300px] p-6">
                 <div class="font-poppins w-full">
-                    <div class="floor-slider">
+                    <div class="floor-slider relative"> <!-- Tambahkan relative untuk positioning -->
+
+                        <!-- Slides -->
                         <div class="floor-slides floor-slider-container">
-                            @foreach($lantaidanruangan as $index => $lantai)
-                                <div class="floor-slide {{ $index == 0 ? 'active' : '' }}">
-                                    <div class="floor-title-container">
-                                        <div class="text-5xl font-bold text-red-600">
-                                            <i class="fas fa-building-user mr-2"></i>{{ $lantai->nama }}
+                            @if(count($lantaidanruangan) > 0)
+                                @foreach($lantaidanruangan as $index => $lantai)
+                                    <div class="floor-slide {{ $index == 0 ? 'active' : '' }} pb-20 md:pb-16 sm:pb-24">
+                                        <div class="floor-title-container">
+                                            <div class="text-5xl font-bold text-red-600">
+                                                <i class="fas fa-building-user mr-2"></i>{{ $lantai->nama }}
+                                            </div>
+                                            <div class="text-lg font-semibold text-gray-600 mb-6">({{ $lantai->label }})</div>
                                         </div>
-                                        <div class="text-lg font-semibold text-gray-600 mb-6">({{ $lantai->label }})</div>
+                                        <div class="floor-content">
+                                            @include('digitalSign::digital_sign.partials.floor-content-dinamis', ['ruangan' => $lantai->ruangan])
+                                        </div>
                                     </div>
-                                    <div class="floor-content">
-                                        @include('digitalSign::digital_sign.partials.floor-content-dinamis', ['ruangan' => $lantai->ruangan])
+                                @endforeach
+                            @else
+                                <div class="flex items-center justify-center h-full w-full text-center">
+                                    <div>
+                                        <div class="text-4xl text-gray-500 font-bold mb-2">
+                                            <i class="fas fa-building-slash mr-2"></i>Tidak ada data lantai
+                                        </div>
+                                        <p class="text-lg text-gray-600">Silakan tambahkan data lantai pada sistem terlebih dahulu.</p>
                                     </div>
                                 </div>
-                            @endforeach
+                            @endif
                         </div>
 
-                        <!-- Floor Navigation -->
-                        <div class="floor-nav floor-nav-container">
-                            @foreach($lantaidanruangan as $index => $lt)
-                                <div class="floor-nav-btn {{ $index == 0 ? 'active' : '' }}" data-floor="{{ $index }}"></div>
-                            @endforeach
-                        </div>
+                        <!-- Floor Navigation (dot) -->
+                        @if(count($lantaidanruangan) > 1)
+                                <div class="floor-nav-container mt-6 flex justify-center items-center gap-2">
+                                @foreach($lantaidanruangan as $index => $lt)
+                                    <div class="floor-nav-btn {{ $index == 0 ? 'active' : '' }}" data-floor="{{ $index }}"></div>
+                                @endforeach
+                            </div>
+                        @endif
+
                     </div>
-            </div>
-    </section>
-
-        <!-- Schedule Section -->
-        <section class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
-            <div class="font-poppins">
-                <h2 class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
-                    <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
-                </h2>
-            </div>
-
-                <div      class="mt-6 w-4/5">
-                    @include('digitalSign::digital_sign.partials.schedule-list')
                 </div>
-        </section>
+            </section>
+
+            <!-- Schedule Section -->
+            <section class="bg-gray-100/50 text-gray-800 flex flex-col items-center justify-start pt-8 text-lg backdrop-blur-sm">
+                <div class="font-poppins">
+                    <h2 class="text-5xl font-bold mb-6 floor-title text-gray-800 hover:text-gray-900 transition-colors duration-300">
+                        <i class="fas fa-calendar-alt mr-2"></i>Jadwal & Agenda
+                    </h2>
+                </div>
+
+                    <div      class="mt-6 w-4/5">
+                        @include('digitalSign::digital_sign.partials.schedule-list')
+                    </div>
+            </section>
         </main>
 
         <!-- Presence Section -->

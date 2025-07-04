@@ -8,6 +8,7 @@ use App\Modules\digitalSign\Models\Jadwal;
 use App\Modules\digitalSign\Models\Kehadiran;
 use App\Modules\digitalSign\Models\Lantai;
 use App\Modules\digitalSign\Models\PortraitData;
+use App\Modules\digitalSign\Models\PortraitMedia;
 use App\Modules\digitalSign\Models\PortraitSetting;
 
 /**
@@ -85,18 +86,13 @@ Route::get('/landscape', function () {
 })->name('landscape');
 
 Route::get('/portrait', function () {
-    // Mengambil data slide aktif
     $slides = PortraitData::where('is_aktif', true)->orderBy('urutan')->get();
+    $media = PortraitMedia::orderBy('urutan')->get(); // <- ambil semua media diurutkan
 
-    // Mengambil template yang aktif
-    $template = PortraitSetting::first(); // Ambil template pertama (atau Anda bisa mengubah logika ini)
+    $template = PortraitSetting::first();
+    $version = $template ? $template->version : 'default';
 
-    $version = $template ? $template->version : 'default'; // default jika tidak ada template
-
-    // Menentukan nama file Blade berdasarkan template
-    $templateName = $template ? $template->nama_template : 'default'; // default jika tidak ada template
-
-    return view("digitalSign::digital_sign.portrait", compact('slides', 'version'));
+    return view("digitalSign::digital_sign.portrait", compact('slides', 'media', 'version'));
 })->name('portrait');
 
 /**
@@ -140,3 +136,16 @@ Route::controller(App\Modules\digitalSign\Controllers\PortraitSettingController:
 
 Route::get('portrait-setting/preview/{template}', [PortraitSettingController::class, 'preview'])
     ->name('portrait_setting.preview');
+
+/**
+ * Routes of digitalSign/PortraitMedia module
+ */
+Route::controller(App\Modules\digitalSign\Controllers\PortraitMediaController::class)->middleware(['web','auth'])->name('portrait_media.')->prefix('portrait-media')->group(function (){
+    Route::get('/', 'index')->name('read');
+    Route::post('/filter', 'filter')->name('filter.read');
+    Route::get('/create', 'create')->name('create');
+    Route::post('/store', 'store')->name('store');
+    Route::get('/edit/{id}', 'edit')->name('edit');
+    Route::post('/update', 'update')->name('update');
+    Route::get('/delete/{id}', 'delete')->name('delete');
+});
