@@ -15,8 +15,8 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex-grow">
                                     <h3 class="group flex items-center mb-2">
-                                        <i class="fas fa-{{ $item->icon }} mr-3 text-yellow-400 text-xl group-hover:scale-110 transition-transform"></i>
-                                        <span class="hover:text-yellow-400 transition-colors duration-300">
+                                        <i class="fas fa-{{ $item->icon }} mr-3 text-white-400 text-xl group-hover:scale-110 transition-transform"></i>
+                                        <span class="hover:text-gray-400 transition-colors duration-300">
                                             {{ $item->nama_kegiatan }}
                                         </span>
                                     </h3>

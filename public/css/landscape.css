@@ -55,9 +55,13 @@ body {
 }
 
 .schedule-card {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+    /* dark mode tone schedule
     background: linear-gradient(135deg, #2c3e50 0%, #1a202c 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
-}
+} */
 
 /* ==========================================================================
    Floor Navigation & Slider
@@ -332,18 +336,19 @@ body {
     font-size: 1.5rem;
     line-height: 1.75rem;
     letter-spacing: 0.025em;
+    color: #000000;
 }
 
 .schedule-item .location-text {
     font-size: 1.3rem;
-    color: #e2e8f0;
+    color: #212121;
     letter-spacing: 0.01em;
 }
 
 .schedule-item .time-text {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #fcd34d;
+    color: #000000;
 }
 
 .schedule-item .date-text {
@@ -352,7 +357,7 @@ body {
 }
 
 .schedule-item .date-text span {
-    color: #fcd34d;
+    color: #000000;
     font-weight: 500;
 }
 
@@ -368,7 +373,7 @@ body {
     top: 0;
     width: 4px;
     height: 0;
-    background: #fbbf24;
+    background: #222222;
     transition: height 0.3s ease;
 }
 
