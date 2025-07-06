@@ -198,47 +198,37 @@ function updateJadwal(jadwal) {
         slide.className = "schedule-slide" + (index === 0 ? " active" : "");
         slide.dataset.index = index;
         slide.innerHTML = `<div class="text-white font-poppins space-y-4">${group
-            .map(
-                (item) => `
-            <div class="schedule-item rounded-lg p-4 transition-all duration-300 bg-white/20 backdrop-blur">
-                <div class="flex items-center justify-between">
-                    <div class="flex-grow">
-                        <h3 class="group flex items-center mb-2">
-                            <i class="fas ${
-                                item.icon
-                            } mr-3 text-yellow-400 text-xl group-hover:scale-110 transition-transform"></i>
-                            <span class="hover:text-yellow-400 transition-colors duration-300">${
-                                item.nama_kegiatan
-                            }</span>
-                        </h3>
-                        <p class="location-text flex items-center text-sm text-gray-200">
-                            <i class="fas fa-map-marker-alt mr-2 text-red-400"></i>
-                            ${item?.ruangan?.nama || "-"}
-                            ${
-                                item?.ruangan?.lantai?.label
-                                    ? `<span class="ml-2 text-xs bg-gray-800/50 px-2 py-0.5 rounded-md">${item.ruangan.lantai.label}</span>`
-                                    : ""
-                            }
-                        </p>
+            .map((item) => {
+                return `
+                    <div class="schedule-item rounded-lg p-4 transition-all duration-300 bg-white/20 backdrop-blur">
+                        <div class="flex items-center justify-between">
+                            <div class="flex-grow">
+                                <h3 class="group flex items-center font-bold mb-2">
+                                    <i class="fas ${item.icon} mr-3 text-blue-600 text-xl group-hover:scale-110 transition-transform"></i>
+                                    <span class="hover:text-blue-400 transition-colors duration-300">${item.nama_kegiatan}</span>
+                                </h3>
+                                <p class="location-text flex items-center text-sm text-gray-200">
+                                    <i class="fas fa-map-marker-alt mr-2 text-red-600"></i>
+                                    ${item?.ruangan?.nama || "-"}
+                                    ${item?.ruangan?.lantai?.label ? `<span class=\"ml-2 text-xs bg-gray-600/50 px-2 py-0.5 rounded-md\">${item.ruangan.lantai.label}</span>` : ""}
+                                </p>
+                            </div>
+                            <div class="text-right ml-6 text-sm">
+                                <p class="time-text flex items-center justify-end mb-1">
+                                    <i class="far fa-clock mr-2 font-bold text-blue-600"></i>
+                                    <span>${dayjs(item.waktu_mulai).format("HH:mm")} WIB</span>
+                                </p>
+                                <p class="date-text flex items-center justify-end">
+                                    <i class="far fa-calendar-check mr-2 text-green-600"></i>
+                                    <span>${dayjs(item.waktu_mulai).format("DD MMM YYYY")}</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-right ml-6 text-sm text-gray-200">
-                        <p class="time-text flex items-center justify-end mb-1">
-                            <i class="far fa-clock mr-2 animate-pulse text-blue-300"></i>
-                            <span>${dayjs(item.waktu_mulai).format(
-                                "HH:mm"
-                            )} WIB</span>
-                        </p>
-                        <p class="date-text flex items-center justify-end">
-                            <i class="far fa-calendar-check mr-2 text-green-400"></i>
-                            <span>${dayjs(item.waktu_mulai).format(
-                                "DD MMM YYYY"
-                            )}</span>
-                        </p>
-                    </div>
-                </div>
-            </div>`
-            )
-            .join("")}</div>`;
+                `;
+            })
+            .join("")
+        }</div>`;
 
         sliderWrapper.appendChild(slide);
 
@@ -345,7 +335,7 @@ function updateLantaiDanRuangan(lantaidanruangan) {
                     index === 0 ? "active" : ""
                 } relative pb-20">
                     <div class="floor-title-container">
-                        <div class="text-5xl font-bold text-red-600"><i class="fas fa-building-user mr-2"></i>${
+                        <div class="text-5xl font-bold text-grey-600"><i class="fas fa-building-user mr-2"></i>${
                             lantai.nama
                         }</div>
                         <div class="text-lg font-semibold text-gray-600 mb-6">(${

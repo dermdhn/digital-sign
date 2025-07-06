@@ -11,32 +11,27 @@
             <div class="schedule-slide {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}">
                 <div class="text-white font-poppins space-y-4">
                     @foreach($group as $item)
-                        <div class="schedule-item rounded-lg p-4 transition-all duration-300 bg-white/20 backdrop-blur">
+                        <div class="schedule-item rounded-lg p-4 transition-all duration-300">
                             <div class="flex items-center justify-between">
                                 <div class="flex-grow">
                                     <h3 class="group flex items-center mb-2">
-                                        <i class="fas fa-{{ $item->icon }} mr-3 text-white-400 text-xl group-hover:scale-110 transition-transform"></i>
-                                        <span class="hover:text-gray-400 transition-colors duration-300">
+                                        <span class="transition-colors duration-300">
                                             {{ $item->nama_kegiatan }}
                                         </span>
                                     </h3>
-                                    <p class="location-text flex items-center text-sm text-gray-200">
-                                        <i class="fas fa-map-marker-alt mr-2 text-red-400"></i>
+                                    <p class="location-text">
                                         {{ $item->ruangan->nama ?? '-' }}
                                         @if ($item->ruangan && $item->ruangan->lantai)
-                                            <span class="ml-2 text-xs bg-gray-800/50 px-2 py-0.5 rounded-md">
-                                                {{ $item->ruangan->lantai->label }}
-                                            </span>
                                         @endif
                                     </p>
                                 </div>
-                                <div class="text-right ml-6 text-sm text-gray-200">
+                                <div class="text-right ml-6 text-sm">
                                     <p class="time-text flex items-center justify-end mb-1">
-                                        <i class="far fa-clock mr-2 animate-pulse text-blue-300"></i>
+                                        <i class="far fa-clock mr-2"></i>
                                         <span>{{ \Carbon\Carbon::parse($item->waktu_mulai)->format('H:i') }} WIB</span>
                                     </p>
                                     <p class="date-text flex items-center justify-end">
-                                        <i class="far fa-calendar-check mr-2 text-green-400"></i>
+                                        <i class="far fa-calendar-check mr-2"></i>
                                         <span>{{ \Carbon\Carbon::parse($item->waktu_mulai)->format('d M Y') }}</span>
                                     </p>
                                 </div>
@@ -55,7 +50,7 @@
         @if ($groupedSchedules->count() > 1)
             <div class="flex justify-center mt-8 space-x-3">
                 @foreach($groupedSchedules as $index => $group)
-                    <button class="schedule-dot w-2 h-2 rounded-full bg-gray-400/50 transition-all duration-300 hover:bg-gray-300 {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"></button>
+                    <button class="schedule-dot w-2 h-2 rounded-full bg-gray-400/50 transition-all duration-300 {{ $index === 0 ? 'active' : '' }}" data-index="{{ $index }}"></button>
                 @endforeach
             </div>
         @endif
