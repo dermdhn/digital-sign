@@ -333,7 +333,7 @@ function updateLantaiDanRuangan(lantaidanruangan) {
             const slideHTML = `
                 <div class="floor-slide ${
                     index === 0 ? "active" : ""
-                } relative pb-20">
+                } relative">
                     <div class="floor-title-container">
                         <div class="text-5xl font-bold text-grey-600"><i class="fas fa-building-user mr-2"></i>${
                             lantai.nama

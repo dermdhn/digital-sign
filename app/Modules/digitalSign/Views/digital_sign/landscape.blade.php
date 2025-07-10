@@ -58,7 +58,7 @@
         <!-- Main Content -->
         <main class="grid grid-cols-2 flex-grow bg-gray-50">
             <!-- Floor Information -->
-            <section class="lantai-section flex flex-col justify-start text-lg backdrop-blur-sm h-full min-h-[300px] p-6 pt-8 {{ count($lantaidanruangan) <= 1 ? '!justify-normal' : '' }}">
+            <section class="lantai-section flex flex-col justify-start text-lg backdrop-blur-sm h-full min-h-[300px] px-6 pt-6 {{ count($lantaidanruangan) <= 1 ? '!justify-normal' : '' }}">
                 <div class="font-poppins w-full">
                     <div class="floor-slider relative">
                         <!-- SLIDE CONTAINER -->
