@@ -1,3 +1,11 @@
+/* Custom font size for room list in info-card */
+.info-card ul li {
+    font-size: 25px !important;
+}
+/* Custom override for info-card text size */
+.info-card .text-gray-700 {
+    font-size: 2rem !important;
+}
 /* ==========================================================================
    Reset & Base Styles
    ========================================================================== */
