@@ -23,7 +23,7 @@ class JadwalController extends BaseController
     protected $add_title = ''; // Title tambahan jika diperlukan ex. terdapat referensi {(User: <code>$nm_user</code>)}
     protected $base_route = 'jadwal'; // Base route name untuk CRUD {sys_user_role}
     protected $route_params = [];
-    protected $dt_order = ['created_at', 'ASC'];
+    protected $dt_order = ['created_at', 'DESC'];
     protected $use_validate = false; // Jika memerlukan validasi data
     protected $form = [];
     protected $data_method = [];
